@@ -882,7 +882,7 @@
       <?rfc include='reference.RFC.7384'?>
       <!-- <?rfc include='reference.I-D.ietf-tictoc-1588overmpls'?>  -->
       <?rfc include='reference.I-D.ietf-detnet-use-cases'?>
-
+      <?rfc include='reference.I-D.ietf-detnet-architecture'?>
       <reference anchor="IEEE1588">
         <front>
           <title>IEEE 1588 Standard for a Precision Clock Synchronization Protocol for Networked
