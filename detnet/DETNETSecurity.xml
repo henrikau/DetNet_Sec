@@ -91,6 +91,19 @@
       </address>
     </author>
 
+    <author fullname="Henrik Austad" initials="H" surname="Austad">
+      <organization>Cisco Systems</organization>
+      <address>
+        <postal>
+          <street>Philip Pedersens vei 1</street>
+          <city>Lysaker</city>
+          <code>1366</code>
+          <country>Norway</country>
+        </postal>
+        <email>henrik@austad.us</email>
+      </address>
+    </author>
+
     <!--
     <author fullname="Carsten Bormann" initials="C.B." surname="Bormann">
       <organization abbrev=" "> </organization>
