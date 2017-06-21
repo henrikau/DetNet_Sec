@@ -526,6 +526,38 @@
 	  </t>
 	</section>
       </section>		<!-- SegmentationImpact -->
+
+      <section anchor="ReplicationImpact"
+	       title="Replication and Elimination">
+	<t>
+	  The Replication and Elimination is relevant only to DataPlane
+	  messages as Signalling is not subject to multipath routing.
+	</t>
+
+	<section title="Impact of increased attack surface">
+	  <t>
+	    Covered briefly in <xref target="SegmentationImpact" />
+	  </t>
+	</section>
+
+	<section title="Impact of header manipulation at elimination bridges">
+	  <t>
+	    Covered briefly in <xref target="SegmentationImpact" />
+	  </t>
+	</section>
+      </section>
+
+      <section title="Impact of attacks to path choice"
+	       anchor="PathChoiceImpact">
+	<t>
+	  This is covered in part in <xref
+	  target="SegmentationImpact"/>, and as with Replication and
+	  Elimination (<xref target="ReplicationImpact"/>, this is
+	  relevant for DataPlane messages.
+	</t>
+      </section>
+
+
     </section> <!-- ThreatImpact -->
 
     <section anchor="ThreatMitigation" title="Security Threat Mitigation">
