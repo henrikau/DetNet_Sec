@@ -429,6 +429,33 @@
 	  the EP will continue to receive messages even after it is</t>
 	</section>
       </section>		<!-- DelayImpact -->
+
+      <section anchor="SpoofingImpact" title="Spoofing Impact">
+	<section title="Dataplane Spoofing">
+	  <t>Spoofing dataplane messages can result in increased
+	  resource consumptions on the bridges throughout the network as
+	  it will increase buffer usage and CPU utilization. This can
+	  lead to resource exhaustion and/or increased delay.</t>
+	  <t>If the attacker manages to create valid headers, the false
+	  messages can be forwarded through the network, using part of
+	  the allocated bandwidth. This in turn can cause legitimate
+	  messages to be dropped when the budget has been exhausted.</t>
+	  <t>Finally, the endpoint will have to deal with invalid
+	  messages being delivered to the endpoint instead of (or in
+	  addition to) a valid message.</t>
+	</section>
+	<section title="ControlPlane Spoofing">
+	  <t>A successful control plane spoofing-attack has a very large
+	  potentional. It can do anything from modifying existing
+	  streams by changing the available bandwidth, add or remove
+	  endpoints or drop the stream altogether. It would also be
+	  possible to falsely create new streams, which could give an
+	  attacker the ability to exhaust the systems resources, or just
+	  enable a high quality DetNet stream outside the Network
+	  engineer's control.</t>
+	</section>
+      </section>		<!-- SpoofingImpact -->
+
       </section> <!-- ThreatImpact -->
 
     <section anchor="ThreatMitigation" title="Security Threat Mitigation">
