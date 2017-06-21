@@ -456,59 +456,51 @@
 	</section>
       </section>		<!-- SpoofingImpact -->
 
-	<section anchor="SegmentationImpact"
-		 title="Segmentation attacks (injection)">
-	  <section title="DataPlane segmentation impact">
-	    <t>
-	      Injection of false messages in a DetNet stream could lead
-	      to exhaustion of the available bandwidth for a stream if
-	      the bridges accounts false messages to the stream's
-	      budget.
-	    </t>
-	    <t>
-	      In a multipath scenario, injected messages will cause an
-	      increased CPU utilization on elimination bridges and if
-	      enough paths are subject to malicious injection, the
-	      legitimate messages could be dropped. Likewise it can
-	      cause an increase in buffer usage. In total, this will
-	      consume more resources on the bridges than normal, giving
-	      rise to a potential resource exhaustion attack on the
-	      bridges.
-	    </t>
-	    <t>
-	      If a stream is interrupted, the end application will be
-	      affected by what is now a non-deterministic stream.
-	    </t>
-	  </section>
-	  <section title="ControlPlane segmentation impact">
-	    <t>
-	      A successful ControlPlane segmentation attack will cause
-	      control-messages to be interpreted by nodes in the
-	      network. This has the potentional to create new streams
-	      (exhausting resources), drop existing (denial of service),
-	      add/remove end-stations to a multicast group (loss of
-	      privacy) or modify the stream attributes (reducing
-	      available bandwidth, or increasing it so that new streams
-	      cannot reserve a path).
-	    </t>
-	    <t>
-	      In short, this means that you cannot trust the stream
-	      reservation properties or the network itself.
-	    </t>
-	    <t>
-	      As with spoofing, if an attacker is able to inject
-	      control-plane messages and the receiving end does not
-	      detect it, pretty mu the receiving station must be able
-	      to.
-	    </t>
-	  </section>
-	</section>		<!-- SegmentationImpact -->
-
-	<section anchor="ReplicationImpact" title="Replication and Elimination">
-	  <t>empty</t>
+      <section anchor="SegmentationImpact"
+	       title="Segmentation attacks (injection)">
+	<section title="DataPlane segmentation impact">
+	  <t>
+	    Injection of false messages in a DetNet stream could lead to
+	    exhaustion of the available bandwidth for a stream if the
+	    bridges accounts false messages to the stream's budget.
+	  </t>
+	  <t>
+	    In a multipath scenario, injected messages will cause an
+	    increased CPU utilization on elimination bridges and if
+	    enough paths are subject to malicious injection, the
+	    legitimate messages could be dropped. Likewise it can cause
+	    an increase in buffer usage. In total, this will consume
+	    more resources on the bridges than normal, giving rise to a
+	    potential resource exhaustion attack on the bridges.
+	  </t>
+	  <t>
+	    If a stream is interrupted, the end application will be
+	    affected by what is now a non-deterministic stream.
+	  </t>
 	</section>
-
-      </section> <!-- ThreatImpact -->
+	<section title="ControlPlane segmentation impact">
+	  <t>
+	    A successful ControlPlane segmentation attack will cause
+	    control-messages to be interpreted by nodes in the
+	    network. This has the potentional to create new streams
+	    (exhausting resources), drop existing (denial of service),
+	    add/remove end-stations to a multicast group (loss of
+	    privacy) or modify the stream attributes (reducing available
+	    bandwidth, or increasing it so that new streams cannot
+	    reserve a path).
+	  </t>
+	  <t>
+	    In short, this means that you cannot trust the stream
+	    reservation properties or the network itself.
+	  </t>
+	  <t>
+	    As with spoofing, if an attacker is able to inject
+	    control-plane messages and the receiving end does not detect
+	    it, pretty mu the receiving station must be able to.
+	  </t>
+	</section>
+      </section>		<!-- SegmentationImpact -->
+    </section> <!-- ThreatImpact -->
 
     <section anchor="ThreatMitigation" title="Security Threat Mitigation">
 
