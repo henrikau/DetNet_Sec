@@ -519,10 +519,9 @@
 
       </section>
 
-
       <section title="Mitigation Summary">
 
-	   <t>The following table maps the threats of <xref target="ThreatSection"/> to the impacts of Section TBD, and to the mitigations of the current section. Each row specifies a threat, the impact of this threat if it is successfully implemented, and possible mitigation methods.</t>
+	   <t>The following table maps the threats of <xref target="ThreatSection"/> to the impacts of <xref target="ThreatImpact"/> , and to the mitigations of the current section. Each row specifies a threat, the impact of this threat if it is successfully implemented, and possible mitigation methods.</t>
 
 
         <figure align="center" anchor="ThreatMapping" title="Mapping Threats to Impact and Mitigations">
