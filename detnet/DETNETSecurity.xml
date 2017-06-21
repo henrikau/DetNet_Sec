@@ -430,7 +430,32 @@
 	</section>
       </section>		<!-- DelayImpact -->
 
-      <section anchor="SpoofingImpact" title="Spoofing Impact">
+      <section anchor="SpoofingImpact"
+	       title="Flow Identification and Spoofing Impact">
+
+	<section title="Flow identification Impact">
+	  <t>
+	    Of all the attacks, this is one of the most difficult to
+	    detect and counter. Often, an attacker will start out by
+	    observing the traffic going through the network and use the
+	    knowledge gathered in this phase to mount future attacks.
+	  </t>
+	  <t>
+	    The attacker can, at their leisure, observe over time all
+	    aspects of the messaging and signalling, learning the intent
+	    and purpose of all traffic flows. At some later date,
+	    possibly at an important time in an operational context, the
+	    attacker can launch a multi-faceted attack, possibly in
+	    conjunction with some demand for ransom.
+	  </t>
+	  <t>
+	    The flow-id in the header of the dataplane-messages gives an
+	    attacker a very reliable identifier for DetNet traffic, and
+	    this traffic has a high probability of going to lucrative
+	    targets.
+	  </t>
+	</section>
+	<section title="Spoofing">
 	<section title="Dataplane Spoofing">
 	  <t>Spoofing dataplane messages can result in increased
 	  resource consumptions on the bridges throughout the network as
@@ -454,7 +479,8 @@
 	  enable a high quality DetNet stream outside the Network
 	  engineer's control.</t>
 	</section>
-      </section>		<!-- SpoofingImpact -->
+      </section>		<!-- spoofing-->
+      </section>		<!-- Flow identification and spoofing impact -->
 
       <section anchor="SegmentationImpact"
 	       title="Segmentation attacks (injection)">
