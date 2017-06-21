@@ -382,8 +382,56 @@
 
     </section>
 
+    <section anchor="ThreatImpact" title="Security Threat Impacts">
+      <t>
+	This section describes the impact of the threats described in
+	<xref target="ThreatSection"/>. Mitigations are then further
+	handled in <xref target="ThreatMitigation"/>.
+      </t>
+      <t>
+	In computer security, the impact (or consequence) of an incident
+	can be measured in loss of confidentiality, integrity or
+	availability of information. In other words, this section
+	describes the effect of a successful attack. The scope is
+	limited to the effect of a successful attack on DetNet itself,
+	not the applications that _use_ Detnet as this is highly
+	application specific.
+      </t>
 
-    <section title="Security Threat Mitigation">
+      <section anchor="DelayImpact" title="Impact of Delay-Attacs">
+	<section title="Dataplane Delay Attacks">
+	  <t>
+	    Dropped messages can result in stream instability. If only a
+	    single path is used, the entire stream can be disrupted. In
+	    a multipath scenario, large delays on one stream can lead to
+	    increased buffer and CPU resources on the elimination
+	    bridge.
+
+	    If the attack is carried out on a sole link (i.e. no
+	    multipath), the DetNet stream can be interrupted and result
+	    in outages.
+	  </t>
+	</section>
+
+	<section title="ControlPlane Delay Attacks">
+	  <t>In and of itself, this is not directly a threat, the
+	  effects of delaying control messages can have quite adverse
+	  effects later.</t>
+	  <t>Delayed messages for tear-down can lead to resource
+	  leakage if a stream is not torn down at the correct time. This
+	  can in turn result in failure to allocate new streams giving
+	  rise to a denial of service attack.</t>
+	  <t>In the case where an End-point should be added to a
+	  multicast, failure to deliver said signalling message will
+	  prevent the new EP from receiving expected frames.</t>
+	  <t>Likewise, when an EP should be removed from a multicast
+	  group, delaying such messages can lead to loss of privacy as
+	  the EP will continue to receive messages even after it is</t>
+	</section>
+      </section>		<!-- DelayImpact -->
+      </section> <!-- ThreatImpact -->
+
+    <section anchor="ThreatMitigation" title="Security Threat Mitigation">
 
 	<t>This section describes a set of measures that can be taken to mitigate the threats described in <xref target="ThreatSection"/>. These mitigations should be viewed as a toolset that includes several different and diverse tools. Each application or system will typically use a subset of these tools, based on a system-specific threat analysis.</t>
 
