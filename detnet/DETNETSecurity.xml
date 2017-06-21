@@ -508,7 +508,7 @@
 	  <t>
 	    A successful ControlPlane segmentation attack will cause
 	    control-messages to be interpreted by nodes in the
-	    network. This has the potentional to create new streams
+	    network. This has the potential to create new streams
 	    (exhausting resources), drop existing (denial of service),
 	    add/remove end-stations to a multicast group (loss of
 	    privacy) or modify the stream attributes (reducing available
