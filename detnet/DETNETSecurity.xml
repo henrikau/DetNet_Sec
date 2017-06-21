@@ -217,7 +217,7 @@
 
       </section>
 
-      <section anchor="ThreatSection" title="Threat Analysis">
+      <section anchor="ThreatAnalysis" title="Threat Analysis">
 
         <section anchor="DelayThreat" title="Threats Related to Delay">
           <section title="Delay Attack">
