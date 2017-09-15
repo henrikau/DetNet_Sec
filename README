@@ -1,0 +1,8 @@
+DetNet Security
+
+Published, or official, versions can be found in published/. The current
+work in progress is detnet-security.xml
+
+Current approach is to use published/ as an archive of old verions. As a
+convenience, each new draft placed under published/ get a separate tag
+which is then signed.
