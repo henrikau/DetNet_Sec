@@ -417,32 +417,41 @@
         application specific. </t>
 
       <section anchor="DelayImpact" title="Delay-Attacks">
-
+	<!-- <xref target="DelayThreat"/> -->
         <section title="Data Plane Delay Attacks">
-          <t> Dropped messages can result in stream instability. If only a single path is used, the
-            entire stream can be disrupted. In a multipath scenario, large delays on one stream can
-            lead to increased buffer and CPU resources on the elimination bridge. </t>
+          <t> Severely delayed messages in a DetNet link can result in
+          the same behavior as dropped messages in ordinary networks as
+          the services attached to the stream has strict deterministic
+          requirements.</t>
 
-          <t>If the attack is carried out on a sole link (i.e. no multipath), the DetNet stream can
-            be interrupted and result in outages.</t>
+	  <t>For a single path scenario, disruption is a real
+	  possibility, whereas in a multipath scenario, large delays or
+	  instabilities in one stream can lead to increased buffer and
+	  CPU resources on the elimination bridge.</t>
 
         </section>
 
         <section title="Control Plane Delay Attacks">
-          <t>In and of itself, this is not directly a threat, the effects of delaying control
-            messages can have quite adverse effects later.</t>
-          <t>Delayed messages for tear-down can lead to resource leakage if a stream is not torn
-            down at the correct time. This can in turn result in failure to allocate new streams
+          <t>In and of itself, this is not directly a threat to the
+          DetNet service, but the effects of delaying control messages
+          can have quite adverse effects later.</t>
+          <t><list style="symbols">
+            <t>Delayed tear-down can lead to resource leakage, which in
+            turn can result in failure to allocate new streams finally
             giving rise to a denial of service attack.</t>
-          <t>In the case where an End-point should be added to a multicast, failure to deliver said
-            signalling message will prevent the new EP from receiving expected frames.</t>
-          <t>Likewise, when an EP should be removed from a multicast group, delaying such messages
-            can lead to loss of privacy as the EP will continue to receive messages even after it is
-            removed.</t>
+
+            <t>Failure to deliver, or severely delaying, signalling
+            messages adding an end-point to a multicast-group will
+            prevent the new EP from receiving expected frames thus
+	    disrupting expected behavior.</t>
+
+            <t>Delaying messages removing an EP from a group can lead to
+            loss of privacy as the EP will continue to receive messages
+            even after it is supposedly removed.</t>
+	  </list></t>
         </section>
 
       </section>
-      <!-- DelayImpact -->
 
       <section anchor="SpoofingImpact" title="Flow Identification and Spoofing">
 
