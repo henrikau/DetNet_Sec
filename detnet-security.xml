@@ -406,15 +406,94 @@
       </section>
 
     </section>
+    <!-- Section: Security Threats -->
 
     <section anchor="ThreatImpact" title="Security Threat Impacts">
-      <t> This section describes the impact of the attacks described in <xref target="ThreatSection"
-        />. Mitigations are discussed further in <xref target="ThreatMitigation"/>. </t>
-      <t> In computer security, the impact (or consequence) of an incident can be measured in loss
-        of confidentiality, integrity or availability of information. In other words, this section
-        describes the effect of a successful attack. The scope is limited to the effect of a
-        successful attack on DetNet itself, not the applications that _use_ Detnet as this is highly
-        application specific. </t>
+      <t> This section describes and rates the impact of the attacks
+      described in <xref target="ThreatSection" />. Mitigations are
+      discussed further in <xref target="ThreatMitigation"/>. </t>
+
+      <t> In computer security, the impact (or consequence) of an
+      incident can be measured in loss of confidentiality, integrity or
+      availability of information.</t>
+
+      <t>The severity of various components of the impact of a successful
+          vulnerability exploit to use cases by industry is available in
+	  more detail in <xref target="I-D.ietf-detnet-use-cases"/>.
+	  This includes Pro Audio, Electrical Utilities,
+          Building Automation, Wireless for Industrial, Cellular Radio,
+	  and Industrial M2M (split into two areas, M2M Data Gathering and
+	  M2M Control Loop).</t>
+
+        <t>Components of Impact (left column) include Criticality of Failure, Effects of Failure,
+          Recovery, and DetNet Functional Dependence. Criticality of failure summarizes the
+          seriousness of the impact. The impact of a resulting failure can affect many different
+          metrics that vary greatly in scope and severity. In order to reduce the number of
+          variables, the following were included: Financial, Health and Safety, People well being,
+          Affect on a single organization, and affect on multiple organizations. Recovery outlines
+          how long it would take for an affected use case to get back to its pre-failure state
+          (Recovery time objective, RTO), and how much of the original service would be lost in
+          between the time of service failure and recovery to original state (Recovery Point
+          Objective, RPO). DetNET dependence maps how much the following DetNet service objectives
+          contribute to impact of failure: Time dependency, data integrity, source node integrity,
+          availability, latency/jitter.</t>
+
+        <t>The scale of the Impact mappings is low, medium, and high. In some use cases there may be
+          a multitude of specific applications in which DetNET is used. For simplicity this section
+          attempts to average the varied impacts of different applications. This section does not
+          address the overall risk of a certain impact which would require the likelihood of a
+          failure happening. </t>
+
+        <t>In practice any such ratings will vary from case to case; the ratings shown here are
+          given as examples.</t>
+
+        <figure align="center" anchor="ThreatIndustryMapping"
+          title="Impact of Attacks by Use Case Industry">
+
+          <artwork align="left">
+            <![CDATA[
++------------------+-----------------------------------------+-----+
+|                  | Pro A | Util | Bldg |Wire- | Cell |M2M  |M2M  |
+|                  |       |      |      | less |      |Data |Ctrl |
++------------------+-----------------------------------------+-----+
+| Criticality      | Med   | Hi   | Low  | Med  | Med  | Med | Med |
++------------------+-----------------------------------------+-----+
+| Effects
++------------------+-----------------------------------------+-----+
+|  Financial       | Med   | Hi   | Med  | Med  | Low  | Med | Med |
++------------------+-----------------------------------------+-----+
+|  Health/Safety   | Med   | Hi   | Hi   | Med  | Med  | Med | Med |
++------------------+-----------------------------------------+-----+
+|  People WB       | Med   | Hi   | Hi   | Low  | Hi   | Low | Low |
++------------------+-----------------------------------------+-----+
+|  Effect 1 org    | Hi    | Hi   | Med  | Hi   | Med  | Med | Med |
++------------------+-----------------------------------------+-----+
+|  Effect >1 org   | Med   | Hi   | Low  | Med  | Med  | Med | Med |
++------------------+-----------------------------------------+-----+
+|Recovery
++------------------+-----------------------------------------+-----+
+|  Recov Time Obj  | Med   | Hi   | Med  | Hi   | Hi   | Hi  | Hi  |
++------------------+-----------------------------------------+-----+
+|  Recov Point Obj | Med   | Hi   | Low  | Med  | Low  | Hi  | Hi  |
++------------------+-----------------------------------------+-----+
+|DetNet Dependence
++------------------+-----------------------------------------+-----+
+|  Time Dependency | Hi    | Hi   | Low  | Hi   | Med  | Low | Hi  |
++------------------+-----------------------------------------+-----+
+|  Latency/Jitter  | Hi    | Hi   | Med  | Med  | Low  | Low | Hi  |
++------------------+-----------------------------------------+-----+
+|  Data Integrity  | Hi    | Hi   | Med  | Hi   | Low  | Hi  | Low |
++------------------+-----------------------------------------+-----+
+|  Src Node Integ  | Hi    | Hi   | Med  | Hi   | Med  | Hi  | Hi  |
++------------------+-----------------------------------------+-----+
+|  Availability    | Hi    | Hi   | Med  | Hi   | Low  | Hi  | Hi  |
++------------------+-----------------------------------------+-----+
+]]></artwork>
+        </figure>
+
+
+	<t>The rest of this section will cover impact of the different
+	groups in more detail.</t>
 
       <section anchor="DelayImpact" title="Delay-Attacks">
 	<!-- <xref target="DelayThreat"/> -->
@@ -562,83 +641,8 @@
           messages. </t>
       </section>
 
-      <section title="Impact of Attacks by Use Case Industry">
-
-        <t>This section rates the severity of various components of the impact of a successful
-          vulnerability exploit to use cases by industry as described in <xref
-            target="I-D.ietf-detnet-use-cases"/>, including Pro Audio, Electrical Utilities,
-          Building Automation, Wireless for Industrial, Cellular Radio, and Industrial M2M (split
-          into two areas, M2M Data Gathering and M2M Control Loop).</t>
-
-        <t>Components of Impact (left column) include Criticality of Failure, Effects of Failure,
-          Recovery, and DetNet Functional Dependence. Criticality of failure summarizes the
-          seriousness of the impact. The impact of a resulting failure can affect many different
-          metrics that vary greatly in scope and severity. In order to reduce the number of
-          variables, the following were included: Financial, Health and Safety, People well being,
-          Affect on a single organization, and affect on multiple organizations. Recovery outlines
-          how long it would take for an affected use case to get back to its pre-failure state
-          (Recovery time objective, RTO), and how much of the original service would be lost in
-          between the time of service failure and recovery to original state (Recovery Point
-          Objective, RPO). DetNET dependence maps how much the following DetNet service objectives
-          contribute to impact of failure: Time dependency, data integrity, source node integrity,
-          availability, latency/jitter.</t>
-
-        <t>The scale of the Impact mappings is low, medium, and high. In some use cases there may be
-          a multitude of specific applications in which DetNET is used. For simplicity this section
-          attempts to average the varied impacts of different applications. This section does not
-          address the overall risk of a certain impact which would require the likelihood of a
-          failure happening. </t>
-
-        <t>In practice any such ratings will vary from case to case; the ratings shown here are
-          given as examples.</t>
-
-        <figure align="center" anchor="ThreatIndustryMapping"
-          title="Impact of Attacks by Use Case Industry">
-
-          <artwork align="left">
-            <![CDATA[
-+------------------+-----------------------------------------+-----+
-|                  | Pro A | Util | Bldg |Wire- | Cell |M2M  |M2M  |
-|                  |       |      |      | less |      |Data |Ctrl |
-+------------------+-----------------------------------------+-----+
-| Criticality      | Med   | Hi   | Low  | Med  | Med  | Med | Med |
-+------------------+-----------------------------------------+-----+
-| Effects
-+------------------+-----------------------------------------+-----+
-|  Financial       | Med   | Hi   | Med  | Med  | Low  | Med | Med |
-+------------------+-----------------------------------------+-----+
-|  Health/Safety   | Med   | Hi   | Hi   | Med  | Med  | Med | Med |
-+------------------+-----------------------------------------+-----+
-|  People WB       | Med   | Hi   | Hi   | Low  | Hi   | Low | Low |
-+------------------+-----------------------------------------+-----+
-|  Effect 1 org    | Hi    | Hi   | Med  | Hi   | Med  | Med | Med |
-+------------------+-----------------------------------------+-----+
-|  Effect >1 org   | Med   | Hi   | Low  | Med  | Med  | Med | Med |
-+------------------+-----------------------------------------+-----+
-|Recovery
-+------------------+-----------------------------------------+-----+
-|  Recov Time Obj  | Med   | Hi   | Med  | Hi   | Hi   | Hi  | Hi  |
-+------------------+-----------------------------------------+-----+
-|  Recov Point Obj | Med   | Hi   | Low  | Med  | Low  | Hi  | Hi  |
-+------------------+-----------------------------------------+-----+
-|DetNet Dependence
-+------------------+-----------------------------------------+-----+
-|  Time Dependency | Hi    | Hi   | Low  | Hi   | Med  | Low | Hi  |
-+------------------+-----------------------------------------+-----+
-|  Latency/Jitter  | Hi    | Hi   | Med  | Med  | Low  | Low | Hi  |
-+------------------+-----------------------------------------+-----+
-|  Data Integrity  | Hi    | Hi   | Med  | Hi   | Low  | Hi  | Low |
-+------------------+-----------------------------------------+-----+
-|  Src Node Integ  | Hi    | Hi   | Med  | Hi   | Med  | Hi  | Hi  |
-+------------------+-----------------------------------------+-----+
-|  Availability    | Hi    | Hi   | Med  | Hi   | Low  | Hi  | Hi  |
-+------------------+-----------------------------------------+-----+
-]]></artwork>
-        </figure>
-
-      </section>
-
     </section>
+    <!-- Section: Security Threat Impacts-->
 
     <section anchor="ThreatMitigation" title="Security Threat Mitigation">
 
