@@ -770,6 +770,9 @@
 |                      |-Increased resource  |                     |
 |                      | consumption         |                     |
 +----------------------+---------------------+---------------------+
+|Reconnaissance        |-Enabler for other   |-Encryption          |
+|                      | attacks             |                     |
++----------------------+---------------------+---------------------+
 |DetNet Flow Modificat-|-Increased resource  |-Path redundancy     |
 |ion or Spoofing       | consumption         |-Integrity protection|
 |                      |-Data disruption     |-DetNet Node         |
@@ -804,9 +807,6 @@
 |                      |-Non-deterministic   |                     |
 |                      | delay               |                     |
 |                      |-Data disruption     |                     |
-+----------------------+---------------------+---------------------+
-|Reconnaissance        |-Enabler for other   |-Encryption          |
-|                      | attacks             |                     |
 +----------------------+---------------------+---------------------+
 |Attacks on Time Sync  |-Non-deterministic   |-Path redundancy     |
 |Mechanisms            | delay               |-Control message     |
