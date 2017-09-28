@@ -483,13 +483,17 @@
           </section>
 
           <section title="Control Plane Spoofing">
-            <t>A successful control plane spoofing-attack has a very large potential. It can do
-              anything from modifying existing streams by changing the available bandwidth, add or
-              remove endpoints or drop the stream altogether. It would also be possible to falsely
-              create new streams, which could give an attacker the ability to exhaust the systems
-              resources, or just enable a high quality DetNet stream outside the Network engineer's
-              control.</t>
-
+            <t>A successful control plane spoofing-attack will
+            potentionally have adverse effects. It can do virtually
+	    anything from:</t>
+	    <t><list style="symbols">
+              <t>modifying existing streams by changing the available bandwidth</t>
+	      <t>add or remove endpoints from a stream</t>
+	      <t>drop streams completly</t>
+	      <t>falsely create new streams (exhaust the systems
+	      resources, or to enable streams outside the Network
+	      engineer's control)</t>
+	    </list></t>
           </section>
           <!-- Control Plane Spoofing -->
 
