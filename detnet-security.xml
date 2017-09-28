@@ -118,10 +118,10 @@
       </address>
     </author>
 
-    <!--  
+    <!--
     <author fullname="Carsten Bormann" initials="C.B." surname="Bormann">
       <organization abbrev=" "> </organization>
-    </author> 
+    </author>
     -->
 
     <date year="2017"/>
@@ -587,13 +587,13 @@
             <![CDATA[
 +------------------+-----------------------------------------+-----+
 |                  | Pro A | Util | Bldg |Wire- | Cell |M2M  |M2M  |
-|                  |       |      |      | less |      |Data |Ctrl |    
+|                  |       |      |      | less |      |Data |Ctrl |
 +------------------+-----------------------------------------+-----+
 | Criticality      | Med   | Hi   | Low  | Med  | Med  | Med | Med |
 +------------------+-----------------------------------------+-----+
-| Effects          
+| Effects
 +------------------+-----------------------------------------+-----+
-|  Financial       | Med   | Hi   | Med  | Med  | Low  | Med | Med | 
+|  Financial       | Med   | Hi   | Med  | Med  | Low  | Med | Med |
 +------------------+-----------------------------------------+-----+
 |  Health/Safety   | Med   | Hi   | Hi   | Med  | Med  | Med | Med |
 +------------------+-----------------------------------------+-----+
@@ -603,15 +603,15 @@
 +------------------+-----------------------------------------+-----+
 |  Effect >1 org   | Med   | Hi   | Low  | Med  | Med  | Med | Med |
 +------------------+-----------------------------------------+-----+
-|Recovery                                                                              
+|Recovery
 +------------------+-----------------------------------------+-----+
 |  Recov Time Obj  | Med   | Hi   | Med  | Hi   | Hi   | Hi  | Hi  |
 +------------------+-----------------------------------------+-----+
 |  Recov Point Obj | Med   | Hi   | Low  | Med  | Low  | Hi  | Hi  |
 +------------------+-----------------------------------------+-----+
-|DetNet Dependence                                                    
+|DetNet Dependence
 +------------------+-----------------------------------------+-----+
-|  Time Dependency | Hi    | Hi   | Low  | Hi   | Med  | Low | Hi  |  
+|  Time Dependency | Hi    | Hi   | Low  | Hi   | Med  | Low | Hi  |
 +------------------+-----------------------------------------+-----+
 |  Latency/Jitter  | Hi    | Hi   | Med  | Med  | Low  | Low | Hi  |
 +------------------+-----------------------------------------+-----+
@@ -1433,9 +1433,9 @@
 
     <!-- Change Log
 v00 2017-02-22  TM   Initial version
-v00 2017-03-09  EAG  Edited for clarity, incorporated comments from sdt review. 
-v01 2017-06-26  EAG  Added Impact, Mitigation and Use Case Associations text. 
-v01 2017-06-29  EAG  Integrated review input and Association by Use Case Industry text. 
+v00 2017-03-09  EAG  Edited for clarity, incorporated comments from sdt review.
+v01 2017-06-26  EAG  Added Impact, Mitigation and Use Case Associations text.
+v01 2017-06-29  EAG  Integrated review input and Association by Use Case Industry text.
    -->
 
   </back>
