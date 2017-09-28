@@ -509,11 +509,11 @@
           <t>Injection of false messages in a DetNet stream could lead to exhaustion of the
             available bandwidth for a stream if the bridges accounts false messages to the stream's
             budget. </t>
-          <t>In a multipath scenario, injected messages will cause an increased CPU utilization on
-            elimination bridges and if enough paths are subject to malicious injection, the
-            legitimate messages could be dropped. Likewise it can cause an increase in buffer usage.
-            In total, this will consume more resources on the bridges than normal, giving rise to a
-            potential resource exhaustion attack on the bridges.</t>
+          <t>In a multipath scenario, injected messages will cause increased CPU utilization in
+            elimination bridges. If enough paths are subject to malicious injection, the
+            legitimate messages can be dropped. Likewise it can cause an increase in buffer usage.
+            In total, it will consume more resources in the bridges than normal, giving rise to a
+            resource exhaustion attack on the bridges.</t>
 
           <t>If a stream is interrupted, the end application will be affected by what is now a
             non-deterministic stream. </t>
@@ -521,18 +521,17 @@
         </section>
 
         <section title="Control Plane segmentation">
-          <t> A successful Control Plane segmentation attack will cause control messages to be
-            interpreted by nodes in the network. This has the potential to create new streams
-            (exhausting resources), drop existing (denial of service), add/remove end-stations to a
-            multicast group (loss of privacy) or modify the stream attributes (reducing available
-            bandwidth, or increasing it so that new streams cannot reserve a path).</t>
-
-          <t>In short, this means that you cannot trust the stream reservation properties or the
-            network itself. </t>
-
-          <t>As with spoofing, if an attacker is able to inject control-plane messages and the
-            receiving end does not detect it, the receiving station must be able to. </t>
-
+          <t> A successful Control Plane segmentation attack control messages to be
+            interpreted by nodes in the network, unbeknownst to the
+	  central controller or the network engineer. This has the potential to create </t>
+	  <t><list style="symbols">
+	    <t>new streams (exhausting resources)</t>
+	    <t>drop existing (denial of service)</t>
+	    <t>add/remove end-stations to a multicast group (loss of
+	    privacy)</t>
+	    <t>modify the stream attributes (affecting available
+	    bandwidth</t>
+	  </list></t>
         </section>
         <!-- cp segment impact -->
 
