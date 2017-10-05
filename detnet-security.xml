@@ -18,7 +18,7 @@
 <?rfc subcompact="no" ?>
 
 
-<rfc category="info" docName="draft-sdt-detnet-security-01" ipr="trust200902">
+<rfc category="info" docName="draft-ietf-detnet-security-00" ipr="trust200902">
 
 
   <front>
@@ -220,7 +220,8 @@
         <t>The threat model used in this memo is based on the threat model of Section 3.1 of <xref
             target="RFC7384"/>. This model classifies attackers based on two criteria:</t>
 
-        <t><list style="symbols">
+        <t>
+          <list style="symbols">
             <t>Internal vs. external: internal attackers either have access to a trusted segment of
               the network or possess the encryption or authentication keys. External attackers, on
               the other hand, do not have the keys and have access only to the encrypted or
@@ -228,7 +229,8 @@
             <t>Man in the Middle (MITM) vs. packet injector: MITM attackers are located in a
               position that allows interception and modification of in-flight protocol packets,
               whereas a traffic injector can only attack by generating protocol packets.</t>
-          </list></t>
+          </list>
+        </t>
 
         <t>DetNet-Service, one of the service scenarios described in <xref
             target="I-D.varga-detnet-service-model"/>, is the case where a service connects DetNet
@@ -253,21 +255,13 @@
 
         </section>
 
-        <section anchor="IdentificationThreat" title="DetNet Flow Identification">
-          <section title="DetNet Flow Modification or Spoofing">
-            <t>An attacker can modify some header fields of en route packets in a way that causes
-              the DetNet flow identification mechanisms to misclassify the flow. Alternatively, the
-              attacker can inject traffic that is tailored to appear as if it belongs to a
-              legitimate DetNet flow. The potential consequence is that the DetNet flow resource
-              allocation cannot guarantee the performance that is expected when the flow
-              identification works correctly.</t>
-
-            <t>Note that in some cases there may be an explicit DetNet header, but in some cases the
-              flow identification may be based on fields from the L3/L4 headers. If L3/L4 headers
-              are involved, for purposes of this draft we assume they are encrypted and/or
-              integrity-protected from external attackers. </t>
-          </section>
-
+        <section anchor="ModificationThreat" title="DetNet Flow Modification or Spoofing">
+          <t>An attacker can modify some header fields of en route packets in a way that causes the
+            DetNet flow identification mechanisms to misclassify the flow. Alternatively, the
+            attacker can inject traffic that is tailored to appear as if it belongs to a legitimate
+            DetNet flow. The potential consequence is that the DetNet flow resource allocation
+            cannot guarantee the performance that is expected when the flow identification works
+            correctly.</t>
         </section>
 
         <section anchor="SegmentThreat" title="Resource Segmentation or Slicing">
@@ -293,7 +287,8 @@
             <t>An attacker can manipulate the replication-related header fields (R-TAG). This
               capability opens the door for various types of attacks. For example:</t>
 
-            <t><list style="symbols">
+            <t>
+              <list style="symbols">
                 <t>Forward both replicas - malicious change of a packet SN (Sequence Number) can
                   cause both replicas of the packet to be forwarded. Note that this attack has a
                   similar outcome to a replay attack.</t>
@@ -311,7 +306,8 @@
                   eliminated. Once the flow is hijacked the attacker can either replace en route
                   packets with malicious packets, or simply injecting errors, causing the packets to
                   be dropped at their destination.</t>
-              </list></t>
+              </list>
+            </t>
 
           </section>
 
@@ -347,9 +343,16 @@
 
         <section anchor="SchedulingThreat" title="Scheduling or Shaping">
           <section title="Reconnaissance">
-            <t>A passive eavesdropper can gather information about en route DetNet flows, e.g., the
-              number of DetNet flows, their bandwidths, and their schedules. The gathered
-              information can later be used to invoke other attacks on some or all of the flows.</t>
+            <t>A passive eavesdropper can identify DetNet flows and then gather information about en
+              route DetNet flows, e.g., the number of DetNet flows, their bandwidths, and their
+              schedules. The gathered information can later be used to invoke other attacks on some
+              or all of the flows.</t>
+
+            <t>Note that in some cases DetNet flows may be identified based on an explicit DetNet
+              header, but in some cases the flow identification may be based on fields from the
+              L3/L4 headers. If L3/L4 headers are involved, for purposes of this draft we assume
+              they are encrypted and/or integrity-protected from external attackers. </t>
+
           </section>
 
         </section>
@@ -372,7 +375,7 @@
         <figure align="center" anchor="ThreatSummary" title="Threat Analysis Summary">
 
           <artwork align="left">
-         <![CDATA[
+            <![CDATA[
 +-----------------------------------------+----+----+----+----+
 | Attack                                  |   Attacker Type   |
 |                                         +---------+---------+
@@ -409,49 +412,47 @@
     <!-- Section: Security Threats -->
 
     <section anchor="ThreatImpact" title="Security Threat Impacts">
-      <t> This section describes and rates the impact of the attacks
-      described in <xref target="ThreatSection" />. Mitigations are
-      discussed further in <xref target="ThreatMitigation"/>. </t>
+      <t> This section describes and rates the impact of the attacks described in <xref
+          target="ThreatSection"/>. In this section, the impacts as described assume that the
+        associated mitigation is not present or has failed. Mitigations are discussed in <xref
+          target="ThreatMitigation"/>. </t>
 
-      <t> In computer security, the impact (or consequence) of an
-      incident can be measured in loss of confidentiality, integrity or
-      availability of information.</t>
+      <t> In computer security, the impact (or consequence) of an incident can be measured in loss
+        of confidentiality, integrity or availability of information.</t>
 
-      <t>The severity of various components of the impact of a successful
-          vulnerability exploit to use cases by industry is available in
-	  more detail in <xref target="I-D.ietf-detnet-use-cases"/>.
-	  This includes Pro Audio, Electrical Utilities,
-          Building Automation, Wireless for Industrial, Cellular Radio,
-	  and Industrial M2M (split into two areas, M2M Data Gathering and
-	  M2M Control Loop).</t>
+      <t>The severity of various components of the impact of a successful vulnerability exploit to
+        use cases by industry is available in more detail in <xref
+          target="I-D.ietf-detnet-use-cases"/>. This includes Pro Audio, Electrical Utilities,
+        Building Automation, Wireless for Industrial, Cellular Radio, and Industrial M2M (split into
+        two areas, M2M Data Gathering and M2M Control Loop).</t>
 
-        <t>Components of Impact (left column) include Criticality of Failure, Effects of Failure,
-          Recovery, and DetNet Functional Dependence. Criticality of failure summarizes the
-          seriousness of the impact. The impact of a resulting failure can affect many different
-          metrics that vary greatly in scope and severity. In order to reduce the number of
-          variables, the following were included: Financial, Health and Safety, People well being,
-          Affect on a single organization, and affect on multiple organizations. Recovery outlines
-          how long it would take for an affected use case to get back to its pre-failure state
-          (Recovery time objective, RTO), and how much of the original service would be lost in
-          between the time of service failure and recovery to original state (Recovery Point
-          Objective, RPO). DetNET dependence maps how much the following DetNet service objectives
-          contribute to impact of failure: Time dependency, data integrity, source node integrity,
-          availability, latency/jitter.</t>
+      <t>Components of Impact (left column) include Criticality of Failure, Effects of Failure,
+        Recovery, and DetNet Functional Dependence. Criticality of failure summarizes the
+        seriousness of the impact. The impact of a resulting failure can affect many different
+        metrics that vary greatly in scope and severity. In order to reduce the number of variables,
+        the following were included: Financial, Health and Safety, People well being, Affect on a
+        single organization, and affect on multiple organizations. Recovery outlines how long it
+        would take for an affected use case to get back to its pre-failure state (Recovery time
+        objective, RTO), and how much of the original service would be lost in between the time of
+        service failure and recovery to original state (Recovery Point Objective, RPO). DetNET
+        dependence maps how much the following DetNet service objectives contribute to impact of
+        failure: Time dependency, data integrity, source node integrity, availability,
+        latency/jitter.</t>
 
-        <t>The scale of the Impact mappings is low, medium, and high. In some use cases there may be
-          a multitude of specific applications in which DetNET is used. For simplicity this section
-          attempts to average the varied impacts of different applications. This section does not
-          address the overall risk of a certain impact which would require the likelihood of a
-          failure happening. </t>
+      <t>The scale of the Impact mappings is low, medium, and high. In some use cases there may be a
+        multitude of specific applications in which DetNET is used. For simplicity this section
+        attempts to average the varied impacts of different applications. This section does not
+        address the overall risk of a certain impact which would require the likelihood of a failure
+        happening. </t>
 
-        <t>In practice any such ratings will vary from case to case; the ratings shown here are
-          given as examples.</t>
+      <t>In practice any such ratings will vary from case to case; the ratings shown here are given
+        as examples.</t>
 
-        <figure align="center" anchor="ThreatIndustryMapping"
-          title="Impact of Attacks by Use Case Industry">
+      <figure align="center" anchor="ThreatIndustryMapping"
+        title="Impact of Attacks by Use Case Industry">
 
-          <artwork align="left">
-            <![CDATA[
+        <artwork align="left">
+          <![CDATA[
 +------------------+-----------------------------------------+-----+
 |                  | Pro A | Util | Bldg |Wire- | Cell |M2M  |M2M  |
 |                  |       |      |      | less |      |Data |Ctrl |
@@ -489,62 +490,48 @@
 |  Availability    | Hi    | Hi   | Med  | Hi   | Low  | Hi  | Hi  |
 +------------------+-----------------------------------------+-----+
 ]]></artwork>
-        </figure>
+      </figure>
 
 
-	<t>The rest of this section will cover impact of the different
-	groups in more detail.</t>
+      <t>The rest of this section will cover impact of the different groups in more detail.</t>
 
       <section anchor="DelayImpact" title="Delay-Attacks">
-	<!-- <xref target="DelayThreat"/> -->
+        <!-- <xref target="DelayThreat"/> -->
         <section title="Data Plane Delay Attacks">
-          <t> Severely delayed messages in a DetNet link can result in
-          the same behavior as dropped messages in ordinary networks as
-          the services attached to the stream has strict deterministic
-          requirements.</t>
+          <t> Severely delayed messages in a DetNet link can result in the same behavior as dropped
+            messages in ordinary networks as the services attached to the stream has strict
+            deterministic requirements.</t>
 
-	  <t>For a single path scenario, disruption is a real
-	  possibility, whereas in a multipath scenario, large delays or
-	  instabilities in one stream can lead to increased buffer and
-	  CPU resources on the elimination bridge.</t>
+          <t>For a single path scenario, disruption is a real possibility, whereas in a multipath
+            scenario, large delays or instabilities in one stream can lead to increased buffer and
+            CPU resources on the elimination bridge.</t>
 
         </section>
 
         <section title="Control Plane Delay Attacks">
-          <t>In and of itself, this is not directly a threat to the
-          DetNet service, but the effects of delaying control messages
-          can have quite adverse effects later.</t>
-          <t><list style="symbols">
-            <t>Delayed tear-down can lead to resource leakage, which in
-            turn can result in failure to allocate new streams finally
-            giving rise to a denial of service attack.</t>
+          <t>In and of itself, this is not directly a threat to the DetNet service, but the effects
+            of delaying control messages can have quite adverse effects later.</t>
+          <t>
+            <list style="symbols">
+              <t>Delayed tear-down can lead to resource leakage, which in turn can result in failure
+                to allocate new streams finally giving rise to a denial of service attack.</t>
 
-            <t>Failure to deliver, or severely delaying, signalling
-            messages adding an end-point to a multicast-group will
-            prevent the new EP from receiving expected frames thus
-	    disrupting expected behavior.</t>
+              <t>Failure to deliver, or severely delaying, signalling messages adding an end-point
+                to a multicast-group will prevent the new EP from receiving expected frames thus
+                disrupting expected behavior.</t>
 
-            <t>Delaying messages removing an EP from a group can lead to
-            loss of privacy as the EP will continue to receive messages
-            even after it is supposedly removed.</t>
-	  </list></t>
+              <t>Delaying messages removing an EP from a group can lead to loss of privacy as the EP
+                will continue to receive messages even after it is supposedly removed.</t>
+            </list>
+          </t>
         </section>
 
       </section>
 
-      <section anchor="SpoofingImpact" title="Flow Identification and Spoofing">
+      <section anchor="SpoofingImpact" title="Flow Modification and Spoofing">
 
-        <section title="Flow identification">
-          <t> Of all the attacks, this is one of the most difficult to detect and counter. Often, an
-            attacker will start out by observing the traffic going through the network and use the
-            knowledge gathered in this phase to mount future attacks. </t>
-          <t> The attacker can, at their leisure, observe over time all aspects of the messaging and
-            signalling, learning the intent and purpose of all traffic flows. At some later date,
-            possibly at an important time in an operational context, the attacker can launch a
-            multi-faceted attack, possibly in conjunction with some demand for ransom. </t>
-          <t> The flow-id in the header of the data plane-messages gives an attacker a very reliable
-            identifier for DetNet traffic, and this traffic has a high probability of going to
-            lucrative targets. </t>
+        <section title="Flow Modification">
+          <t>ToDo.</t>
         </section>
 
         <section title="Spoofing">
@@ -562,17 +549,17 @@
           </section>
 
           <section title="Control Plane Spoofing">
-            <t>A successful control plane spoofing-attack will
-            potentionally have adverse effects. It can do virtually
-	    anything from:</t>
-	    <t><list style="symbols">
-              <t>modifying existing streams by changing the available bandwidth</t>
-	      <t>add or remove endpoints from a stream</t>
-	      <t>drop streams completly</t>
-	      <t>falsely create new streams (exhaust the systems
-	      resources, or to enable streams outside the Network
-	      engineer's control)</t>
-	    </list></t>
+            <t>A successful control plane spoofing-attack will potentionally have adverse effects.
+              It can do virtually anything from:</t>
+            <t>
+              <list style="symbols">
+                <t>modifying existing streams by changing the available bandwidth</t>
+                <t>add or remove endpoints from a stream</t>
+                <t>drop streams completly</t>
+                <t>falsely create new streams (exhaust the systems resources, or to enable streams
+                  outside the Network engineer's control)</t>
+              </list>
+            </t>
           </section>
           <!-- Control Plane Spoofing -->
 
@@ -580,7 +567,7 @@
         <!-- spoofing-->
 
       </section>
-      <!-- Flow identification and spoofing impact -->
+      <!-- Flow Modification and Spoofing impact -->
 
       <section anchor="SegmentationImpact" title="Segmentation attacks (injection)">
 
@@ -589,10 +576,10 @@
             available bandwidth for a stream if the bridges accounts false messages to the stream's
             budget. </t>
           <t>In a multipath scenario, injected messages will cause increased CPU utilization in
-            elimination bridges. If enough paths are subject to malicious injection, the
-            legitimate messages can be dropped. Likewise it can cause an increase in buffer usage.
-            In total, it will consume more resources in the bridges than normal, giving rise to a
-            resource exhaustion attack on the bridges.</t>
+            elimination bridges. If enough paths are subject to malicious injection, the legitimate
+            messages can be dropped. Likewise it can cause an increase in buffer usage. In total, it
+            will consume more resources in the bridges than normal, giving rise to a resource
+            exhaustion attack on the bridges.</t>
 
           <t>If a stream is interrupted, the end application will be affected by what is now a
             non-deterministic stream. </t>
@@ -600,17 +587,17 @@
         </section>
 
         <section title="Control Plane segmentation">
-          <t> A successful Control Plane segmentation attack control messages to be
-            interpreted by nodes in the network, unbeknownst to the
-	  central controller or the network engineer. This has the potential to create </t>
-	  <t><list style="symbols">
-	    <t>new streams (exhausting resources)</t>
-	    <t>drop existing (denial of service)</t>
-	    <t>add/remove end-stations to a multicast group (loss of
-	    privacy)</t>
-	    <t>modify the stream attributes (affecting available
-	    bandwidth</t>
-	  </list></t>
+          <t> A successful Control Plane segmentation attack control messages to be interpreted by
+            nodes in the network, unbeknownst to the central controller or the network engineer.
+            This has the potential to create </t>
+          <t>
+            <list style="symbols">
+              <t>new streams (exhausting resources)</t>
+              <t>drop existing (denial of service)</t>
+              <t>add/remove end-stations to a multicast group (loss of privacy)</t>
+              <t>modify the stream attributes (affecting available bandwidth</t>
+            </list>
+          </t>
         </section>
         <!-- cp segment impact -->
 
@@ -621,21 +608,43 @@
         <t> The Replication and Elimination is relevant only to Data Plane messages as Signalling is
           not subject to multipath routing. </t>
 
-
         <section title="Increased Attack Surface">
           <t>Covered briefly in <xref target="SegmentationImpact"/>
           </t>
-
         </section>
 
         <section title="Header Manipulation at Elimination Bridges">
           <t> Covered briefly in <xref target="SegmentationImpact"/>
           </t>
         </section>
-
       </section>
 
-      <section title="Impact of Attacks to Path Choice" anchor="PathChoiceImpact">
+      <section title="Control or Signaling Packet Modification">
+        <t>ToDo.</t>
+      </section>
+
+      <section title="Control or Signaling Packet Injection">
+        <t>ToDo.</t>
+      </section>
+
+      <section title="Reconnaissance">
+        <t> Of all the attacks, this is one of the most difficult to detect and counter. Often, an
+          attacker will start out by observing the traffic going through the network and use the
+          knowledge gathered in this phase to mount future attacks. </t>
+        <t> The attacker can, at their leisure, observe over time all aspects of the messaging and
+          signalling, learning the intent and purpose of all traffic flows. At some later date,
+          possibly at an important time in an operational context, the attacker can launch a
+          multi-faceted attack, possibly in conjunction with some demand for ransom. </t>
+        <t> The flow-id in the header of the data plane-messages gives an attacker a very reliable
+          identifier for DetNet traffic, and this traffic has a high probability of going to
+          lucrative targets. </t>
+      </section>
+
+      <section title="Attacks on Time Sync Mechanisms">
+        <t>ToDo.</t>
+      </section>
+
+      <section title="Attacks on Path Choice" anchor="PathChoiceImpact">
         <t> This is covered in part in <xref target="SegmentationImpact"/>, and as with Replication
           and Elimination (<xref target="ReplicationImpact"/>, this is relevant for DataPlane
           messages. </t>
@@ -662,7 +671,7 @@
 
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>Path redundancy can be used to mitigate various man-in-the-middle attacks, including
-              attacks described in <xref target="DelayThreat"/>, <xref target="IdentificationThreat"
+              attacks described in <xref target="DelayThreat"/>, <xref target="ModificationThreat"
               />, <xref target="SegmentThreat"/>, and <xref target="SyncThreat"/>.</t>
           </list></t>
       </section>
@@ -680,7 +689,7 @@
 
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>Integrity protection mitigates attacks related to modification and tampering,
-              including the attacks described in <xref target="IdentificationThreat"/> and <xref
+              including the attacks described in <xref target="ModificationThreat"/> and <xref
                 target="ReplicationThreat"/>.</t>
           </list></t>
       </section>
@@ -697,7 +706,7 @@
 
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>DetNet node authentication is used to mitigate attacks related to spoofing, including
-              the attacks of <xref target="IdentificationThreat"/>, and <xref
+              the attacks of <xref target="ModificationThreat"/>, and <xref
                 target="ReplicationThreat"/>.</t>
           </list></t>
       </section>
@@ -764,7 +773,7 @@
           title="Mapping Attacks to Impact and Mitigations">
 
           <artwork align="left">
-         <![CDATA[
+            <![CDATA[
 +----------------------+---------------------+---------------------+
 | Attack               |      Impact         |     Mitigations     |
 +----------------------+---------------------+---------------------+
@@ -1079,15 +1088,15 @@
            ]]></artwork>
         </figure>
 
-        <t>The following table maps the use case themes presented in this memo to the attacks of <xref
-            target="ThreatList"/>. Each row specifies a theme, and the attacks relevant to this
-          theme are marked with a '+'.</t>
+        <t>The following table maps the use case themes presented in this memo to the attacks of
+            <xref target="ThreatList"/>. Each row specifies a theme, and the attacks relevant to
+          this theme are marked with a '+'.</t>
 
         <figure align="center" anchor="ThemeAttackMapping"
           title="Mapping Between Themes and Attacks">
 
           <artwork align="left">
-         <![CDATA[
+            <![CDATA[
 +----------------------------+--------------------------------+
 | Theme                      |             Attack             |
 |                            +--+--+--+--+--+--+--+--+--+--+--+
@@ -1452,6 +1461,17 @@ v00 2017-02-22  TM   Initial version
 v00 2017-03-09  EAG  Edited for clarity, incorporated comments from sdt review.
 v01 2017-06-26  EAG  Added Impact, Mitigation and Use Case Associations text.
 v01 2017-06-29  EAG  Integrated review input and Association by Use Case Industry text.
+v00 2017-10-04  EAG  First post-WG-adoption (draft-ietf-detnet) version, version reset to 00.
+                     Clarify text regarding "Flow Identification" vs "Flow Modification..." 
+                      1) Remove spurious "DetNet Flow Identification" section header, 
+                      2) Move 4.2.1. Flow identification text to a new Impact - Recon section. 
+                     Add missing sections to Impact section - even if empty, mark as ToDo. 
+                     Mention that impacts as described assume that mitigation is not present or has failed.
+  ToDo list:  
+              Rewrite use case themes questions as statements.
+              Add text for new use cases - to Intro, Industry table, Industry text, etc. 
+              Make sure use of words "attack" and "threat" is correct - prefer use of "attack" unless necessary.
+              Fill in ToDo sections. 
    -->
 
   </back>
