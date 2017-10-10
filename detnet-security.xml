@@ -419,6 +419,11 @@
       <t> In computer security, the impact (or consequence) of an incident can be measured in loss
         of confidentiality, integrity or availability of information.</t>
 
+      <t>DetNet raises these stakes significantly since legacy OT
+      applications will be connected to a normal IT network, exposing a
+      whole range of services andprotocols.  See <xref
+      target="use_cases"/> for more examples.</t>
+
       <t>The severity of various components of the impact of a successful vulnerability exploit to
         use cases by industry is available in more detail in <xref
           target="I-D.ietf-detnet-use-cases"/>. This includes Pro Audio, Electrical Utilities,
@@ -1351,7 +1356,7 @@
         </section>
       </section>
 
-      <section title="Use Cases (draft 11)">
+      <section title="Use Cases (draft 11)" anchor="use_cases">
         <section title="(Utility Networks) Security Current Practices and Limitations (sec 3.2.1)">
           <t>Grid monitoring and control devices are already targets for cyber attacks, and legacy
             telecommunications protocols have many intrinsic network-related vulnerabilities. For
