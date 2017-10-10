@@ -176,9 +176,8 @@
       </t>
 
       <t> This draft includes sections on threat modeling and analysis, threat impact and
-        mitigation, and the association of various attacks with various use cases both by industry
-        and based on the Use Case Common Themes section of the DetNet Use Cases draft <xref
-          target="I-D.ietf-detnet-use-cases"/>.</t>
+        mitigation, and the association of attacks with use cases based on the Use Case Common
+        Themes section of the DetNet Use Cases draft <xref target="I-D.ietf-detnet-use-cases"/>.</t>
 
       <t>This draft also provides context for the DetNet security considerations by collecting into
         one place <xref target="appendix_a"/> the various remarks about security from the various
@@ -836,28 +835,49 @@
 
     <section title="Association of Attacks to Use Cases">
 
+      <t>Different attacks can have different impact and/or mitigation depending on the use case, so
+        we would like to make this association in our analysis. However since there is a potentially
+        unbounded list of use cases, we categorize the attacks with respect to the common themes of
+        the use cases as identified in the Use Case Common Themes section of the DetNet Use Cases
+        draft <xref target="I-D.ietf-detnet-use-cases"/>. </t>
+
+      <t>See also <xref target="ThreatIndustryMapping"/> for a mapping of the impact of attacks
+        per use case by industry.</t>
+
       <section title="Use Cases by Common Themes">
-        <t>Different attacks can have different impact and/or mitigation depending on the use case,
-          so we would like to make this association in our analysis. However since there is a
-          potentially unbounded list of use cases, we categorize the attacks with respect to the
-          common themes of the use cases as identified in the Use Case Common Themes section of the
-          DetNet Use Cases draft <xref target="I-D.ietf-detnet-use-cases"/>. We describe each theme
-          and its associated attacks, impacts and mitigations.</t>
+
+        <t>In this section we review each theme and discuss the attacks that are applicable to that
+          theme, as well as anything specific about the impact and mitigations for that attack with
+          respect to that theme. The table <xref target="ThemeAttackMapping"/> then provides a
+          summary of the attacks that are applicable to each theme. </t>
 
         <section title="Network Layer - AVB/TSN Ethernet">
-          <t>Presumably it will be possible to run DetNet over other underlying network layers
-            besides Ethernet, but Ethernet is explicitly supported. Is the attack specific to the
-            Ethernet AVB/TSN protocols? Does the threat affect only Ethernet, or any underlying
-            network layer? </t>
+          <t>DetNet is expected to run over various transmission mediums, with Ethernet being
+            explicitly supported. Attacks such as Delay or Reconnaissance might be implemented
+            differently on a different transmission medium, however the impact on the DetNet as a
+            whole would be essentially the same. We thus conclude that all attacks and impacts that
+            would be applicable to DetNet over Ethernet (i.e. all those named in this draft) would
+            also be applicable to DetNet over other transmission mediums. </t>
 
+          <t>With respect to mitigations, some methods are specific to the Ethernet medium, for
+            example time-aware scheduling using 802.1Qbv can protect against excessive use of
+            bandwidth at the ingress - for other mediums, other mitigations would have to be
+            implemented to provide analogous protection. </t>
         </section>
 
         <section title="Central Administration">
           <t>A DetNet network is expected to be controlled by a centralized network configuration
-            and control system. Such a system may be in a single central location, or it may be
-            distributed across multiple control entities that function together as a unified control
-            system for the network. Is the attack directed at threat the central control system of
-            the network? Does it interfere with OAM?</t>
+            and control system (CNC). Such a system may be in a single central location, or it may
+            be distributed across multiple control entities that function together as a unified
+            control system for the network. </t>
+
+          <t>In this draft we distinguish between attacks on the DetNet Control plane vs. Data
+            plane. But is an attack affecting control plane packets synonymous with an attack on the
+            CNC itself? For purposes of this draft let us consider an attack on the CNC itself to be
+            out of scope, and consider all attacks named in this draft which are relevant to control
+            plane packets to be relevant to this theme, including Path Manipulation, Path Choice,
+            Control Packet Modification or Injection, Reconaissance and Attacks on Time Sync
+            Mechanisms. </t>
         </section>
 
         <section title="Hot Swap">
@@ -865,68 +885,116 @@
             some centralized network configuration and control system. However, the ability to "hot
             swap" components (e.g. due to malfunction) is similar enough to "plug and play" that
             this kind of behavior may be expected in DetNet networks, depending on the
-            implementation. Does the attack target "hot swap" ("plug and play") operation in the
-            network? </t>
+            implementation. </t>
+          <t>An attack surface related to Hot Swap is that the DetNet network must at least consider
+            input at runtime from devices that were not part of the initial configuration of the
+            network. Even a "perfect" (or "hitless") replacement of a device at runtime would not
+            necessarily be ideal, since presumably one would want to distinguish it from the
+            original for OAM purposes (e.g. to report hot swap of a failed device). </t>
+          <t>This implies that an attack such as Flow Modification, Spoofing or Inter-segment (which
+            could introduce packets from a "new" device (i.e. one heretofore unknown on the network)
+            could be used to exploit the need to consider such packets (as opposed to rejecting them
+            out of hand as one would do if one did not have to consider introduction of a new
+            device).</t>
+          <t>Similarly if the network was designed to support runtime replacement of a clock device,
+            then presence (or apparent presence) and thus consideration of packets from a new such
+            device could affect the network, or the time sync of the network, for example by
+            initiating a new Best Master Clock selection process. Thus attacks on time sync should
+            be considered when designing hot swap type functionality. </t>
         </section>
-
 
         <section title="Data Flow Information Models">
           <t> Data Flow Information Models specific to DetNet networks are to be specified by
             DetNet. Thus they are "new" and thus potentially present a new attack surface. Does the
             threat take advantage of any aspect of our new Data Flow Info Models? </t>
-
+          <t>This is TBD, thus there are no specific entries in our table, however that does not
+            imply that there could be no relevant attacks.</t>
         </section>
-
 
         <section title="L2 and L3 Integration">
-          <t>A DetNet network is intended to integrate between Layer 2 (bridged) network(s) (e.g.
-            AVB/TSN LAN) and Layer 3 (routed) network(s) (e.g. using IP-based protocols). Does the
-            attack target L2? L3? Both? The interaction between the two?</t>
-
+          <t>A DetNet network integrates Layer 2 (bridged) networks (e.g. AVB/TSN LAN) and Layer 3
+            (routed) networks via the use of well-known protocols such as IPv6, MPLS-PW, and
+            Ethernet. Presumably security considerations applicable directly to those individual
+            protocols is not specific to DetNet, and thus out of scope for this draft. However
+            enabling DetNet to coordinate Layer 2 and Layer 3 behavior will require some additions
+            to existing protocols (see draft-dt-detnet-dp-alt) and any such new work can introduce
+            new attack surfaces. </t>
+          <t>This is TBD, thus there are no specific entries in our table, however that does not
+            imply that there could be no relevant attacks.</t>
         </section>
-
 
         <section title="End-to-End Delivery">
           <t>Packets sent over DetNet are guaranteed not to be dropped by the network due to
             congestion. (Packets may however be dropped for intended reasons, e.g. per security
-            measures). Does the attack result in packets (which should be delivered) not being
-            delivered? Does it result in packets that should not be delivered being delivered?</t>
-
+            measures). </t>
+          <t>A Data plane attack may force packets to be dropped, for example a "long" Delay or
+            Replication/Elimination or Flow Modification attack. </t>
+          <t>The same result might be obtained by a Control plane attack, e.g. Path Manipulation or
+            Signaling Packet Modification.</t>
+          <t>It may be that such attacks are limited to Internal MITM attackers, but other
+            possibilities should be considered.</t>
+          <t>An attack may also cause packets that should not be delivered to be delivered, such as
+            by forcing packets from one (e.g. replicated) path to be preferred over another path
+            when they should not be (Replication attack), or by Flow Modification, or by Path Choice
+            or Packet Injection. A Time Sync attack could cause a system that was expecting certain
+            packets at certain times to accept unintended packets based on compromised system time
+            or time windowing in the scheduler. </t>
         </section>
-
 
         <section title="Proprietary Deterministic Ethernet Networks">
           <t>There are many proprietary non-interoperable deterministic Ethernet-based networks
             currently available; DetNet is intended to provide an open-standards-based alternative
-            to such networks. Does the threat relate to a specific such network that is being
-            "emulated" or "replaced" by DetNet, for example by exploiting specific commands specific
-            to that network protocol?</t>
-
+            to such networks. In cases where a DetNet intersects with remnants of such networks or
+            their protocols, such as by protocol emulation or access to such a network via a
+            gateway, new attack surfaces can be opened. </t>
+          <t>For example an Inter-Segment or Control plane attack such as Path Manipulation, Path
+            Choice or Control Packet Modification/Injection could be used to exploit commands
+            specific to such a protocol, or that are interpreted differently by the different
+            protocols or gateway. </t>
         </section>
-
 
         <section title="Replacement for Proprietary Fieldbuses">
           <t>There are many proprietary "field buses" used in today's industrial and other
             industries; DetNet is intended to provide an open-standards-based alternative to such
-            buses. Does the threat relate to a specific fieldbus that is being "emulated" or
-            "replaced" by DetNet, for example by exploiting specific commands specific to that
-            network protocol? </t>
-
+            buses. In cases where a DetNet intersects with such fieldbuses or their protocols, such
+            as by protocol emulation or access via a gateway, new attack surfaces can be opened.</t>
+          <t>For example an Inter-Segment or Control plane attack such as Path Manipulation, Path
+            Choice or Control Packet Modification/Injection could be used to exploit commands
+            specific to such a protocol, or that are interpreted differently by the different
+            protocols or gateway. </t>
         </section>
 
         <section title="Deterministic vs Best-Effort Traffic">
           <t>DetNet is intended to support coexistence of time-sensitive operational (OT,
             deterministic) traffic and information (IT, "best effort") traffic on the same
-            ("unified") network. Does the attack affect only IT or only OT or both types of traffic?
-            Does the threat affect any interaction between IT and OT traffic, e.g. by changing
-            relative priority or handling of IT vs. OT packets?</t>
+            ("unified") network. </t>
+          <t>The presence of IT traffic on a network carrying OT traffic has long been considered
+            insecure design [reference needed here]. With DetNet, this coexistance will become more
+            common, and mitigations will need to be established. The fact that the IT traffic on a
+            DetNet is limited to a corporate controlled network makes this a less difficult problem
+            compared to being exposed to the open Internet, however this aspect of DetNet security
+            should not be underestimated. </t>
+          <t>Most of the themes described in this draft address OT (reserved) streams - this item is
+            intended to address issues related to IT traffic on a DetNet.</t>
+          <t>An Inter-segment attack can flood the network with IT-type traffic with the intent of
+            disrupting handling of IT traffic, and/or the goal of interfering with OT traffic.
+            Presumably if the stream reservation and isolation of the DetNet is well-designed
+            (better-designed than the attack) then interference with OT traffic should not result
+            from an attack that floods the network with IT traffic. </t>
+          <t>However the DetNet's handling of IT traffic may not (by design) be as resilient to DOS
+            attack, and thus designers must be otherwise prepared to mitigate DOS attacks on IT
+            traffic in a DetNet.</t>
         </section>
 
         <section title="Deterministic Flows">
-          <t>Reserved bandwidth data flows (deterministic flows) must be isolated from each other
-            and from best-effort traffic, so that even if the network is saturated with best-effort
-            and/or reserved bandwidth traffic the configured flows are not adversely affected. Does
-            the attack affect the isolation of one (reserved) flow from another?</t>
+          <t>Reserved bandwidth data flows (deterministic flows) must provide the allocated
+            bandwidth, and must be isolated from each other. </t>
+          <t>A Spoofing or Inter-segment attack which adds packet traffic to a bandwidth-reserved
+            stream could cause that stream to occupy more bandwidth than it is allocated, resulting
+            in interference with other deterministic flows.</t>
+          <t>A Flow Modification or Spoofing or Header Manipulation or Control Packet Modification
+            attack could cause packets from one flow to be directed to another flow, thus breaching
+            isolation between the flows.</t>
         </section>
 
         <section title="Unused Reserved Bandwidth">
@@ -935,8 +1003,12 @@
             best-effort traffic. If the owner of the reserved stream then starts transmitting again,
             the bandwidth is no longer available for best-effort traffic, on a moment-to-moment
             basis. (Such "temporarily available" bandwidth is not available for time-sensitive
-            traffic, which must have its own reservation). Does the attack affect the system's
-            ability to allocate unused reserved BW to best-effort traffic?</t>
+            traffic, which must have its own reservation). </t>
+          <t>An Inter-segment attack could flood the network with IT traffic, interfering with the
+            intended IT traffic.</t>
+          <t>A Flow Modification or Spoofing or Control Packet Modification or Injection attack
+            could cause extra bandwidth to be reserved by a new or existing stream, thus making it
+            unavailable for use by best-effort traffic. </t>
         </section>
 
         <section title="Interoperability">
@@ -945,6 +1017,8 @@
             potentially higher numbers of each device manufactured. Does the threat take advantage
             of differences in implementation of "interoperable" products made by different
             vendors?</t>
+          <t>This is TBD, thus there are no specific entries in our table, however that does not
+            imply that there could be no relevant attacks.</t>
         </section>
 
         <section title="Cost Reductions">
@@ -953,6 +1027,8 @@
             manufactured, promoting cost reduction and cost competition among vendors. Does the
             threat take advantage of "low cost" HW or SW components or other "cost-related
             shortcuts" that might be present in devices? </t>
+          <t>This is TBD, thus there are no specific entries in our table, however that does not
+            imply that there could be no relevant attacks.</t>
         </section>
 
         <section title="Insufficiently Secure Devices">
@@ -962,28 +1038,40 @@
             of SW, for example SW that was not designed to be sufficiently secure (or secure at all)
             but is deployed on a DetNet network that is intended to be highly secure? (For example
             IoT exploits like the Mirai video-camera botnet (<xref target="MIRAI"/>). </t>
+          <t>This is TBD, thus there are no specific entries in our table, however that does not
+            imply that there could be no relevant attacks.</t>
         </section>
 
         <section title="DetNet Network Size">
           <t>DetNet networks range in size from very small, e.g. inside a single industrial machine,
-            to very large, for example a Utility Grid network spanning a whole country, and
-            involving many "hops" over various kinds of links for example radio repeaters, microwave
-            links, fiber optic links, etc.. Does the attack affect DetNet networks of only certain
-            sizes, e.g. very large networks, or very small? This might be related to how the attack
-            is introduced into the network, for example if the entire network is local, there is a
-            threat that power can be cut to the entire network. If the network is large, perhaps
-            only a part of the network is attacked. Does the threat take advantage of attack vectors
-            that are specific to network size?</t>
+            to very large, for example a Utility Grid network spanning a whole country. </t>
+          <t>The size of the network might be related to how the attack is introduced into the
+            network, for example if the entire network is local, there is a threat that power can be
+            cut to the entire network. If the network is large, perhaps only a part of the network
+            is attacked. </t>
+          <t>A Delay attack might be as relevant to a small network as to a large network, although
+            the amount of delay might be different. </t>
+          <t>Attacks sourced from IT traffic might be more likely in large networks, since more
+            people might have access to the network. Similarly Path Manipulation, Path Choice and
+            Time Sync attacks seem more likely relevant to large networks.</t>
         </section>
 
         <section title="Multiple Hops">
-          <t>DetNet networks range in size from very small, e.g. inside a single industrial machine,
-            to very large, for example a Utility Grid network spanning a whole country, and
-            involving many "hops" over various kinds of links for example radio repeaters, microwave
-            links, fiber optic links, etc.. Does the attack exploit the presence of more than one
-            "hop"? Does the threat exploit the presence of more than one type of "hop", e.g. between
-            radio and microwave links? Does the threat exploit a specific type of "hop", e.g.
-            something specific to a fiber optic link, or other type of link? </t>
+          <t>Large DetNet networks (e.g. a Utility Grid network) may involve many "hops" over
+            various kinds of links for example radio repeaters, microwave links, fiber optic links,
+            etc.. </t>
+          <t>An attack that takes advantage of flaws (or even normal operation) in the device
+            drivers for the various links (through internal knowledge of how the individual driver
+            or firmware operates, perhaps like the Stuxnet attack) could take proportionately
+            greater advantage of this topology. We don't currently have an attack like this defined;
+            we have only "protocol" (time or packet) based attacks. Perhaps we need to define an
+            attack like this? Or is that out of scope for DetNet?</t>
+          <t>It is also possible that this DetNet topology will not be in as common use as other
+            more homogeneous topologies so there may be more opportunity for attackers to exploit
+            software and/or protocol flaws in the implementations which have not been wrung out by
+            extensive use, particularly in the case of early adopters.</t>
+          <t>Of the attacks we have defined, the ones identified above as relevant to "large"
+            networks seem to be most relevant.</t>
         </section>
 
         <section title="Level of Service">
@@ -993,16 +1081,20 @@
             expected case that the network cannot provide a given requested service level. In such
             cases the network control system should reply that the requested service level is not
             available (as opposed to accepting the parameter but then not delivering the desired
-            behavior). Does the attack affect any querying or replying to such service-level-related
-            traffic? Can the attack cause incorrect responses from the system regarding
-            timing-related configuration? For example replying that a requested level of service is
-            available when it isn't, or that the requested level of service is not available when it
-            actually is available?</t>
+            behavior). </t>
+          <t>Control plane attacks such as Signaling Packet Modification and Injection could be used
+            to modify or create control traffic that could interfere with the process of a user
+            requesting a level of service and/or the network's reply.</t>
+          <t>Reconnaissance could be used to characterize flows and perhaps target specific flows
+            for attack via the Control plane as noted above.</t>
         </section>
 
         <section title="Bounded Latency">
-          <t>Does the threat affect the network's ability to deliver packets within the agreed-upon
-            latency boundaries?</t>
+          <t>DetNet provides the expectation of guaranteed bounded latency. </t>
+          <t>Delay attacks can cause packets to miss their agreed-upon latency boundaries.</t>
+          <t>Time Sync attacks can corrupt the system's time reference, resulting in missed latency
+            deadlines (with respect to the "correct" time reference).</t>
+
         </section>
 
         <section title="Low Latency">
@@ -1011,14 +1103,17 @@
             grid network is on a different time scale than "low latency" in a motor control loop in
             a small machine. The intent is that the mechanisms for specifying desired latency
             include wide ranges, and that architecturally there is nothing to prevent arbitrarily
-            low latencies from being implemented in a given network. Does the threat affect the
-            network's ability to deliver packets within the agreed-upon low latency? </t>
+            low latencies from being implemented in a given network. </t>
+          <t>Attacks on the Control plane (as described in the Level of Service theme) and Delay and
+            Time attacks (as described in the Bounded Latency theme) both apply here. </t>
         </section>
 
         <section title="Symmetrical Path Delays">
           <t>Some applications would like to specify that the transit delay time values be equal for
-            both the transmit and return paths. Does the attack affect the network's ability to
-            provide matched transmit and return path delays (latencies)? </t>
+            both the transmit and return paths. </t>
+          <t>Delay attacks can cause path delays to differ.</t>
+          <t>Time Sync attacks can corrupt the system's time reference, resulting in differing path
+            delays (with respect to the "correct" time reference).</t>
         </section>
 
         <section title="Reliability and Availability">
@@ -1026,28 +1121,34 @@
             availability (for example 99.9999% up time, or even 12 nines). The intent is that the
             DetNet designs should not make any assumptions about the level of reliability and
             availability that may be required of a given system, and should define parameters for
-            communicating these kinds of metrics within the network. Does the attack affect the
-            reliability of the DetNet network? Is it a large or small change, e.g. the difference
-            between completely taking down the network for some period of time, vs reducing its
-            reliability by just one "nine"? Does the threat affect the availability of the DetNet
-            network?</t>
+            communicating these kinds of metrics within the network. </t>
+
+          <t>Any attack on the system, of any type, can affect its overall reliability and
+            availability, thus in our table we have marked every attack. Since every DetNet depends
+            to a greater or lesser degree on reliability and availability, this essentially means
+            that all networks have to mitigate all attacks, which to a greater or lesser degree
+            defeats the purpose of associating attacks with use cases. It also underscores the
+            difficulty of designing "extremely high reliability" networks. I hope that in future
+            drafts we can say something more useful here.</t>
         </section>
 
         <section title="Redundant Paths">
           <t>DetNet based systems are expected to be implemented with essentially arbitrarily high
             reliability/availability. A strategy used by DetNet for providing such extraordinarily
             high levels of reliability is to provide redundant paths that can be seamlessly switched
-            between, all the while maintaining the required performance of that system. Does the
-            attack affect the configuration or operation of redundant paths? </t>
+            between, all the while maintaining the required performance of that system. </t>
+          <t>Replication-related attacks are by definition applicable here. Control plane attacks
+            can also interfere with the configuration of redundant paths.</t>
         </section>
-
 
         <section title="Security Measures">
           <t>A DetNet network must be made secure against devices failures, attackers, misbehaving
             devices, and so on. Does the threat affect such security measures themselves, e.g. by
             attacking SW designed to protect against device failure? </t>
-
+          <t>This is TBD, thus there are no specific entries in our table, however that does not
+            imply that there could be no relevant attacks.</t>
         </section>
+
       </section>
 
       <section title="Attack Types by Use Case Common Theme">
@@ -1110,9 +1211,9 @@
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
 |Data Flow Information Models|  |  |  |  |  |  |  |  |  |  |  |
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
-|L2 and L3 Integration       |  |  |  |  | +| +|  |  |  |  |  |
+|L2 and L3 Integration       |  |  |  |  |  |  |  |  |  |  |  |
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
-|End-to-end Delivery         |  |  |  | +| +|  |  |  |  |  |  |
+|End-to-end Delivery         | +| +| +| +| +| +| +| +| +|  | +|
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
 |Proprietary Deterministic   |  |  | +|  |  | +| +| +| +|  |  |
 |Ethernet Networks           |  |  |  |  |  |  |  |  |  |  |  |
@@ -1123,9 +1224,9 @@
 |Deterministic vs. Best-     |  |  | +|  |  |  |  |  |  |  |  |
 |Effort Traffic              |  |  |  |  |  |  |  |  |  |  |  |
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
-|Deterministic Flows         |  |  | +|  |  |  |  |  |  |  |  |
+|Deterministic Flows         |  | +| +|  | +| +|  | +|  |  |  |
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
-|Unused Reserved Bandwidth   |  |  | +|  |  |  |  |  |  |  |  |
+|Unused Reserved Bandwidth   |  | +| +|  |  |  |  | +| +|  |  |
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
 |Interoperability            |  |  |  |  |  |  |  |  |  |  |  |
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
@@ -1142,7 +1243,7 @@
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
 |Bounded Latency             | +|  |  |  |  |  |  |  |  |  | +|
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
-|Low Latency                 | +|  |  |  |  |  |  |  |  |  | +|
+|Low Latency                 | +|  |  |  |  |  |  | +| +| +| +|
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
 |Symmetric Path Delays       | +|  |  |  |  |  |  |  |  |  | +|
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
@@ -1467,10 +1568,11 @@ v00 2017-10-04  EAG  First post-WG-adoption (draft-ietf-detnet) version, version
                       2) Move 4.2.1. Flow identification text to a new Impact - Recon section. 
                      Add missing sections to Impact section - even if empty, mark as ToDo. 
                      Mention that impacts as described assume that mitigation is not present or has failed.
+v00 2017-10-09 EAG   Rewrite use case themes questions as statements. Update use cases/threats table. 
   ToDo list:  
-              Rewrite use case themes questions as statements.
-              Add text for new use cases - to Intro, Industry table, Industry text, etc. 
-              Make sure use of words "attack" and "threat" is correct - prefer use of "attack" unless necessary.
+              Add text for new use cases - to Intro, Industry table, Industry text, etc.
+              Add a new attack type for internal knowledge of drivers/firmware (as in Multiple Hops section)? Is this in scope? 
+              Validate use of words "attack" and "threat" is correct - prefer use of "attack" unless necessary.
               Fill in ToDo sections. 
    -->
 
