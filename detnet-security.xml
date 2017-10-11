@@ -210,7 +210,8 @@
         network.</t>
 
       <t> We distinguish control plane threats from data plane threats. The attack surface may be
-        the same, but the types of attacks are different. For example, a delay attack is more
+        the same, but the types of attacks as well as the motivation
+	behind them, are different. For example, a delay attack is more
         relevant to data plane than to control plane. There is also a difference in terms of
         security solutions: the way you secure the data plane is often different than the way you
         secure the control plane. </t>
