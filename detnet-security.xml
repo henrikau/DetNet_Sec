@@ -231,6 +231,17 @@
           </list>
         </t>
 
+	<t>
+	  Care has also been taken to adhere to Section 5 of <xref
+	  target="RFC3552" />, both with respect to what attacks are
+	  considered out-of-scope for this document, but also what is
+	  considered to be the most common threats (explored furhter in
+	  <xref target="ThreatAnalysis" />. Most of the direct threats to DetNet
+	  are Active attacks, but it is highly suggested that DetNet
+	  application developers take appropriate measures to protect
+	  the content of the streams from passive attacks.
+	</t>
+
         <t>DetNet-Service, one of the service scenarios described in <xref
             target="I-D.varga-detnet-service-model"/>, is the case where a service connects DetNet
           networking islands, i.e. two or more otherwise independent DetNet network domains are
@@ -1522,6 +1533,7 @@
   <!--  *****BACK MATTER ***** -->
   <back>
     <references title="Informative References">
+      <?rfc include='reference.RFC.3552'?>
       <?rfc include='reference.RFC.7384'?>
       <!-- <?rfc include='reference.I-D.ietf-tictoc-1588overmpls'?>  -->
       <?rfc include='reference.I-D.ietf-detnet-use-cases'?>
