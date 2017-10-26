@@ -210,11 +210,10 @@
         network.</t>
 
       <t> We distinguish control plane threats from data plane threats. The attack surface may be
-        the same, but the types of attacks as well as the motivation
-	behind them, are different. For example, a delay attack is more
-        relevant to data plane than to control plane. There is also a difference in terms of
-        security solutions: the way you secure the data plane is often different than the way you
-        secure the control plane. </t>
+        the same, but the types of attacks as well as the motivation behind them, are different. For
+        example, a delay attack is more relevant to data plane than to control plane. There is also
+        a difference in terms of security solutions: the way you secure the data plane is often
+        different than the way you secure the control plane. </t>
 
       <section title="Threat Model">
         <t>The threat model used in this memo is based on the threat model of Section 3.1 of <xref
@@ -232,16 +231,12 @@
           </list>
         </t>
 
-	<t>
-	  Care has also been taken to adhere to Section 5 of <xref
-	  target="RFC3552" />, both with respect to what attacks are
-	  considered out-of-scope for this document, but also what is
-	  considered to be the most common threats (explored furhter in
-	  <xref target="ThreatAnalysis" />. Most of the direct threats to DetNet
-	  are Active attacks, but it is highly suggested that DetNet
-	  application developers take appropriate measures to protect
-	  the content of the streams from passive attacks.
-	</t>
+        <t> Care has also been taken to adhere to Section 5 of <xref target="RFC3552"/>, both with
+          respect to what attacks are considered out-of-scope for this document, but also what is
+          considered to be the most common threats (explored furhter in <xref
+            target="ThreatAnalysis"/>. Most of the direct threats to DetNet are Active attacks, but
+          it is highly suggested that DetNet application developers take appropriate measures to
+          protect the content of the streams from passive attacks. </t>
 
         <t>DetNet-Service, one of the service scenarios described in <xref
             target="I-D.varga-detnet-service-model"/>, is the case where a service connects DetNet
@@ -431,32 +426,31 @@
       <t> In computer security, the impact (or consequence) of an incident can be measured in loss
         of confidentiality, integrity or availability of information.</t>
 
-      <t>DetNet raises these stakes significantly since legacy OT
-      applications will be connected to a normal IT network, exposing a
-      whole range of services andprotocols.  See <xref
-      target="use_cases"/> for more examples.</t>
+      <t>DetNet raises these stakes significantly for OT applications, particularly those which may
+        have been designed to run in an OT-only environment and thus may not have been designed for
+        security in an IT environment with its associated devices, services and protocols. </t>
 
       <t>The severity of various components of the impact of a successful vulnerability exploit to
         use cases by industry is available in more detail in <xref
-          target="I-D.ietf-detnet-use-cases"/>. This includes Pro Audio, Electrical Utilities,
-        Building Automation, Wireless for Industrial, Cellular Radio, and Industrial M2M (split into
-        two areas, M2M Data Gathering and M2M Control Loop).</t>
+          target="I-D.ietf-detnet-use-cases"/>. Each of the use cases in the DetNet Use Cases draft
+        is represented in the table below, including Pro Audio, Electrical Utilities, Industrial M2M
+        (split into two areas, M2M Data Gathering and M2M Control Loop), and others.</t>
 
       <t>Components of Impact (left column) include Criticality of Failure, Effects of Failure,
         Recovery, and DetNet Functional Dependence. Criticality of failure summarizes the
         seriousness of the impact. The impact of a resulting failure can affect many different
         metrics that vary greatly in scope and severity. In order to reduce the number of variables,
-        the following were included: Financial, Health and Safety, People well being, Affect on a
-        single organization, and affect on multiple organizations. Recovery outlines how long it
+        only the following were included: Financial, Health and Safety, People well being, Affect on
+        a single organization, and affect on multiple organizations. Recovery outlines how long it
         would take for an affected use case to get back to its pre-failure state (Recovery time
         objective, RTO), and how much of the original service would be lost in between the time of
-        service failure and recovery to original state (Recovery Point Objective, RPO). DetNET
+        service failure and recovery to original state (Recovery Point Objective, RPO). DetNet
         dependence maps how much the following DetNet service objectives contribute to impact of
         failure: Time dependency, data integrity, source node integrity, availability,
         latency/jitter.</t>
 
       <t>The scale of the Impact mappings is low, medium, and high. In some use cases there may be a
-        multitude of specific applications in which DetNET is used. For simplicity this section
+        multitude of specific applications in which DetNet is used. For simplicity this section
         attempts to average the varied impacts of different applications. This section does not
         address the overall risk of a certain impact which would require the likelihood of a failure
         happening. </t>
@@ -469,6 +463,7 @@
 
         <artwork align="left">
           <![CDATA[
+Table, Part One (of Two) 
 +------------------+-----------------------------------------+-----+
 |                  | Pro A | Util | Bldg |Wire- | Cell |M2M  |M2M  |
 |                  |       |      |      | less |      |Data |Ctrl |
@@ -505,6 +500,45 @@
 +------------------+-----------------------------------------+-----+
 |  Availability    | Hi    | Hi   | Med  | Hi   | Low  | Hi  | Hi  |
 +------------------+-----------------------------------------+-----+
+
+Table, Part Two (of Two) 
++------------------+--------------------------+
+|                  | Mining | Block | Network |
+|                  |        | Chain | Slicing |
++------------------+--------------------------+
+| Criticality      | Hi     | Med   | Hi      |
++------------------+--------------------------+
+| Effects
++------------------+--------------------------+
+|  Financial       | Hi     | Hi    | Hi      |
++------------------+--------------------------+
+|  Health/Safety   | Hi     | Low   | Med     |
++------------------+--------------------------+
+|  People WB       | Hi     | Low   | Med     |
++------------------+--------------------------+
+|  Effect 1 org    | Hi     | Hi    | Hi      |
++------------------+--------------------------+
+|  Effect >1 org   | Hi     | Low   | Hi      |
++------------------+--------------------------+
+|Recovery
++------------------+--------------------------+
+|  Recov Time Obj  | Hi     | Low   | Hi      |
++------------------+--------------------------+
+|  Recov Point Obj | Hi     | Low   | Hi      |
++------------------+--------------------------+
+|DetNet Dependence
++------------------+--------------------------+
+|  Time Dependency | Hi     | Low   | Hi      |
++------------------+--------------------------+
+|  Latency/Jitter  | Hi     | Low   | Hi      |
++------------------+--------------------------+
+|  Data Integrity  | Hi     | Hi    | Hi      |
++------------------+--------------------------+
+|  Src Node Integ  | Hi     | Hi    | Hi      |
++------------------+--------------------------+
+|  Availability    | Hi     | Hi    | Hi      |
++------------------+--------------------------+
+
 ]]></artwork>
       </figure>
 
@@ -858,8 +892,8 @@
         the use cases as identified in the Use Case Common Themes section of the DetNet Use Cases
         draft <xref target="I-D.ietf-detnet-use-cases"/>. </t>
 
-      <t>See also <xref target="ThreatIndustryMapping"/> for a mapping of the impact of attacks
-        per use case by industry.</t>
+      <t>See also <xref target="ThreatIndustryMapping"/> for a mapping of the impact of attacks per
+        use case by industry.</t>
 
       <section title="Use Cases by Common Themes">
 
@@ -1587,8 +1621,8 @@ v00 2017-10-04  EAG  First post-WG-adoption (draft-ietf-detnet) version, version
                      Add missing sections to Impact section - even if empty, mark as ToDo. 
                      Mention that impacts as described assume that mitigation is not present or has failed.
 v00 2017-10-09 EAG   Rewrite use case themes questions as statements. Update use cases/threats table. 
+v00 2017-10-25 EAG   Add text for new use cases - to Intro, Industry table, Industry text, etc.
   ToDo list:  
-              Add text for new use cases - to Intro, Industry table, Industry text, etc.
               Add a new attack type for internal knowledge of drivers/firmware (as in Multiple Hops section)? Is this in scope? 
               Validate use of words "attack" and "threat" is correct - prefer use of "attack" unless necessary.
               Fill in ToDo sections. 
