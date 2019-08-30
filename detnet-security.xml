@@ -92,12 +92,12 @@
     </author>
 
     <author fullname="Henrik Austad" initials="H" surname="Austad">
-      <organization>Cisco Systems</organization>
+      <organization>SINTEF Digital</organization>
       <address>
         <postal>
-          <street>Philip Pedersens vei 1</street>
-          <city>Lysaker</city>
-          <code>1366</code>
+          <street>Klaebuveien 153</street>
+          <city>Trondheim</city>
+          <code>7037</code>
           <country>Norway</country>
         </postal>
         <email>henrik@austad.us</email>
