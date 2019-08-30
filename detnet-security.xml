@@ -152,9 +152,9 @@
   <middle>
     <section title="Introduction">
       <t> Security is of particularly high importance in DetNet networks because many of the use
-        cases which are enabled by DetNet <xref target="I-D.ietf-detnet-use-cases"/> include control
-        of physical devices (power grid components, industrial controls, building controls) which
-        can have high operational costs for failure, and present potentially attractive targets for
+        cases which are enabled by DetNet <xref target="RFC8578"/> include control of physical
+        devices (power grid components, industrial controls, building controls) which can have high
+        operational costs for failure, and present potentially attractive targets for
         cyber-attackers.</t>
 
       <t>This situation is even more acute given that one of the goals of DetNet is to provide a
@@ -177,7 +177,7 @@
 
       <t> This draft includes sections on threat modeling and analysis, threat impact and
         mitigation, and the association of attacks with use cases based on the Use Case Common
-        Themes section of the DetNet Use Cases draft <xref target="I-D.ietf-detnet-use-cases"/>.</t>
+        Themes section of the DetNet Use Cases draft <xref target="RFC8578"/>.</t>
 
       <t>This draft also provides context for the DetNet security considerations by collecting into
         one place <xref target="appendix_a"/> the various remarks about security from the various
@@ -207,13 +207,16 @@
 
     <section anchor="ThreatSection" title="Security Threats">
       <t>This section presents a threat model, and analyzes the possible threats in a DetNet-enabled
-        network.</t>
+        network. The threats considered in this section are independent of any specific technologies
+        used to implement the DetNet; <xref target="TechnologySpecificThreats"/>) considers attacks
+        that are associated with the DetNet technologies encompassed by <xref
+          target="I-D.ietf-detnet-data-plane-framework"/>.</t>
 
       <t> We distinguish control plane threats from data plane threats. The attack surface may be
-          the same, but the types of attacks as well as the motivation behind them, are different. For
-          example, a delay attack is more relevant to data plane than to control plane. There is also
-          a difference in terms of security solutions: the way you secure the data plane is often
-          different than the way you secure the control plane. </t>
+        the same, but the types of attacks as well as the motivation behind them, are different. For
+        example, a delay attack is more relevant to data plane than to control plane. There is also
+        a difference in terms of security solutions: the way you secure the data plane is often
+        different than the way you secure the control plane. </t>
 
       <section title="Threat Model">
         <t>The threat model used in this memo is based on the threat model of Section 3.1 of <xref
@@ -431,10 +434,10 @@
         security in an IT environment with its associated devices, services and protocols. </t>
 
       <t>The severity of various components of the impact of a successful vulnerability exploit to
-        use cases by industry is available in more detail in <xref
-         target="I-D.ietf-detnet-use-cases"/>. Each of the use cases in the DetNet Use Cases draft
-        is represented in the table below, including Pro Audio, Electrical Utilities, Industrial M2M
-        (split into two areas, M2M Data Gathering and M2M Control Loop), and others.</t>
+        use cases by industry is available in more detail in <xref target="RFC8578"/>. Each of the
+        use cases in the DetNet Use Cases draft is represented in the table below, including Pro
+        Audio, Electrical Utilities, Industrial M2M (split into two areas, M2M Data Gathering and
+        M2M Control Loop), and others.</t>
 
       <t>Components of Impact (left column) include Criticality of Failure, Effects of Failure,
         Recovery, and DetNet Functional Dependence. Criticality of failure summarizes the
@@ -444,13 +447,13 @@
         a single organization, and affect on multiple organizations. Recovery outlines how long it
         would take for an affected use case to get back to its pre-failure state (Recovery time
         objective, RTO), and how much of the original service would be lost in between the time of
-	service failure and recovery to original state (Recovery Point Objective, RPO). DetNet
+        service failure and recovery to original state (Recovery Point Objective, RPO). DetNet
         dependence maps how much the following DetNet service objectives contribute to impact of
         failure: Time dependency, data integrity, source node integrity, availability,
         latency/jitter.</t>
 
       <t>The scale of the Impact mappings is low, medium, and high. In some use cases there may be a
-        multitude of specific applications in which DetNET is used. For simplicity this section
+        multitude of specific applications in which DetNet is used. For simplicity this section
         attempts to average the varied impacts of different applications. This section does not
         address the overall risk of a certain impact which would require the likelihood of a failure
         happening. </t>
@@ -538,6 +541,7 @@ Table, Part Two (of Two)
 +------------------+--------------------------+
 |  Availability    | Hi     | Hi    | Hi      |
 +------------------+--------------------------+
+
 ]]></artwork>
       </figure>
 
@@ -554,6 +558,11 @@ Table, Part Two (of Two)
           <t>For a single path scenario, disruption is a real possibility, whereas in a multipath
             scenario, large delays or instabilities in one stream can lead to increased buffer and
             CPU resources on the elimination bridge.</t>
+
+          <t>A data-plane delay attack on a system controlling substantial moving devices, for
+            example in industrial automation, can cause physical damage. For example, if the network
+            promises a bounded latency of 2ms for a flow, yet the machine receives it with 5ms
+            latency, the machine's control loop can become unstable. </t>
 
         </section>
 
@@ -768,10 +777,48 @@ Table, Part Two (of Two)
           </list></t>
 
         <t>Related attacks <list hangIndent="10" style="empty">
-            <t>While confidentiality is not considered an important goal with respect to DetNet,
-              encryption can be used to mitigate recon attacks (<xref target="SchedulingThreat"
-              />).</t>
+            <t>Encryption can be used to mitigate recon attacks (<xref target="SchedulingThreat"/>).
+              However, for a DetNet network to give differentiated quality of service on a
+              flow-by-flow basis, the network must be able to identify the flows individually. This
+              implies that in a recon attack the attacker may also be able to track individual flows
+              to learn more about the system.</t>
+            <t>Encryption can also provide traffic origin verification, i.e. to verify that each
+              packet in a DetNet flow is from a trusted source, for example as part of ingress
+              filtering.</t>
           </list></t>
+
+        <section title="Encryption Considerations for DetNet">
+
+          <t>Any compute time which is required for encryption and decryption processing ('crypto')
+            must be included in the flow latency calculations. Thus, crypto algorithms used in a
+            DetNet must have bounded worst-case execution times, and these values must be used in
+            the latency calculations. </t>
+          <t>Some crypto algorithms are symmetric in encode/decode time (such as AES) and others are
+            asymmetric (such as public key algorithms). There are advantages and disadvantages to
+            the use of either type in a given DetNet context. </t>
+          <t>Asymmetrical crypto is typically not used in networks on a packet-by-packet basis due
+            to its computational cost. For example, if only endpoint checks or checks at a small
+            number of intermediate points are required, asymmetric crypto can be used to
+            authenticate distribution or exchange of a secret symmetric crypto key; a successful
+            check based on that key will provide traffic origin verification, as long as the key is
+            kept secret by the participants. TLS and IKE (for IPsec) are examples of this for
+            endpoint checks.</t>
+          <t>However, if secret symmetrical keys are used for this purpose the key must be given to
+            all relays, which increases the probability of a secret key being leaked. Also, if any
+            relay is compromised or misbehaving it may inject traffic into the flow. </t>
+          <t>Alternatively, asymmetric crypto can provide traffic origin verification at every
+            intermediate node. For example, a DetNet flow can be associated with an (asymmetric)
+            keypair, such that the private key is available to the source of the flow and the public
+            key is distributed with the flow information, allowing verification at every node for
+            every packet. However, this is more computationally expensive. </t>
+          <t>In either case, origin verification also requires replay detection as part of the
+            security protocol to prevent an attacker from recording and resending traffic, e.g., as
+            a denial of service attack on flow forwarding resources.</t>
+          <t>If crypto keys are to be regenerated over the duration of the flow then the time
+            required to accomplish this must be accounted for in the latency calculations. </t>
+
+        </section>
+
       </section>
 
 
@@ -804,8 +851,14 @@ Table, Part Two (of Two)
 
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>Performance analytics can be used to mitigate various attacks, including the ones
-              described in <xref target="DelayThreat"/>, <xref target="SegmentThreat"/>, and <xref
-                target="SyncThreat"/>.</t>
+              described in <xref target="DelayThreat"/> (Delay Attack), <xref target="SegmentThreat"
+              /> (Resource Segmentation Attack), and <xref target="SyncThreat"/> (Time Sync
+              Attack).</t>
+
+            <t>For example, in the case of data plane delay attacks, one possible mitigation is to
+              timestamp the data at the source, and timestamp it again at the destination, and if
+              the resulting latency exceeds the promised bound, discard that data and warn the
+              operator (and/or enter a fail-safe mode).</t>
           </list></t>
 
       </section>
@@ -889,7 +942,7 @@ Table, Part Two (of Two)
         we would like to make this association in our analysis. However since there is a potentially
         unbounded list of use cases, we categorize the attacks with respect to the common themes of
         the use cases as identified in the Use Case Common Themes section of the DetNet Use Cases
-        draft <xref target="I-D.ietf-detnet-use-cases"/>. </t>
+        draft <xref target="RFC8578"/>. </t>
 
       <t>See also <xref target="ThreatIndustryMapping"/> for a mapping of the impact of attacks per
         use case by industry.</t>
@@ -1144,7 +1197,6 @@ Table, Part Two (of Two)
           <t>Delay attacks can cause packets to miss their agreed-upon latency boundaries.</t>
           <t>Time Sync attacks can corrupt the system's time reference, resulting in missed latency
             deadlines (with respect to the "correct" time reference).</t>
-
         </section>
 
         <section title="Low Latency">
@@ -1156,6 +1208,12 @@ Table, Part Two (of Two)
             low latencies from being implemented in a given network. </t>
           <t>Attacks on the Control plane (as described in the Level of Service theme) and Delay and
             Time attacks (as described in the Bounded Latency theme) both apply here. </t>
+        </section>
+
+        <section title="Bounded Jitter (Latency Variation)">
+          <t>DetNet is expected to provide bounded jitter (packet to packet latency variation).</t>
+          <t>Delay attacks can cause packets to vary in their arrival times, resulting in packet to
+            packet latency variation, thereby violating the jitter specification.</t>
         </section>
 
         <section title="Symmetrical Path Delays">
@@ -1295,6 +1353,8 @@ Table, Part Two (of Two)
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
 |Low Latency                 | +|  |  |  |  |  |  | +| +| +| +|
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
+|Bounded Jitter              | +|  |  |  |  |  |  |  |  |  |  |
++----------------------------+--+--+--+--+--+--+--+--+--+--+--+
 |Symmetric Path Delays       | +|  |  |  |  |  |  |  |  |  | +|
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
 |Reliability and Availability| +| +| +| +| +| +| +| +| +| +| +|
@@ -1307,8 +1367,78 @@ Table, Part Two (of Two)
         </figure>
       </section>
 
+      <section title="Security Considerations for OAM Traffic">
+        <t>This section considers DetNet-specific security considerations for packet traffic that is
+          generated and transmitted over a DetNet as part of OAM (Operations, Administration and
+          Maintenance). For purposes of this discussion, OAM traffic falls into one of two basic
+          types:</t>
+        <t><list style="symbols">
+            <t>OAM traffic generated by the network itself. The additional bandwidth required for
+              such packets is added by the network administration, presumably transparent to the
+              customer. Security considerations for such traffic are not DetNet-specific (apart from
+              such traffic being subject to the same DetNet-specific security considerations as any
+              other DetNet data flow) and are thus not covered in this document.</t>
+            <t>OAM traffic generated by the customer. From a DetNet security point of view, DetNet
+              security considerations for such traffic are exactly the same as for any other
+              customer data flows.</t>
+          </list>
+        </t>
+        <t>Thus OAM traffic presents no additional (i.e. OAM-specific) DetNet security
+          considerations.</t>
+      </section>
 
     </section>
+
+    <section anchor="TechnologySpecificThreats" title="DetNet Technology-Specific Threats">
+      <t>
+        <xref target="ThreatSection"/> described threats which are independent of the DetNet
+        implementation. This section considers threats related to the specific technologies
+        referenced in <xref target="I-D.ietf-detnet-data-plane-framework"/> which have not already
+        been enumerated in <xref target="ThreatSection"/>. </t>
+
+      <t>As in this document in general, this section only enumerates security aspects which are
+        unique to providing the specific quality of service aspects of DetNet, which are primarily
+        to deliver data flows with extremely low packet loss rates and bounded end-to-end delivery
+        latency. The primary considerations for the data plane specifically are to maintain
+        integrity of data and delivery of the associated DetNet service traversing the DetNet
+        network. </t>
+
+      <t>As noted in <xref target="I-D.ietf-detnet-architecture"/>, DetNet operates at the IP layer
+          (<xref target="I-D.ietf-detnet-ip"/>) and delivers service over sub-layer technologies
+        such as MPLS (<xref target="I-D.ietf-detnet-mpls"/>) and IEEE 802.1 Time-Sensitive
+        Networking (TSN) (<xref target="I-D.ietf-detnet-ip-over-tsn"/>). </t>
+
+      <t>Application flows can be protected through whatever means is provided by the underlying
+        technology. For example, technology-specific encryption may be used, such as that provided
+        by IPSec <xref target="RFC4301"/> for IP flows and/or by an underlying sub-net using MACSec
+          <xref target="IEEE802.1AE-2018"/> for IP over Ethernet (Layer-2) flows. </t>
+
+      <t>Sections below discuss threats specific to IP, MPLS, and TSN in more detail.</t>
+
+      <section title="IP">
+
+        <t>The IP protocol has a long history of security considerations and architectural
+          protection mechanisms. From a data plane perspective DetNet does not add or modify any IP
+          header information, and its use as a DetNet Data Plane does not introduce any new security
+          issues that were not there before, apart from those already described in the
+          data-plane-independent threats section <xref target="ThreatSection"/>. </t>
+
+        <t>Thus the security considerations for a DetNet based on an IP data plane are purely
+          inherited from the rich IP Security literature and code/application base, and the
+          data-plane-independent section of this document. </t>
+
+      </section>
+      <section title="MPLS">
+        <t>Editor's Note: To Be Written.</t>
+      </section>
+
+      <section title="TSN">
+        <t>Editor's Note: To Be Written.</t>
+      </section>
+
+    </section>
+    <!-- Section: Technology Specific Attacks -->
+
 
     <section title="Appendix A: DetNet Draft Security-Related Statements" anchor="appendix_a">
       <t>This section collects the various statements in the currently existing DetNet Working Group
@@ -1512,6 +1642,23 @@ Table, Part Two (of Two)
             person-to-machine and machine-to-machine communications, and providing the appropriate
             levels of data privacy, device and platform integrity, and threat detection and
             mitigation. </t>
+
+          <t>Existing power automation security standards can inform network security. For example
+            the NERC CIP (North American Electric Reliability Corporation Critical Infrastructure
+            Protection) plan is a set of requirements designed to secure the assets required for
+            operating North America's bulk electric system. Another standardized security control
+            technique is Segmentation (zones and conduits including access control). </t>
+
+          <t>The requirements in Industrial Automation and Control Systems (IACS) are quite similar,
+            especially in new scenarios such as Industry 4.0/Digital Factory where workflows and
+            protocols cross zones, segments, and entities. IEC 62443 (ISA99) defines security for
+            IACS, typically for installations in other critical infrastructure such as oil and
+            gas.</t>
+
+          <t>Availability and integrity are the most important security objectives for the lower
+            layers of such networks; confidentiality and privacy are relevant if customer or market
+            data is involved, typically handled by higher layers.</t>
+
         </section>
 
         <section title="(BAS) Security Considerations (sec 4.2.4)">
@@ -1569,10 +1716,16 @@ Table, Part Two (of Two)
     <references title="Informative References">
       <?rfc include='reference.RFC.3552'?>
       <?rfc include='reference.RFC.7384'?>
+      <?rfc include='reference.RFC.4301'?>
       <!-- <?rfc include='reference.I-D.ietf-tictoc-1588overmpls'?>  -->
-      <?rfc include='reference.I-D.ietf-detnet-use-cases'?>
       <?rfc include='reference.I-D.ietf-detnet-architecture'?>
       <?rfc include='reference.I-D.varga-detnet-service-model'?>
+      <?rfc include='reference.I-D.ietf-detnet-data-plane-framework'?>
+      <?rfc include='reference.I-D.ietf-detnet-ip'?>
+      <?rfc include='reference.I-D.ietf-detnet-mpls'?>
+      <?rfc include='reference.I-D.ietf-detnet-ip-over-tsn'?>
+      <!-- DetNet RFCs:  -->
+      <?rfc include='reference.RFC.8578'?>
 
       <reference anchor="IEEE1588">
         <front>
@@ -1606,6 +1759,16 @@ Table, Part Two (of Two)
         </front>
       </reference>
 
+      <reference anchor="IEEE802.1AE-2018" target="https://ieeexplore.ieee.org/document/8585421">
+        <front>
+          <title>IEEE Std 802.1AE-2018 MAC Security (MACsec)</title>
+          <author>
+            <organization>IEEE Standards Association</organization>
+          </author>
+          <date year="2018"/>
+        </front>
+      </reference>
+
     </references>
 
     <!-- Change Log
@@ -1614,18 +1777,24 @@ v00 2017-03-09  EAG  Edited for clarity, incorporated comments from sdt review.
 v01 2017-06-26  EAG  Added Impact, Mitigation and Use Case Associations text.
 v01 2017-06-29  EAG  Integrated review input and Association by Use Case Industry text.
 v00 2017-10-04  EAG  First post-WG-adoption (draft-ietf-detnet) version, version reset to 00.
-                     Clarify text regarding "Flow Identification" vs "Flow Modification..." 
-                      1) Remove spurious "DetNet Flow Identification" section header, 
-                      2) Move 4.2.1. Flow identification text to a new Impact - Recon section. 
-                     Add missing sections to Impact section - even if empty, mark as ToDo. 
+                     Clarify text regarding "Flow Identification" vs "Flow Modification..."
+                      1) Remove spurious "DetNet Flow Identification" section header,
+                      2) Move 4.2.1. Flow identification text to a new Impact - Recon section.
+                     Add missing sections to Impact section - even if empty, mark as ToDo.
                      Mention that impacts as described assume that mitigation is not present or has failed.
-v00 2017-10-09 EAG   Rewrite use case themes questions as statements. Update use cases/threats table. 
+v00 2017-10-09 EAG   Rewrite use case themes questions as statements. Update use cases/threats table.
 v00 2017-10-25 EAG   Add text for new use cases - to Intro, Industry table, Industry text, etc.
 v02 2018-04-23 EAG   Just bump revision to keep draft alive.
-  ToDo list:  
-              Add a new attack type for internal knowledge of drivers/firmware (as in Multiple Hops section)? Is this in scope? 
+v03 2018-10-16 EAG   Add OAM considerations section. Update Tal affiliation. Add new Commmon Theme: Bounded Jitter.
+v04 2019-02-11 EAG   Add possible impact of DP delay on physical device e.g. Industrial per Rodney. Add Maik text to use case appendix.
+v04 2019-03-02 EAG   Added Encryption Considerations section per list discussion.
+v05 2019-08-29 EAG   Add sections for dataplane-specific considerations (IP, MPLS, TSN).
+                     Update Use Cases references to RFC 8578.
+  ToDo list:
+              Update Appendix A security text for various drafts including Architecture and new dataplane drafts.
               Validate use of words "attack" and "threat" is correct - prefer use of "attack" unless necessary.
-              Fill in ToDo sections. 
+              Add a new attack type for internal knowledge of drivers/firmware (as in Multiple Hops section)? Is this in scope?
+              Fill in ToDo sections.
    -->
 
   </back>
