@@ -26,9 +26,9 @@
     <title abbrev="DetNet Security"> Deterministic Networking (DetNet) Security Considerations </title>
 
     <author fullname="Tal Mizrahi" initials="T.M." surname="Mizrahi">
-      <organization abbrev="MARVELL">Marvell</organization>
+      <organization abbrev="HUAWEI">Huawei Network.IO Innovation Lab</organization>
       <address>
-        <email>talmi@marvell.com</email>
+        <email>tal.mizrahi.phd@gmail.com</email>
       </address>
     </author>
 
