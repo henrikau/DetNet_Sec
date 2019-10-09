@@ -132,8 +132,8 @@
     <abstract>
       <t> A deterministic network is one that can carry data flows for real-time applications with
         extremely low data loss rates and bounded latency. Deterministic networks have been
-        successfully deployed in real-time operational technology (OT) applications for some years
-        (for example <xref target="ARINC664P7"/>). However, such networks are typically isolated
+        successfully deployed in real-time operational technology (OT)
+	applications for some years. However, such networks are typically isolated
         from external access, and thus the security threat from external attackers is low. IETF
         Deterministic Networking (DetNet) specifies a set of technologies that enable creation of
         deterministic networks on IP-based networks of potentially wide area (on the scale of a
@@ -161,7 +161,8 @@
         "converged network", i.e. one that includes both IT traffic and OT traffic, thus exposing
         potentially sensitive OT devices to attack in ways that were not previously common (usually
         because they were under a separate control system or otherwise isolated from the IT
-        network). Security considerations for OT networks is not a new area, and there are many OT
+        network, for example <xref target="ARINC664P7"/>).
+	Security considerations for OT networks is not a new area, and there are many OT
         networks today that are connected to wide area networks or the Internet; this draft focuses
         on the issues that are specific to the DetNet technologies and use cases.</t>
 
