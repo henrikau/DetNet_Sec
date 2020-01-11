@@ -18,7 +18,7 @@
 <?rfc subcompact="no" ?>
 
 
-<rfc category="info" docName="draft-ietf-detnet-security-06" ipr="trust200902">
+<rfc category="info" docName="draft-ietf-detnet-security-07" ipr="trust200902">
 
 
   <front>
@@ -117,7 +117,7 @@
     </author>
     -->
 
-    <date year="2019"/>
+    <date year="2020"/>
     <area>Routing</area>
     <workgroup>Internet Engineering Task Force</workgroup>
     <keyword>DetNet, security</keyword>
@@ -134,10 +134,8 @@
         outside of a tightly controlled and bounded area (such as the internals of an aircraft).
         These DetNet technologies have not previously been deployed together on a wide area IP-based
         network, and thus can present security considerations that may be new to IP-based wide area
-        network designers. This draft, intended for use by DetNet network designers, provides
-        insight into these security considerations. In addition, this draft collects all
-        security-related statements from the various DetNet drafts (Architecture, Use Cases, etc)
-        into a single location <xref target="appendix_a"/>. </t>
+        network designers. This document, intended for use by DetNet network designers, provides
+        insight into these security considerations. </t>
     </abstract>
   </front>
 
@@ -153,10 +151,26 @@
         "converged network", i.e. one that includes both IT traffic and OT traffic, thus exposing
         potentially sensitive OT devices to attack in ways that were not previously common (usually
         because they were under a separate control system or otherwise isolated from the IT network,
-        for example <xref target="ARINC664P7"/>). Security considerations for OT networks is not a
+        for example <xref target="ARINC664P7"/>). Security considerations for OT networks are not a
         new area, and there are many OT networks today that are connected to wide area networks or
-        the Internet; this draft focuses on the issues that are specific to the DetNet technologies
-        and use cases.</t>
+        the Internet; this document focuses on the issues that are specific to the DetNet
+        technologies and use cases.</t>
+
+      <t>Given the above considerations, securing a DetNet starts with a scrupulously well-designed
+        and well-managed engineered network following industry best practices for security at both
+        the data plane and control plane; this is the assumed starting point for the considerations
+        discussed herein. In this context we view the network design and managment aspects of
+        network security as being primarily concerned with denial-of service prevention by ensuring
+        that DetNet traffic goes where it's supposed to and that an external attacker can't inject
+        traffic that disrupts the DetNet's delivery timing assurance. The time-specific aspects of
+        DetNet security presented here take up where the design and management aspects leave off. </t>
+
+      <t> The security requirements for any given DetNet network are necessarily specific to the use
+        cases handled by that network. Thus the reader is assumed to be familiar with the specific
+        security requirements of their use cases, for example those outlined in the DetNet Use Cases
+          <xref target="RFC8578"/> and the Security Considerations sections of the DetNet documents
+        applicable to the network technologies in use, for example <xref target="I-D.ietf-detnet-ip"
+        />). </t>
 
       <t> The DetNet technologies include ways to: <list style="symbols">
           <t> Reserve data plane resources for DetNet flows in some or all of the intermediate nodes
@@ -168,15 +182,9 @@
         </list>
       </t>
 
-      <t> This draft includes sections on threat modeling and analysis, threat impact and
+      <t> This document includes sections on threat modeling and analysis, threat impact and
         mitigation, and the association of attacks with use cases based on the Use Case Common
-        Themes section of the DetNet Use Cases draft <xref target="RFC8578"/>.</t>
-
-      <t>This draft also provides context for the DetNet security considerations by collecting into
-        one place <xref target="appendix_a"/> the various remarks about security from the various
-        DetNet drafts (Use Cases, Architecture, etc). This text is duplicated here primarily because
-        the DetNet working group has elected not to produce a Requirements draft and thus
-        collectively these statements are as close as we have to "DetNet Security Requirements". </t>
+        Themes section of the DetNet Use Cases <xref target="RFC8578"/>.</t>
 
     </section>
 
@@ -229,7 +237,7 @@
 
         <t> Care has also been taken to adhere to Section 5 of <xref target="RFC3552"/>, both with
           respect to which attacks are considered out-of-scope for this document, but also which are
-          considered to be the most common threats (explored furhter in <xref
+          considered to be the most common threats (explored further in <xref
             target="ThreatAnalysis"/>. Most of the direct threats to DetNet are Active attacks, but
           it is highly suggested that DetNet application developers take appropriate measures to
           protect the content of the streams from passive attacks. </t>
@@ -252,7 +260,7 @@
           <section title="Delay Attack">
             <t>An attacker can maliciously delay DetNet data flow traffic. By delaying the traffic,
               the attacker can compromise the service of applications that are sensitive to high
-              delays or to high delay variation.</t>
+              delays or to high delay variation. The delay may be constant or modulated.</t>
           </section>
 
         </section>
@@ -352,7 +360,7 @@
 
             <t>Note that in some cases DetNet flows may be identified based on an explicit DetNet
               header, but in some cases the flow identification may be based on fields from the
-              L3/L4 headers. If L3/L4 headers are involved, for purposes of this draft we assume
+              L3/L4 headers. If L3/L4 headers are involved, for purposes of this document we assume
               they are encrypted and/or integrity-protected from external attackers. </t>
 
           </section>
@@ -384,7 +392,7 @@
 |                                         |Internal |External |
 |                                         |MITM|Inj.|MITM|Inj.|
 +-----------------------------------------+----+----+----+----+
-|Delay attack                             | +  |    | +  |    |
+|Delay attack                             | +  |  + | +  |  + |
 +-----------------------------------------+----+----+----+----+
 |DetNet Flow Modification or Spoofing     | +  | +  |    |    |
 +-----------------------------------------+----+----+----+----+
@@ -428,9 +436,9 @@
 
       <t>The severity of various components of the impact of a successful vulnerability exploit to
         use cases by industry is available in more detail in <xref target="RFC8578"/>. Each of the
-        use cases in the DetNet Use Cases draft is represented in the table below, including Pro
-        Audio, Electrical Utilities, Industrial M2M (split into two areas, M2M Data Gathering and
-        M2M Control Loop), and others.</t>
+        use cases in the DetNet Use Cases is represented in the table below, including Pro Audio,
+        Electrical Utilities, Industrial M2M (split into two areas, M2M Data Gathering and M2M
+        Control Loop), and others.</t>
 
       <t>Components of Impact (left column) include Criticality of Failure, Effects of Failure,
         Recovery, and DetNet Functional Dependence. Criticality of failure summarizes the
@@ -544,9 +552,9 @@ Table, Part Two (of Two)
       <section anchor="DelayImpact" title="Delay-Attacks">
         <!-- <xref target="DelayThreat"/> -->
         <section title="Data Plane Delay Attacks">
-          <t> Severely delayed messages in a DetNet link can result in the same behavior as dropped
-            messages in ordinary networks as the services attached to the stream has strict
-            deterministic requirements.</t>
+          <t> Delayed messages in a DetNet link can result in the same behavior as dropped messages
+            in ordinary networks as the services attached to the stream has strict deterministic
+            requirements.</t>
 
           <t>For a single path scenario, disruption is a real possibility, whereas in a multipath
             scenario, large delays or instabilities in one stream can lead to increased buffer and
@@ -582,7 +590,9 @@ Table, Part Two (of Two)
       <section anchor="SpoofingImpact" title="Flow Modification and Spoofing">
 
         <section title="Flow Modification">
-          <t>ToDo.</t>
+          <t>If the contents of a packet header or body can be modified by the attacker, this can
+            cause the packet to be routed incorrectly or dropped, or the payload to be corrupted or
+            subtly modified.</t>
         </section>
 
         <section title="Spoofing">
@@ -671,11 +681,13 @@ Table, Part Two (of Two)
       </section>
 
       <section title="Control or Signaling Packet Modification">
-        <t>ToDo.</t>
+        <t>If the control plane packets are subject to manipulation undetected, the network can be
+          severely compromised.</t>
       </section>
 
       <section title="Control or Signaling Packet Injection">
-        <t>ToDo.</t>
+        <t>If an attacker can inject control plane packets undetected, the network can be severely
+          compromised.</t>
       </section>
 
       <section title="Reconnaissance">
@@ -689,15 +701,18 @@ Table, Part Two (of Two)
         <t> The flow-id in the header of the data plane-messages gives an attacker a very reliable
           identifier for DetNet traffic, and this traffic has a high probability of going to
           lucrative targets. </t>
+        <t>Applications which are ported from a private OT network to the higher visibility DetNet
+          environment may need to be adapted to limit distinctive flow properties that could make
+          them susceptible to reconnaissance. </t>
       </section>
 
       <section title="Attacks on Time Sync Mechanisms">
-        <t>ToDo.</t>
+        <t>Attacks on time sync mechanisms are addressed in <xref target="RFC7384"/>.</t>
       </section>
 
       <section title="Attacks on Path Choice" anchor="PathChoiceImpact">
         <t> This is covered in part in <xref target="SegmentationImpact"/>, and as with Replication
-          and Elimination (<xref target="ReplicationImpact"/>, this is relevant for DataPlane
+          and Elimination (<xref target="ReplicationImpact"/>), this is relevant for DataPlane
           messages. </t>
       </section>
 
@@ -723,7 +738,9 @@ Table, Part Two (of Two)
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>Path redundancy can be used to mitigate various man-in-the-middle attacks, including
               attacks described in <xref target="DelayThreat"/>, <xref target="ModificationThreat"
-              />, <xref target="SegmentThreat"/>, and <xref target="SyncThreat"/>.</t>
+              />, <xref target="SegmentThreat"/>, and <xref target="SyncThreat"/>. However it is
+              also possible that multiple paths may make it more difficult to locate the source of a
+              MITM attacker.</t>
           </list></t>
       </section>
 
@@ -732,8 +749,7 @@ Table, Part Two (of Two)
 
         <t>Description <list hangIndent="10" style="empty">
             <t>An integrity protection mechanism, such as a Hash-based Message Authentication Code
-              (HMAC) can be used to mitigate modification attacks. Integrity protection can be used
-              on the data plane header, to prevent its modification and tampering. Integrity
+              (HMAC) can be used to mitigate modification attacks on IP packets. Integrity
               protection in the control plane is discussed in <xref target="ControlProtectSection"
               />. </t>
           </list></t>
@@ -966,7 +982,7 @@ Table, Part Two (of Two)
         we would like to make this association in our analysis. However since there is a potentially
         unbounded list of use cases, we categorize the attacks with respect to the common themes of
         the use cases as identified in the Use Case Common Themes section of the DetNet Use Cases
-        draft <xref target="RFC8578"/>. </t>
+          <xref target="RFC8578"/>. </t>
 
       <t>See also <xref target="ThreatIndustryMapping"/> for a mapping of the impact of attacks per
         use case by industry.</t>
@@ -983,8 +999,8 @@ Table, Part Two (of Two)
             explicitly supported. Attacks such as Delay or Reconnaissance might be implemented
             differently on a different transmission medium, however the impact on the DetNet as a
             whole would be essentially the same. We thus conclude that all attacks and impacts that
-            would be applicable to DetNet over Ethernet (i.e. all those named in this draft) would
-            also be applicable to DetNet over other transmission mediums. </t>
+            would be applicable to DetNet over Ethernet (i.e. all those named in this document)
+            would also be applicable to DetNet over other transmission mediums. </t>
 
           <t>With respect to mitigations, some methods are specific to the Ethernet medium, for
             example time-aware scheduling using 802.1Qbv can protect against excessive use of
@@ -998,12 +1014,12 @@ Table, Part Two (of Two)
             be distributed across multiple control entities that function together as a unified
             control system for the network. </t>
 
-          <t>In this draft we distinguish between attacks on the DetNet Control plane vs. Data
+          <t>In this document we distinguish between attacks on the DetNet Control plane vs. Data
             plane. But is an attack affecting control plane packets synonymous with an attack on the
-            CNC itself? For purposes of this draft let us consider an attack on the CNC itself to be
-            out of scope, and consider all attacks named in this draft which are relevant to control
-            plane packets to be relevant to this theme, including Path Manipulation, Path Choice,
-            Control Packet Modification or Injection, Reconaissance and Attacks on Time Sync
+            CNC itself? For purposes of this document let us consider an attack on the CNC itself to
+            be out of scope, and consider all attacks named in this document which are relevant to
+            control plane packets to be relevant to this theme, including Path Manipulation, Path
+            Choice, Control Packet Modification or Injection, Reconaissance and Attacks on Time Sync
             Mechanisms. </t>
         </section>
 
@@ -1040,19 +1056,14 @@ Table, Part Two (of Two)
 
         <section title="L2 and L3 Integration">
           <t>A DetNet network integrates Layer 2 (bridged) networks (e.g. AVB/TSN LAN) and Layer 3
-            (routed) networks via the use of well-known protocols such as IPv6, MPLS-PW, and
-            Ethernet. Presumably security considerations applicable directly to those individual
-            protocols is not specific to DetNet, and thus out of scope for this draft. However
-            enabling DetNet to coordinate Layer 2 and Layer 3 behavior will require some additions
-            to existing protocols (see draft-dt-detnet-dp-alt) and any such new work can introduce
-            new attack surfaces. </t>
-          <t>This is TBD, thus there are no specific entries in our table, however that does not
-            imply that there could be no relevant attacks.</t>
+            (routed) networks via the use of well-known protocols such as IP, MPLS-PW, and Ethernet. </t>
+          <t>There are no specific entries in our table, however that does not imply that there
+            could be no relevant attacks related to L2,L3 integration.</t>
         </section>
 
         <section title="End-to-End Delivery">
-          <t>Packets sent over DetNet are guaranteed not to be dropped by the network due to
-            congestion. (Packets may however be dropped for intended reasons, e.g. per security
+          <t>Packets sent over DetNet are not to be dropped by the network due to congestion.
+            (Packets may however intentionally be dropped for intended reasons, e.g. per security
             measures). </t>
           <t>A Data plane attack may force packets to be dropped, for example a "long" Delay or
             Replication/Elimination or Flow Modification attack. </t>
@@ -1066,6 +1077,7 @@ Table, Part Two (of Two)
             or Packet Injection. A Time Sync attack could cause a system that was expecting certain
             packets at certain times to accept unintended packets based on compromised system time
             or time windowing in the scheduler. </t>
+          <t>Packets may also be dropped due to malfunctioning software or hardware.</t>
         </section>
 
         <section title="Proprietary Deterministic Ethernet Networks">
@@ -1095,14 +1107,12 @@ Table, Part Two (of Two)
           <t>DetNet is intended to support coexistence of time-sensitive operational (OT,
             deterministic) traffic and information (IT, "best effort") traffic on the same
             ("unified") network. </t>
-          <t>The presence of IT traffic on a network carrying OT traffic has long been considered
-            insecure design [reference needed here]. With DetNet, this coexistance will become more
-            common, and mitigations will need to be established. The fact that the IT traffic on a
-            DetNet is limited to a corporate controlled network makes this a less difficult problem
-            compared to being exposed to the open Internet, however this aspect of DetNet security
-            should not be underestimated. </t>
-          <t>Most of the themes described in this draft address OT (reserved) streams - this item is
-            intended to address issues related to IT traffic on a DetNet.</t>
+          <t>With DetNet, this coexistance will become more common, and mitigations will need to be
+            established. The fact that the IT traffic on a DetNet is limited to a corporate
+            controlled network makes this a less difficult problem compared to being exposed to the
+            open Internet, however this aspect of DetNet security should not be underestimated. </t>
+          <t>Most of the themes described in this document address OT (reserved) streams - this item
+            is intended to address issues related to IT traffic on a DetNet.</t>
           <t>An Inter-segment attack can flood the network with IT-type traffic with the intent of
             disrupting handling of IT traffic, and/or the goal of interfering with OT traffic.
             Presumably if the stream reservation and isolation of the DetNet is well-designed
@@ -1260,8 +1270,7 @@ Table, Part Two (of Two)
             to a greater or lesser degree on reliability and availability, this essentially means
             that all networks have to mitigate all attacks, which to a greater or lesser degree
             defeats the purpose of associating attacks with use cases. It also underscores the
-            difficulty of designing "extremely high reliability" networks. I hope that in future
-            drafts we can say something more useful here.</t>
+            difficulty of designing "extremely high reliability" networks. </t>
         </section>
 
         <section title="Redundant Paths">
@@ -1416,29 +1425,35 @@ Table, Part Two (of Two)
 
     <section anchor="TechnologySpecificThreats" title="DetNet Technology-Specific Threats">
       <t>
-        <xref target="ThreatSection"/> described threats which are independent of the DetNet
-        implementation. This section considers threats related to the specific technologies
-        referenced in <xref target="I-D.ietf-detnet-data-plane-framework"/> which have not already
-        been enumerated in <xref target="ThreatSection"/>. </t>
+        <xref target="ThreatSection"/> described threats which are independent of a DetNet
+        implementation. This section considers threats specifically related to the IP- and
+        MPLS-specific aspects of DetNet implementations. </t>
 
-      <t>As in this document in general, this section only enumerates security aspects which are
-        unique to providing the specific quality of service aspects of DetNet, which are primarily
-        to deliver data flows with extremely low packet loss rates and bounded end-to-end delivery
-        latency. The primary considerations for the data plane specifically are to maintain
-        integrity of data and delivery of the associated DetNet service traversing the DetNet
-        network. </t>
+      <t>The primary security considerations for the data plane specifically are to maintain the
+        integrity of the data and the delivery of the associated DetNet service traversing the
+        DetNet network. </t>
+
+      <t>The primary relevant differences between IP and MPLS implementations are in flow
+        identification and OAM methodologies.</t>
 
       <t>As noted in <xref target="RFC8655"/>, DetNet operates at the IP layer (<xref
           target="I-D.ietf-detnet-ip"/>) and delivers service over sub-layer technologies such as
         MPLS (<xref target="I-D.ietf-detnet-mpls"/>) and IEEE 802.1 Time-Sensitive Networking (TSN)
-          (<xref target="I-D.ietf-detnet-ip-over-tsn"/>). </t>
+          (<xref target="I-D.ietf-detnet-ip-over-tsn"/>). Application flows can be protected through
+        whatever means are provided by the layer and sub-layer technologies. For example,
+        technology-specific encryption may be used, such as that provided by IPSec <xref
+          target="RFC4301"/> for IP flows and/or by an underlying sub-net using MACSec <xref
+          target="IEEE802.1AE-2018"/> for IP over Ethernet (Layer-2) flows. </t>
 
-      <t>Application flows can be protected through whatever means is provided by the underlying
-        technology. For example, technology-specific encryption may be used, such as that provided
-        by IPSec <xref target="RFC4301"/> for IP flows and/or by an underlying sub-net using MACSec
-          <xref target="IEEE802.1AE-2018"/> for IP over Ethernet (Layer-2) flows. </t>
+      <t>However, if the DetNet nodes cannot decrypt IPsec traffic, IPSec may not be a valid option;
+        this is because the DetNet IP data plane identifies flows via a 6-tuple that consists of two
+        IP addresses, the transport protocol ID, two transport protocol port numbers and the DSCP in
+        the IP header. When IPsec is used, the transport header is encrypted and the next protocol
+        ID is an IPsec protocol, usually ESP, and not a transport protocol (e.g., neither TCP nor
+        UDP, etc.) leaving only three components of the 6-tuple, which are the two IP addresses and
+        the DSCP, which are in general not sufficient to identify a DetNet flow. </t>
 
-      <t>Sections below discuss threats specific to IP, MPLS, and TSN in more detail.</t>
+      <t>Sections below discuss threats specific to IP and MPLS in more detail.</t>
 
       <section title="IP">
 
@@ -1451,6 +1466,21 @@ Table, Part Two (of Two)
         <t>Thus the security considerations for a DetNet based on an IP data plane are purely
           inherited from the rich IP Security literature and code/application base, and the
           data-plane-independent section of this document. </t>
+
+        <t>Maintaining security for IP segments of a DetNet may be more challenging than for the
+          MPLS segments of the network, given that the IP segments of the network may reach the
+          edges of the network, which are more likely to involve interaction with potentially
+          malevolent outside actors. Conversely MPLS is inherently more secure than IP since it is
+          internal to routers and it is well-known how to protect it from outside influence. </t>
+
+        <t>Another way to look at DetNet IP security is to consider it in the light of VPN security;
+          as an industry we have a lot of experience with VPNs running through networks with other
+          VPNs, it is well known how to secure the network for that. However for a DetNet we have
+          the additional subtlety that any possible interaction of one packet with another can have
+          a potentially deleterious effect on the time properties of the flows. So the network must
+          provide sufficient isolation between flows, for example by protecting the forwarding
+          bandwidth and related resources so that they are available to detnet traffic, by whatever
+          means are appropriate for that network's data plane. </t>
 
       </section>
       <section title="MPLS">
@@ -1494,274 +1524,9 @@ Table, Part Two (of Two)
 
       </section>
 
-      <section title="TSN">
-        <t>Editor's Note: To Be Written.</t>
-      </section>
-
     </section>
     <!-- Section: Technology Specific Attacks -->
 
-
-    <section title="Appendix A: DetNet Draft Security-Related Statements" anchor="appendix_a">
-      <t>This section collects the various statements in the currently existing DetNet Working Group
-        drafts. For each draft, the section name and number of the quoted section is shown. The text
-        shown here is the work of the original draft authors, quoted verbatim from the drafts. The
-        intention is to explicitly quote all relevant text, not to summarize it.</t>
-
-      <section title="Architecture (draft 8)">
-        <section title="Fault Mitigation (sec 4.5)">
-          <t>One key to building robust real-time systems is to reduce the infinite variety of
-            possible failures to a number that can be analyzed with reasonable confidence. DetNet
-            aids in the process by providing filters and policers to detect DetNet packets received
-            on the wrong interface, or at the wrong time, or in too great a volume, and to then take
-            actions such as discarding the offending packet, shutting down the offending DetNet
-            flow, or shutting down the offending interface. </t>
-          <t>It is also essential that filters and service remarking be employed at the network edge
-            to prevent non-DetNet packets from being mistaken for DetNet packets, and thus impinging
-            on the resources allocated to DetNet packets. </t>
-          <t>There exist techniques, at present and/or in various stages of standardization, that
-            can perform these fault mitigation tasks that deliver a high probability that
-            misbehaving systems will have zero impact on well-behaved DetNet flows, except of
-            course, for the receiving interface(s) immediately downstream of the misbehaving device.
-            Examples of such techniques include traffic policing functions (e.g. <xref
-              target="RFC2475"/>) and separating flows into per-flow rate- limited queues. </t>
-        </section>
-
-        <section title="Security Considerations (sec 7)">
-          <t>Security in the context of Deterministic Networking has an added dimension; the time of
-            delivery of a packet can be just as important as the contents of the packet, itself. A
-            man-in-the-middle attack, for example, can impose, and then systematically adjust,
-            additional delays into a link, and thus disrupt or subvert a real-time application
-            without having to crack any encryption methods employed. See <xref target="RFC7384"/>
-            for an exploration of this issue in a related context. </t>
-          <t>Furthermore, in a control system where millions of dollars of equipment, or even human
-            lives, can be lost if the DetNet QoS is not delivered, one must consider not only simple
-            equipment failures, where the box or wire instantly becomes perfectly silent, but
-            bizarre errors such as can be caused by software failures. Because there is essential no
-            limit to the kinds of failures that can occur, protecting against realistic equipment
-            failures is indistinguishable, in most cases, from protecting against malicious
-            behavior, whether accidental or intentional. </t>
-          <t>Security must cover:</t>
-          <t>
-            <list style="symbols">
-              <t>Protection of the signaling protocol </t>
-              <t>Authentication and authorization of the controlling nodes</t>
-              <t>Identification and shaping of the flows</t>
-            </list>
-          </t>
-        </section>
-      </section>
-
-      <section title="Data Plane Alternatives (draft 4)">
-        <section title="Security Considerations (sec 7)">
-          <t> This document does not add any new security considerations beyond what the referenced
-            technologies already have. </t>
-        </section>
-      </section>
-
-      <section title="Problem Statement (draft 5)">
-        <section title="Security Considerations (sec 5)">
-          <t>Security in the context of Deterministic Networking has an added dimension; the time of
-            delivery of a packet can be just as important as the contents of the packet, itself. A
-            man-in-the-middle attack, for example, can impose, and then systematically adjust,
-            additional delays into a link, and thus disrupt or subvert a real-time application
-            without having to crack any encryption methods employed. See [RFC7384] for an
-            exploration of this issue in a related context.</t>
-
-          <t>Typical control networks today rely on complete physical isolation to prevent rogue
-            access to network resources. DetNet enables the virtualization of those networks over a
-            converged IT/OT infrastructure. Doing so, DetNet introduces an additional risk that
-            flows interact and interfere with one another as they share physical resources such as
-            Ethernet trunks and radio spectrum. The requirement is that there is no possible data
-            leak from and into a deterministic flow, and in a more general fashion there is no
-            possible influence whatsoever from the outside on a deterministic flow. The expectation
-            is that physical resources are effectively associated with a given flow at a given point
-            of time. In that model, Time Sharing of physical resources becomes transparent to the
-            individual flows which have no clue whether the resources are used by other flows at
-            other times. </t>
-          <t>Security must cover:</t>
-          <t>
-            <list style="symbols">
-              <t>Protection of the signaling protocol </t>
-              <t>Authentication and authorization of the controlling nodes</t>
-              <t>Identification and shaping of the flows</t>
-              <t>Isolation of flows from leakage and other influences from any activity sharing
-                physical resources</t>
-            </list>
-          </t>
-
-        </section>
-      </section>
-
-      <section title="Use Cases (draft 11)" anchor="use_cases">
-        <section title="(Utility Networks) Security Current Practices and Limitations (sec 3.2.1)">
-          <t>Grid monitoring and control devices are already targets for cyber attacks, and legacy
-            telecommunications protocols have many intrinsic network-related vulnerabilities. For
-            example, DNP3, Modbus, PROFIBUS/PROFINET, and other protocols are designed around a
-            common paradigm of request and respond. Each protocol is designed for a master device
-            such as an HMI (Human Machine Interface) system to send commands to subordinate slave
-            devices to retrieve data (reading inputs) or control (writing to outputs). Because many
-            of these protocols lack authentication, encryption, or other basic security measures,
-            they are prone to network-based attacks, allowing a malicious actor or attacker to
-            utilize the request-and-respond system as a mechanism for command-and-control like
-            functionality. Specific security concerns common to most industrial control, including
-            utility telecommunication protocols include the following: </t>
-          <t>
-            <list style="symbols">
-              <t>Network or transport errors (e.g. malformed packets or excessive latency) can cause
-                protocol failure. </t>
-              <t>Protocol commands may be available that are capable of forcing slave devices into
-                inoperable states, including powering-off devices, forcing them into a listen-only
-                state, disabling alarming. </t>
-              <t>Protocol commands may be available that are capable of restarting communications
-                and otherwise interrupting processes. </t>
-              <t>Protocol commands may be available that are capable of clearing, erasing, or
-                resetting diagnostic information such as counters and diagnostic registers. </t>
-              <t>Protocol commands may be available that are capable of requesting sensitive
-                information about the controllers, their configurations, or other need-to-know
-                information. </t>
-              <t>Most protocols are application layer protocols transported over TCP; therefore it
-                is easy to transport commands over non-standard ports or inject commands into
-                authorized traffic flows. </t>
-              <t>Protocol commands may be available that are capable of broadcasting messages to
-                many devices at once (i.e. a potential DoS). </t>
-              <t>Protocol commands may be available to query the device network to obtain defined
-                points and their values (i.e. a configuration scan). </t>
-              <t>Protocol commands may be available that will list all available function codes
-                (i.e. a function scan). </t>
-              <t> These inherent vulnerabilities, along with increasing connectivity between IT an
-                OT networks, make network-based attacks very feasible. </t>
-              <t>Simple injection of malicious protocol commands provides control over the target
-                process. Altering legitimate protocol traffic can also alter information about a
-                process and disrupt the legitimate controls that are in place over that process. A
-                man-in-the-middle attack could provide both control over a process and
-                misrepresentation of data back to operator consoles. </t>
-            </list>
-          </t>
-        </section>
-
-        <section title="(Utility Networks) Security Trends in Utility Networks (sec 3.3.3)">
-          <t>Although advanced telecommunications networks can assist in transforming the energy
-            industry by playing a critical role in maintaining high levels of reliability,
-            performance, and manageability, they also introduce the need for an integrated security
-            infrastructure. Many of the technologies being deployed to support smart grid projects
-            such as smart meters and sensors can increase the vulnerability of the grid to attack.
-            Top security concerns for utilities migrating to an intelligent smart grid
-            telecommunications platform center on the following trends: </t>
-          <t>
-            <list style="symbols">
-              <t>Integration of distributed energy resources </t>
-              <t>Proliferation of digital devices to enable management, automation, protection, and
-                control </t>
-              <t>Regulatory mandates to comply with standards for critical infrastructure protection </t>
-              <t>Migration to new systems for outage management, distribution automation,
-                condition-based maintenance, load forecasting, and smart metering </t>
-              <t>Demand for new levels of customer service and energy management </t>
-            </list>
-          </t>
-          <t>This development of a diverse set of networks to support the integration of microgrids,
-            open-access energy competition, and the use of network-controlled devices is driving the
-            need for a converged security infrastructure for all participants in the smart grid,
-            including utilities, energy service providers, large commercial and industrial, as well
-            as residential customers. Securing the assets of electric power delivery systems (from
-            the control center to the substation, to the feeders and down to customer meters)
-            requires an end-to-end security infrastructure that protects the myriad of
-            telecommunications assets used to operate, monitor, and control power flow and
-            measurement. </t>
-          <t>"Cyber security" refers to all the security issues in automation and telecommunications
-            that affect any functions related to the operation of the electric power systems.
-            Specifically, it involves the concepts of: </t>
-          <t>
-            <list style="symbols">
-              <t>Integrity : data cannot be altered undetectably </t>
-              <t>Authenticity : the telecommunications parties involved must be validated as genuine </t>
-              <t>Authorization : only requests and commands from the authorized users can be
-                accepted by the system </t>
-              <t>Confidentiality : data must not be accessible to any unauthenticated users </t>
-            </list>
-          </t>
-          <t>When designing and deploying new smart grid devices and telecommunications systems, it
-            is imperative to understand the various impacts of these new components under a variety
-            of attack situations on the power grid. Consequences of a cyber attack on the grid
-            telecommunications network can be catastrophic. This is why security for smart grid is
-            not just an ad hoc feature or product, it's a complete framework integrating both
-            physical and Cyber security requirements and covering the entire smart grid networks
-            from generation to distribution. Security has therefore become one of the main
-            foundations of the utility telecom network architecture and must be considered at every
-            layer with a defense-in-depth approach. Migrating to IP based protocols is key to
-            address these challenges for two reasons: </t>
-          <t>
-            <list style="symbols">
-              <t>IP enables a rich set of features and capabilities to enhance the security posture </t>
-              <t>IP is based on open standards, which allows interoperability between different
-                vendors and products, driving down the costs associated with implementing security
-                solutions in OT networks. </t>
-            </list>
-          </t>
-          <t>Securing OT (Operation technology) telecommunications over packet-switched IP networks
-            follow the same principles that are foundational for securing the IT infrastructure,
-            i.e., consideration must be given to enforcing electronic access control for both
-            person-to-machine and machine-to-machine communications, and providing the appropriate
-            levels of data privacy, device and platform integrity, and threat detection and
-            mitigation. </t>
-
-          <t>Existing power automation security standards can inform network security. For example
-            the NERC CIP (North American Electric Reliability Corporation Critical Infrastructure
-            Protection) plan is a set of requirements designed to secure the assets required for
-            operating North America's bulk electric system. Another standardized security control
-            technique is Segmentation (zones and conduits including access control). </t>
-
-          <t>The requirements in Industrial Automation and Control Systems (IACS) are quite similar,
-            especially in new scenarios such as Industry 4.0/Digital Factory where workflows and
-            protocols cross zones, segments, and entities. IEC 62443 (ISA99) defines security for
-            IACS, typically for installations in other critical infrastructure such as oil and
-            gas.</t>
-
-          <t>Availability and integrity are the most important security objectives for the lower
-            layers of such networks; confidentiality and privacy are relevant if customer or market
-            data is involved, typically handled by higher layers.</t>
-
-        </section>
-
-        <section title="(BAS) Security Considerations (sec 4.2.4)">
-          <t>When BAS field networks were developed it was assumed that the field networks would
-            always be physically isolated from external networks and therefore security was not a
-            concern. In today's world many BASs are managed remotely and are thus connected to
-            shared IP networks and so security is definitely a concern, yet security features are
-            not available in the majority of BAS field network deployments . </t>
-          <t>The management network, being an IP-based network, has the protocols available to
-            enable network security, but in practice many BAS systems do not implement even the
-            available security features such as device authentication or encryption for data in
-            transit. </t>
-        </section>
-
-        <section title="(6TiSCH) Security Considerations (sec 5.3.3)">
-          <t>On top of the classical requirements for protection of control signaling, it must be
-            noted that 6TiSCH networks operate on limited resources that can be depleted rapidly in
-            a DoS attack on the system, for instance by placing a rogue device in the network, or by
-            obtaining management control and setting up unexpected additional paths. </t>
-        </section>
-
-        <section title="(Cellular radio) Security Considerations (sec 6.1.5)">
-          <t>Establishing time-sensitive streams in the network entails reserving networking
-            resources for long periods of time. It is important that these reservation requests be
-            authenticated to prevent malicious reservation attempts from hostile nodes (or
-            accidental misconfiguration). This is particularly important in the case where the
-            reservation requests span administrative domains. Furthermore, the reservation
-            information itself should be digitally signed to reduce the risk of a legitimate node
-            pushing a stale or hostile configuration into another networking node. </t>
-          <t>Note: This is considered important for the security policy of the network, but does not
-            affect the core DetNet architecture and design.</t>
-        </section>
-
-        <section title="(Industrial M2M) Communication Today (sec 7.2)">
-          <t>Industrial network scenarios require advanced security solutions. Many of the current
-            industrial production networks are physically separated. Preventing critical flows from
-            be leaked outside a domain is handled today by filtering policies that are typically
-            enforced in firewalls. </t>
-        </section>
-      </section>
-    </section>
     <!-- Possibly a 'Contributors' section ... -->
 
     <section anchor="IANA" title="IANA Considerations">
@@ -1873,19 +1638,22 @@ v06 2019-11-02 EAG   Add placeholder text from Stewart for MPLS dataplane-specif
                      Added "dummy traffic insertion" based on Norm's comment.
                      Clarified that authentication is used for traffic origin verification (not encryption) per Henrik.
                      Added Packet Sequence Number Integrity Considerations per Norm comment.
-                     Occasional auto-reformat changes. 
+                     Occasional auto-reformat changes.
+v07 2020-01-10 EAG                        
+                     Cut "security statements from drafts" (Appendix A). Add "Reader is assumed to be familiar with the other drafts". 
+                     Limit scope to IP and MPLS. (i.e. cut TSN and references to future data planes)
+                     Incorporate comment from IETF 106 that flow ID and OAM are the relevant differentiators between MPLS and IP data planes.
+                    Note that MPLS is inherently more secure than IP since it is internal to routers.
+                    Add assumption of a "very well managed network (both data plane and control plane)" as a starting place for this draft.
+                    Incorporate some items from Stewart's review of 12/17/2019 and Henrik's comments 10Jan20. 
+                    Replace "draft" with "document" where appropriate. 
+                    Put in trivial text for "todo" sections. 
+                    
 ToDo list:
-              Update Appendix A security text for various drafts including Architecture and new dataplane drafts.
               Validate use of words "attack" and "threat" is correct - prefer use of "attack" unless necessary.
               Add a new attack type for internal knowledge of drivers/firmware (as in Multiple Hops section)? Is this in scope?
               Fill in ToDo sections.
               ?? Should control plane references be moved to an appendix since currently out of scope for DetNet?
-              ?? Is the Security draft going to hold up publication of the DP drafts? It is referenced as 
-               Informational in DP drafts.
-              ?? What to do with use case text from appendix? "We believe it would be helpful to establish 
-                solid requirements before we can expect external reviewers 
-                to review this draft, so our intent is to take the various use case statements in the appendix and 
-                turn them into more formal statement of requirements that a reviewer could measure our draft against."
               ?? Pascal pointed out that we could discuss attacks on the UNI, e.g. buffering
    -->
 
