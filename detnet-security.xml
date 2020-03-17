@@ -315,9 +315,10 @@
                   For example, an attacker can replace every SN value S with a higher value S+C,
                   where C is a constant integer. Thus, the attacker creates a false illusion that
                   the attacked path has the lowest delay, causing all packets from other paths to be
-                  eliminated. Once the flow is hijacked the attacker can either replace en route
-                  packets with malicious packets, or simply injecting errors, causing the packets to
-                  be dropped at their destination.</t>
+                  eliminated in favor of the attacked path. Once the flow from the compromised path is
+		  favored by the elminating bridge, the flow is hijacked by the attacker. It is now
+		  posible to either replace en route packets with malicious packets, or simply
+		  injecting errors, causing the packets to be dropped at their destination.</t>
               </list>
             </t>
 
