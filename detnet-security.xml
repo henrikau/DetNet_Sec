@@ -276,10 +276,12 @@
 
         <section anchor="SegmentThreat" title="Resource Segmentation or Slicing">
           <section title="Inter-segment Attack">
-            <t>An attacker can inject traffic, consuming network device resources, thereby affecting
-              DetNet flows. This can be performed using non-DetNet traffic that affects DetNet
-              traffic, or by using DetNet traffic from one DetNet flow that affects traffic from
-              different DetNet flows.</t>
+            <t>An attacker can inject traffic that will consume network
+            resources such that it affects DetNet flows. This can be
+            performed using non-DetNet traffic that indirectly affects
+            DetNet traffic (hardware resource exhaustion), or by using
+            DetNet traffic from one DetNet flow that directly affects
+            traffic from different DetNet flows.</t>
           </section>
 
         </section>
