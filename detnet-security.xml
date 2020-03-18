@@ -165,12 +165,15 @@
         traffic that disrupts the DetNet's delivery timing assurance. The time-specific aspects of
         DetNet security presented here take up where the design and management aspects leave off. </t>
 
-      <t> The security requirements for any given DetNet network are necessarily specific to the use
+      <t>The exact security requirements for any given DetNet network are necessarily specific to the use
         cases handled by that network. Thus the reader is assumed to be familiar with the specific
         security requirements of their use cases, for example those outlined in the DetNet Use Cases
           <xref target="RFC8578"/> and the Security Considerations sections of the DetNet documents
         applicable to the network technologies in use, for example <xref target="I-D.ietf-detnet-ip"
-        />). </t>
+        />). A general introduction to the DetNet architecture can be found in <xref target="RFC8655"/> 
+	and it is also recommended to be familiar with the Data Plane model
+	<xref target="I-D.ietf-detnet-data-plane-framework"/> and Flow Information Model
+        <xref target="I-D.ietf-detnet-flow-information-model"/>.</t>
 
       <t> The DetNet technologies include ways to: <list style="symbols">
           <t> Reserve data plane resources for DetNet flows in some or all of the intermediate nodes
@@ -184,7 +187,7 @@
 
       <t> This document includes sections on threat modeling and analysis, threat impact and
         mitigation, and the association of attacks with use cases based on the Use Case Common
-        Themes section of the DetNet Use Cases <xref target="RFC8578"/>.</t>
+        Themes section of the DetNet Use Cases.</t>
 
     </section>
 
@@ -1569,6 +1572,7 @@ Table, Part Two (of Two)
       <!-- <?rfc include='reference.I-D.ietf-tictoc-1588overmpls'?>  -->
       <?rfc include='reference.I-D.varga-detnet-service-model'?>
       <?rfc include='reference.I-D.ietf-detnet-data-plane-framework'?>
+      <?rfc include='reference.I-D.ietf-detnet-flow-information-model'?>
       <?rfc include='reference.I-D.ietf-detnet-ip'?>
       <?rfc include='reference.I-D.ietf-detnet-mpls'?>
       <?rfc include='reference.I-D.ietf-detnet-ip-over-tsn'?>
