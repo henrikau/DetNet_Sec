@@ -1875,7 +1875,8 @@ v11 2020-08-14 EAG
 v12 2020-10-01 EAG
                     Address remaining items from Adrian Farrel IESG Routing Area review, and from Ben Kaduk, thanks to David, Stewart, Lou.
                     Move Andrew Hacker back to Author role. Move EAG to first author. 
-v13 2020-10-01 EAG
+v13 2020-11-13 EAG
+                    Reformat to auto-format style used by "XMLPad Pro" editor (was in auto-format of "Oxygen" editor). Lots of white space changes, not content changes.
                     Addressing secdir and genart AD review items.
 
 ToDo list:
