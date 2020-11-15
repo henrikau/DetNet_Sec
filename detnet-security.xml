@@ -325,11 +325,8 @@
         PHB, since DetNet does not use the PHB concept for OT traffic, but nonetheless the service
         provided to the packet could be affected, so mitigation measures analogous to those
         prescribed by DiffServ would be appropriate for DetNet. For example, mismarked DSCP values
-        should not cause failure of network nodes, and any internal link that cannot be adequately
-        secured against modification of DSCP values should be treated as a boundary link (and hence
-        any arriving traffic on that link is treated as if it were entering the domain at an ingress
-        node). The remarks in
-        <xref target="RFC2474"/>regarding IPsec and Tunnelling Interactions
+        should not cause failure of network nodes. The remarks in
+        <xref target="RFC2474"/> regarding IPsec and Tunnelling Interactions
         are also relevant (though this is not to say that other sections are less relevant).
       </t>
     </section>
@@ -514,7 +511,7 @@
 +-----------------------------------------+----+----+----+----+
 |DetNet Flow Modification or Spoofing     | +  | +  |    |    |
 +-----------------------------------------+----+----+----+----+
-|Inter-segment Attack                     | +  | +  |    |    |
+|Inter-segment Attack                     | +  | +  | +  | +  |
 +-----------------------------------------+----+----+----+----+
 |Replication: Increased Attack Surface    | +  | +  | +  | +  |
 +-----------------------------------------+----+----+----+----+
@@ -526,7 +523,7 @@
 +-----------------------------------------+----+----+----+----+
 |Control or Signaling Packet Modification | +  |    |    |    |
 +-----------------------------------------+----+----+----+----+
-|Control or Signaling Packet Injection    |    | +  |    |    |
+|Control or Signaling Packet Injection    | +  | +  |    |    |
 +-----------------------------------------+----+----+----+----+
 |Reconnaissance                           | +  |    | +  |    |
 +-----------------------------------------+----+----+----+----+
@@ -872,12 +869,15 @@ Table, Part Two (of Two)
               number and the device that removes the sequence number. The sequence number may be
               end-to-end source to destination, or may be added/deleted by network edge devices. The
               adder and remover(s) have the trust relationship because they are the ones that ensure
-              that the sequence numbers are not modifiable. Between those two points, there may or
+              that the sequence numbers are not modifiable. Thus, sequence numbers can be protected
+			  by using enryption, or by a MAC without using encryption.
+			  Between the adder and remover there may or
               may not be replication and elimination functions. The elimination functions must be
-              able to see the sequence numbers. Therefore any encryption that is done between adders
-              and removers must not obscure the sequence number. If the sequence removers and the
+              able to see the sequence numbers. Therefore, if encryption is done between adders
+              and removers it must not obscure the sequence number. If the sequence removers and the
               eliminators are in the same physical device, it may be possible to obscure the
               sequence number, however that is a layer violation, and is not recommended practice.
+			  It should b
               Note: At the time of this writing, PREOF is not defined for the IP data plane.</t>
           </list>
         </t>
@@ -928,8 +928,11 @@ Table, Part Two (of Two)
         <t>Related attacks
           <list hangIndent="10" style="empty">
             <t>Removing distinctive temporal properties of individual packets or flows can be used
-              to mitigate against reconnaissance attacks
-              <xref target="ReconnaissanceThreat"/>.
+              to mitigate against reconnaissance attacks 
+			  <xref target="ReconnaissanceThreat"/>. For example, dummy traffic can be used 
+			  to synthetically maintain constant traffic rate even when no user data is transmitted,
+			  thus making it difficult to collect information about the times at which users
+			  are active, and the times at which DETNET flows are added or removed.
             </t>
           </list>
         </t>
