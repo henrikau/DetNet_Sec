@@ -1090,16 +1090,20 @@ Table, Part Two (of Two)
           </t>
         </section>
         <section title="Data Flow Information Models">
-          <t> Data Flow YANG models specific to DetNet networks are specified by DetNet, and thus
-            are 'new' and thus potentially present a new attack surface. </t>
+          <t> DetNet specifies new YANG models which may present new attack surfaces. Per IETF
+            guidelines, security considerations for any YANG model are expected to be part of the
+            YANG model specification, as described in <xref target="IETF_YANG_SEC"/>.</t>
         </section>
         <section title="L2 and L3 Integration">
           <t>A DetNet network integrates Layer 2 (bridged) networks (e.g. AVB/TSN LAN) and Layer 3
-            (routed) networks via the use of well-known protocols such as IP, MPLS Pseudowire, and
-            Ethernet. </t>
-          <t>There are no specific entries in the mapping table <xref target="ThreatList"/>, however
-            that does not imply that there could be no relevant attacks related to L2-L3
-            integration. </t>
+            (routed) networks (e.g. IP) via the use of well-known protocols such as IP, MPLS
+            Pseudowire, and Ethernet. Various DetNet drafts address many specific aspects of Layer 2
+            and Layer 3 integration within a DetNet, and these are not individually referenced here;
+            security considerations for those aspects are covered within those drafts or within the
+            related subsections of the present document. </t>
+          <t>Please note that although there are no entries in the L2 and L3 Integration line of the
+            Mapping Between Themes and Attacks table <xref target="ThreatList"/>, this does not
+            imply that there could be no relevant attacks related to L2-L3 integration.</t>
         </section>
         <section title="End-to-End Delivery">
           <t>Packets sent over DetNet are not to be dropped by the network due to congestion.
@@ -1613,6 +1617,17 @@ Table, Part Two (of Two)
       <?rfc include='reference.RFC.7835'?>
       <!-- DetNet RFCs:  -->
       <?rfc include='reference.RFC.8578'?>
+
+      <reference anchor="IETF_YANG_SEC"
+        target="https://trac.ietf.org/trac/ops/wiki/yang-security-guidelines">
+        <front>
+          <title>YANG Module Security Considerations</title>
+          <author>
+            <organization>IETF</organization>
+          </author>
+          <date year="2018"/>
+        </front>
+      </reference>
       <reference anchor="IEEE1588">
         <front>
           <title>IEEE 1588 Standard for a Precision Clock Synchronization Protocol for Networked
@@ -1735,8 +1750,8 @@ v11 2020-08-14 EAG
 v12 2020-10-01 EAG
                     Address remaining items from Adrian Farrel IESG Routing Area review, and from Ben Kaduk, thanks to David, Stewart, Lou.
                     Move Andrew Hacker back to Author role. Move EAG to first author. 
-v13 2020-11-16 EAG 
-                    Addressed many secdir AD review items from Yaron - still a few more to go.
+v13 2020-11-21 EAG 
+                    Addressed secdir AD review items from Yaron - still a few more to go.
 
 ToDo list:
               Validate use of words "attack" and "threat" is correct - prefer use of "attack" unless necessary.
