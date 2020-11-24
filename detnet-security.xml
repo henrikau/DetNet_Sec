@@ -251,11 +251,10 @@
           assigned by the DetNet Data Plane's Service sub-layer, and transported by the Forwarding
           sub-layer. This is no different than the integrity of the values in any header used by the
           DetNet (or any other) data plane, and is not unique to redundant paths. The integrity
-		  protection of header values is technology-dependent; for example, in Layer 2 
-		  networks the integrity of the header fields can be protected by using MACsec 
-		  <xref target="IEEE802.1AE-2018"/>. Similary, from the sequence
-          number injection perspective, it is no different from any other protocols that use
-          sequence numbers. </t>
+          protection of header values is technology-dependent; for example, in Layer 2 networks the
+          integrity of the header fields can be protected by using MACsec <xref
+            target="IEEE802.1AE-2018"/>. Similary, from the sequence number injection perspective,
+          it is no different from any other protocols that use sequence numbers. </t>
       </section>
       <section title="Timing (or other) Violation Reporting">
         <t>Another fundamental assumption of a secure DetNet is that in any case in which an
@@ -776,13 +775,11 @@ Table, Part Two (of Two)
         viewed as a toolset that includes several different and diverse tools. Each application or
         system will typically use a subset of these tools, based on a system-specific threat
         analysis. </t>
-	  <t>Some of the technology-specific security considerations and mitigation 
-	  approaches are further discussed in the DETNET data plane solution 
-	  documents, such as <xref target="I-D.ietf-detnet-ip"/>, 
-	  <xref target="I-D.ietf-detnet-mpls"/>, 
-	  <xref target="I-D.ietf-detnet-mpls-over-udp-ip"/>, 
-	  and <xref target="I-D.ietf-detnet-ip-over-mpls"/>.
-	  </t>
+      <t>Some of the technology-specific security considerations and mitigation approaches are
+        further discussed in the DETNET data plane solution documents, such as <xref
+          target="I-D.ietf-detnet-ip"/>, <xref target="I-D.ietf-detnet-mpls"/>, <xref
+          target="I-D.ietf-detnet-mpls-over-udp-ip"/>, and <xref
+          target="I-D.ietf-detnet-ip-over-mpls"/>. </t>
       <section title="Path Redundancy">
         <t>Description <list hangIndent="10" style="empty">
             <t>A DetNet flow that can be forwarded simultaneously over multiple paths. Path
@@ -1162,6 +1159,12 @@ Table, Part Two (of Two)
           <t>However the DetNet's handling of IT traffic may not (by design) be as resilient to DOS
             attack, and thus designers must be otherwise prepared to mitigate DOS attacks on IT
             traffic in a DetNet.</t>
+          <t>The network design as a whole also needs to consider possible application-level
+            dependencies of "OT"-type applications on services provided by the "IT part" of the
+            network; for example, does the OT application depend on IT network services such as DNS
+            or OAM? If such dependencies exist, how are malicious packet flows handled? Such
+            considerations are typically outside the scope of DetNet proper, but nonetheless need to
+            be addressed in the overall DetNet network design for a given use case.</t>
         </section>
         <section title="Deterministic Flows">
           <t>Reserved bandwidth data flows (deterministic flows) must provide the allocated
@@ -1184,11 +1187,9 @@ Table, Part Two (of Two)
           <t>The DetNet network specifications are intended to enable an ecosystem in which multiple
             vendors can create interoperable products, thus promoting device diversity and
             potentially higher numbers of each device manufactured. </t>
-		  <t>The security mechanisms and protocols that are discussed in this
-		  document also require interoperability. 
-		  It is expected that DETNET network specifications that define 
-		  security measures and protocols will be defined in a way that
-		  allows interoperability.</t>
+          <t>The security mechanisms and protocols that are discussed in this document also require
+            interoperability. It is expected that DETNET network specifications that define security
+            measures and protocols will be defined in a way that allows interoperability.</t>
           <t>Given that the DetNet specifications are unambiguously written and that the
             implementations are accurate, then this should not in and of itself cause a security
             concern; however, in the real world, it could be. The network operator can mitigate this
