@@ -808,12 +808,14 @@ Table, Part Two (of Two)
       </section>
       <section anchor="IntegritySection" title="Integrity Protection">
         <t>Description <list hangIndent="10" style="empty">
-            <t>An integrity protection mechanism, such as a hash-based Message Authentication Code
+            <t>An integrity protection mechanism, such as a Message Authentication Code
               (MAC) can be used to mitigate modification attacks on IP packets. Such MAC usage needs
               to be part of a security association that is established and managed by a security
               association protocol (such as IKEv2 for IPsec security associations). Integrity
               protection in the controller plane is discussed in <xref
-                target="ControllerProtectSection"/>. </t>
+                target="ControllerProtectSection"/>. The secret key,
+	      regardless of MAC used, must be protected from falling
+	      into the hands of unauthorized users. </t>
           </list>
         </t>
         <t>Packet Sequence Number Integrity Considerations <list hangIndent="10" style="empty">
