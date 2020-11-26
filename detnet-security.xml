@@ -358,7 +358,7 @@
           traffic) for example through the use of TLS or DTLS. </t>
         <t>DetNet-Service, one of the service scenarios described in <xref
             target="I-D.varga-detnet-service-model"/>, is the case where a service connects DetNet
-          networking islands, i.e. two or more otherwise independent DetNet network domains are
+          networking islands, i.e. two or more otherwise independent DetNet networks are
           connected via a link that is not intrinsically part of either network. This implies that
           there could be DetNet traffic flowing over a non-DetNet link, which may provide an
           attacker with an advantageous opportunity to tamper with DetNet traffic. The security
