@@ -61,7 +61,9 @@
     <keyword>DetNet, security</keyword>
     <abstract>
       <t>A DetNet (deterministic network) provides specific performance guarantees to its data
-        flows, such as extremely low data loss rates and bounded latency. As a result, securing a
+        flows, such as extremely low data loss rates. In the same
+	setting, each packet in a flow is expected to arrive with
+	bounded latency as well as extremely low jitter. As a result, securing a
         DetNet requires that in addition to the best practice security measures taken for any
         mission-critical network, additional security measures may be needed to secure the intended
         operation of these novel service properties.</t>
@@ -78,7 +80,10 @@
   <middle>
     <section title="Introduction">
       <t>A deterministic network is one that can carry data flows for real-time applications with
-        extremely low data loss rates and bounded latency. Deterministic networks have been
+        extremely low data loss rates and bounded latency. Not only should the latency be both low
+	and bounded, but an upper limit of latency variance is expected to be defined.
+	This is commonly referred to as "jitter" and is of paramount importance in many real-time
+	systems. Deterministic networks have been
         successfully deployed in real-time Operational Technology (OT) applications for some years,
         however such networks are typically isolated from external access, and thus the security
         threat from external attackers is low. IETF Deterministic Networking (DetNet, <xref
