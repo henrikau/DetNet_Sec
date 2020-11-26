@@ -458,10 +458,11 @@
             route DetNet flows, e.g., the number of DetNet flows, their bandwidths, their schedules,
             or other temporal properties. The gathered information can later be used to invoke other
             attacks on some or all of the flows.</t>
-          <t>Note that in some cases DetNet flows may be identified based on an explicit DetNet
-            header, but in some cases the flow identification may be based on fields from the L3/L4
-            headers. If L3/L4 headers are involved, for the purposes of this document we assume they
-            are encrypted and/or integrity-protected from external attackers. </t>
+          <t>DetNet flows are typically uniquely identified by their 6-tuple, i.e. fields within the
+          IP header, however in some implementations the flow ID may also be augmented by additional
+          per-flow attributes known to the system, e.g. above the IP-layer. For the purpose of this
+          document we assume any such additional fields used for flow ID are encrypted and/or
+          integrity-protected from external attackers.</t>
         </section>
         <section anchor="SyncThreat" title="Time Synchronization Mechanisms">
           <t>An attacker can use any of the attacks described in <xref target="RFC7384"/>to attack
