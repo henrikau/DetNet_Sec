@@ -460,8 +460,9 @@
             or other temporal properties. The gathered information can later be used to invoke other
             attacks on some or all of the flows.</t>
           <t>Note that in some cases DetNet flows may be identified based on an explicit DetNet
-            header, but in some cases the flow identification may be based on fields from the L3/L4
-            headers. If L3/L4 headers are involved, for the purposes of this document we assume they
+            header, but in some cases the flow identification may be
+	    based on other fields in the IP header or other per-stream
+	    unique unique attribute tuples. For the purposes of this document we assume these
             are encrypted and/or integrity-protected from external attackers. </t>
         </section>
         <section anchor="SyncThreat" title="Time Synchronization Mechanisms">
