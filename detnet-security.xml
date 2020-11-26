@@ -307,11 +307,12 @@
         sections of <xref target="RFC2474"/> and <xref target="RFC2475"/>. However DetNet also
         introduces timing and other considerations which are not present in DiffServ, so the
         DiffServ security considerations are necessary but not sufficient for DetNet. </t>
-      <t>In the case of DetNet OT traffic, the DSCP value, although interpreted differently than in
-        DiffServ, does contribute to determination of the service provided to the packet. Thus in
-        DetNet there are similar consequences to DiffServ for lack of detection of, or incorrect
-        handling of, packets with mismarked DSCP values, and thus many of the points made in the
-        DiffServ draft Security discussions are also relevant to DetNet OT traffic, though perhaps
+      <t>In the case of DetNet OT traffic, the DSCP value is interpreted differently than in
+        DiffServ and contribute to determination of the service provided to the packet. In
+        DetNet, there are similar consequences to DiffServ for lack of detection of, or incorrect
+        handling of, packets with mismarked DSCP values, and many of the points made in the
+        DiffServ Security discussions (<xref target="RFC2475" /> Sec. 6.1 , <xref target="RFC2474" />
+	Sec. 7 and <xref target="RFC6274" /> Sec 3.3.2.1) are also relevant to DetNet OT traffic, though perhaps
         in modified form. For example, in DetNet the effect of an undetected or incorrectly handled
         maliciously mismarked DSCP field in an OT packet is not identical to affecting that packet's
         PHB, since DetNet does not use the PHB concept for OT traffic, but nonetheless the service
@@ -1635,6 +1636,7 @@ Table, Part Two (of Two)
       <?rfc include='reference.RFC.6478'?>
       <?rfc include='reference.RFC.2474'?>
       <?rfc include='reference.RFC.2475'?>
+      <?rfc include='reference.RFC.6274'?>
       <?rfc include='reference.RFC.7567'?>
       <?rfc include='reference.RFC.7835'?>
       <!-- DetNet RFCs:  -->
