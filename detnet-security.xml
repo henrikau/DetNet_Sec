@@ -846,11 +846,12 @@ Table, Part Two (of Two)
       <section title="DetNet Node Authentication">
         <t>Description <list hangIndent="10" style="empty">
             <t>Authentication verifies the identity of DetNet nodes (including DetNet Controller
-              Plane nodes), enabling mitigation of spoofing attacks. Note that while integrity
+              Plane nodes), and this enables mitigation of spoofing attacks. While integrity
               protection ( <xref target="IntegritySection"/>) prevents intermediate nodes from
-              modifying information, authentication (such as provided by IPsec or MACsec) can
-              provide traffic origin verification, i.e. to verify that each packet in a DetNet flow
-              is from a trusted source. </t>
+              modifying information, authentication
+	      (such as IPsec <xref target="RFC4301" /> or MACsec <xref target="IEEE802.1AE-2018" />)
+	      can provide traffic origin verification, i.e. to verify that each packet in a DetNet flow
+              is from a known source. </t>
           </list>
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
@@ -912,8 +913,9 @@ Table, Part Two (of Two)
             number of intermediate points are required, asymmetric crypto can be used to
             authenticate distribution or exchange of a secret symmetric crypto key; a successful
             check based on that key will provide traffic origin verification, as long as the key is
-            kept secret by the participants. TLS and IKE (for IPsec) are examples of this for
-            endpoint checks.</t>
+            kept secret by the participants. TLS (v1.3 <xref target="RFC8446" />, in particular
+	    section 4.1 "Key exchange") and IKEv2 (xref target="RFC6071" />) are examples of this
+	  for endpoint checks.</t>
           <t>However, if secret symmetric keys are used for this purpose the key must be given to
             all relays, which increases the probability of a secret key being leaked. Also, if any
             relay is compromised or misbehaving it may inject traffic into the flow. Group key
@@ -970,7 +972,7 @@ Table, Part Two (of Two)
               the resulting latency exceeds the promised bound, discard that data and warn the
               operator (and/or enter a fail-safe mode). Note that DetNet specifies packet sequence
               numbering, however it does not specify use of packet timestamps, although they may be
-              used by the underlying transport (for example TSN) to provide the service.</t>
+              used by the underlying transport (for example TSN,  <xref target="IEEE802.1BA-2011"/>) to provide the service.</t>
           </list>
         </t>
       </section>
@@ -1642,6 +1644,8 @@ Table, Part Two (of Two)
       <?rfc include='reference.RFC.6274'?>
       <?rfc include='reference.RFC.7567'?>
       <?rfc include='reference.RFC.7835'?>
+      <?rfc include='reference.RFC.8446'?>
+      <?rfc include='reference.RFC.6071?>
       <!-- DetNet RFCs:  -->
       <?rfc include='reference.RFC.8578'?>
 
@@ -1702,6 +1706,16 @@ Table, Part Two (of Two)
             <organization>IEEE Standards Association</organization>
           </author>
           <date year="2015"/>
+        </front>
+      </reference>
+      <reference anchor="IEEE802.1BA-2011" target="https://ieeexplore.ieee.org/document/6032690">
+        <front>
+          <title>IEEE Standarf for Local and metropoolitan area networks
+	  -- Audio Video Bridging (AVB) Systems</title>
+          <author>
+            <organization>IEEE Standards Association</organization>
+          </author>
+          <date year="2011"/>
         </front>
       </reference>
       <reference anchor="IT_DEF" target="https://en.wikiquote.org/wiki/Information_technology">
