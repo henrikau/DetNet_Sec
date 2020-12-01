@@ -297,7 +297,7 @@
       </section>
     </section>
     <section title="DetNet Security Considerations Compared With DiffServ Security Considerations">
-      <t>DetNet is designed to be compatible with DiffServ <xref target="RFC2474"/>as applied to IT
+      <t>DetNet is designed to be compatible with DiffServ <xref target="RFC2474"/> as applied to IT
         traffic in the DetNet. DetNet also incorporates the use of the 6-bit value of the DSCP field
         of the TOS field of the IP header for flow identification for OT traffic, however the DetNet
         interpretation of the DSCP value for OT traffic is not equivalent to the PHB selection
@@ -336,7 +336,7 @@
         different than the way you secure the controller plane. </t>
       <section title="Threat Model">
         <t>The threat model used in this memo employs organizational elements of the threat models
-          of <xref target="RFC7384"/>and <xref target="RFC7835"/>. This model classifies attackers
+          of <xref target="RFC7384"/> and <xref target="RFC7835"/>. This model classifies attackers
           based on two criteria: </t>
         <t>
           <list style="symbols">
