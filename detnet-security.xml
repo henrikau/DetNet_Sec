@@ -60,7 +60,7 @@
     <workgroup>Internet Engineering Task Force</workgroup>
     <keyword>DetNet, security</keyword>
     <abstract>
-      <t>A DetNet (deterministic network) provides specific performance guarantees to its data
+      <t>A Deterministic Network (DetNet) provides specific performance guarantees to its data
         flows, such as extremely low data loss rates and bounded latency
 	(including bounded latency variation, i.e. "jitter"). As a result, securing a
         DetNet requires that in addition to the best practice security measures taken for any
@@ -78,7 +78,7 @@
   </front>
   <middle>
     <section title="Introduction">
-      <t>A deterministic network is one that can carry data flows for real-time applications with
+      <t>A deterministic network (DetNet) is one that can carry data flows for real-time applications with
         extremely low data loss rates and bounded latency. The bounds on
 	latency defined by DetNet (<xref target="I-D.ietf-detnet-flow-information-model"/>) include
 	both worst case latency (Maximum Latency, Section 5.9.2) and worst case jitter (Maximum
@@ -99,7 +99,7 @@
         maintaining reliable isolation between traffic flows in an environment where IT traffic
         co-mingles with critical reserved-bandwidth OT traffic; this document also examines security
         implications internal to DetNet components. </t>
-      <t>Security is of particularly high importance in DetNet networks because many of the use
+      <t>Security is of particularly high importance in DetNet because many of the use
         cases which are enabled by DetNet <xref target="RFC8578"/> include control of physical
         devices (power grid components, industrial controls, building controls) which can have high
         operational costs for failure, and present potentially attractive targets for
@@ -139,7 +139,7 @@
         time-sensitive network as implemented for the given use case. An example of "behavioral
         properties" might be that dropping of more than a specific number of packets in a row is not
         acceptable according to the service level agreement.</t>
-      <t>The exact security requirements for any given DetNet network are necessarily specific to
+      <t>The exact security requirements for any given DetNet are necessarily specific to
         the use cases handled by that network. Thus the reader is assumed to be familiar with the
         specific security requirements of their use cases, for example those outlined in the DetNet
         Use Cases <xref target="RFC8578"/> and the Security Considerations sections of the DetNet
@@ -174,7 +174,7 @@
         changes in physical processes through direct monitoring and/or control of physical devices
         such as valves, pumps, etc. - <xref target="OT_DEF"/>) </t>
       <t>Component A component of a DetNet system - used here to refer to any hardware or software
-        element of a DetNet network which implements DetNet-specific functionality, for example all
+        element of a DetNet which implements DetNet-specific functionality, for example all
         or part of a router, switch, or end system.</t>
       <t>Resource Segmentation Used as a more general form for Network Segmentation (the act or
         practice of splitting a computer network into subnetworks, each being a network segment -
@@ -357,13 +357,13 @@
           traffic) for example through the use of TLS or DTLS. </t>
         <t>DetNet-Service, one of the service scenarios described in <xref
             target="I-D.varga-detnet-service-model"/>, is the case where a service connects DetNet
-          networking islands, i.e. two or more otherwise independent DetNet networks are
+          islands, i.e. two or more otherwise independent DetNets are
           connected via a link that is not intrinsically part of either network. This implies that
           there could be DetNet traffic flowing over a non-DetNet link, which may provide an
           attacker with an advantageous opportunity to tamper with DetNet traffic. The security
           properties of non-DetNet links are outside of the scope of DetNet Security, but it should
-          be noted that use of non-DetNet services to interconnect DetNet networks merits security
-          analysis to ensure the integrity of the DetNet networks involved. </t>
+          be noted that use of non-DetNet services to interconnect DetNets merits security
+          analysis to ensure the integrity of the networks involved. </t>
       </section>
       <section anchor="ThreatAnalysis" title="Threat Analysis">
         <section anchor="DelayThreat" title="Delay">
@@ -891,7 +891,7 @@ Table, Part Two (of Two)
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>Encryption can be used to mitigate recon attacks ( <xref
-                target="ReconnaissanceThreat"/>). However, for a DetNet network to give
+                target="ReconnaissanceThreat"/>). However, in order to provide
               differentiated quality of service on a flow-by-flow basis, the network must be able to
               identify the flows individually. This implies that in a recon attack the attacker may
               also be able to track individual flows to learn more about the system. </t>
