@@ -67,13 +67,13 @@
         mission-critical network, additional security measures may be needed to secure the intended
         operation of these novel service properties.</t>
       <t> This document addresses DetNet-specific security considerations from the perspectives of
-        both the DetNet system-level designer and component designer. System considerations include
+        both the system-level designer and component designer. System considerations include
         a threat model, taxonomy of relevant attacks, and associations of threats versus use cases
         and service properties. Component-level considerations include ingress filtering and packet
-        arrival time violation detection. This document also addresses DetNet security
-        considerations specific to the IP and MPLS data plane technologies thereby complementing the
-        Security Considerations sections of the various DetNet Data Plane (and other) DetNet
-        documents. </t>
+        arrival time violation detection.</t>
+      <t>This document also addresses DetNet security considerations specific to the IP and MPLS
+      data plane technologies thereby complementing the Security Considerations sections for these
+      DetNet documents.</t>
     </abstract>
   </front>
   <middle>
