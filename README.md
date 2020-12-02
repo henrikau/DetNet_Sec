@@ -1,10 +1,10 @@
 # DetNet Security
 
-[![Build Status](https://travis-ci.org/henrikau/DetNet_Sec.svg?branch=master)](https://travis-ci.org/henrikau/DetNet_Sec)
+[![Build Status](https://travis-ci.com/henrikau/DetNet_Sec.svg?branch=master)](https://travis-ci.com/henrikau/DetNet_Sec)
 
 
-* For more details: https://travis-ci.org/henrikau/DetNet_Sec
-* previous build: https://travis-ci.org/henrikau/DetNet_Sec/builds
+* For more details: https://travis-ci.com/henrikau/DetNet_Sec
+* previous build: https://travis-ci.com/henrikau/DetNet_Sec/builds
 
 
 ## Tools (Linux):
