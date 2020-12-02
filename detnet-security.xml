@@ -154,7 +154,7 @@
             network topology in ways that affect the quality of service received by the affected
             flow(s) </t>
           <t> Distribute data from DetNet flow packets over time and/or space to ensure delivery of
-            each packet's data' in spite of the loss of a path</t>
+          the data in each packet in spite of the loss of a path.</t>
         </list>
       </t>
       <t>This document includes sections considering DetNet component design as well as system
@@ -200,7 +200,7 @@
           discussed in <xref target="RFC8938" />). In this example say
           there are N flows that are to be aggregated, thus the bandwidth resources of the aggregate
           flow must be sufficient to contain the sum of the bandwidth reservation for the N flows.
-          However if one of those flows were to consume more than its individually allocated BW,
+          However if one of those flows were to consume more than its individually allocated bandwidth,
           this could cause starvation of the other flows. Thus simply providing and enforcing the
           calculated aggregate bandwidth may not be a complete solution - the bandwidth for each
           individual flow must still be guaranteed, for example via ingress policing of each flow
@@ -303,7 +303,7 @@
       <t>Thus security consideration for DetNet have some aspects in common with DiffServ, in fact
         overlapping 100% with respect to IP IT traffic. Security considerations for these aspects
         are part of the existing literature on IP network security, specifically the Security
-        sections of <xref target="RFC2474"/> and <xref target="RFC2475"/>. However DetNet also
+        Considerations sections of <xref target="RFC2474"/> and <xref target="RFC2475"/>. However DetNet also
         introduces timing and other considerations which are not present in DiffServ, so the
         DiffServ security considerations are necessary but not sufficient for DetNet. </t>
       <t>In the case of DetNet OT traffic, the DSCP value is interpreted differently than in
@@ -441,7 +441,7 @@
             <t>An attacker can subvert a controller, or enable a compromised controller to falsely
               represent itself as a controller so that the network nodes believe it to be authorized
               to instruct them. </t>
-            <t>Presence of compromised nodes in a DetNet is not a "new" threat that arises as a
+            <t>Presence of compromised nodes in a DetNet is not a new threat that arises as a
               result of determinism or time sensitivity; the same techniques used to prevent or
               mitigate against compromised nodes in any network are equally applicable in the DetNet
               case. However this underscores the requirement for careful system security design in a
@@ -477,34 +477,34 @@
         <figure align="center" anchor="ThreatSummary" title="Threat Analysis Summary">
           <artwork align="left">
             <![CDATA[
-+-----------------------------------------+----+----+----+----+
-| Attack                                  |   Attacker Type   |
-|                                         +---------+---------+
-|                                         |Internal |External |
-|                                         |On-P|Off-P|On-P|Off-P|
-+-----------------------------------------+----+----+----+----+
-|Delay attack                             | +  | +  | +  | +  |
-+-----------------------------------------+----+----+----+----+
-|DetNet Flow Modification or Spoofing     | +  | +  |    |    |
-+-----------------------------------------+----+----+----+----+
-|Inter-segment Attack                     | +  | +  | +  | +  |
-+-----------------------------------------+----+----+----+----+
-|Replication: Increased Attack Surface    | +  | +  | +  | +  |
-+-----------------------------------------+----+----+----+----+
-|Replication-related Header Manipulation  | +  |    |    |    |
-+-----------------------------------------+----+----+----+----+
-|Path Manipulation                        | +  | +  |    |    |
-+-----------------------------------------+----+----+----+----+
-|Path Choice: Increased Attack Surface    | +  | +  | +  | +  |
-+-----------------------------------------+----+----+----+----+
-|Control or Signaling Packet Modification | +  |    |    |    |
-+-----------------------------------------+----+----+----+----+
-|Control or Signaling Packet Injection    | +  | +  |    |    |
-+-----------------------------------------+----+----+----+----+
-|Reconnaissance                           | +  |    | +  |    |
-+-----------------------------------------+----+----+----+----+
-|Attacks on Time Sync Mechanisms          | +  | +  | +  | +  |
-+-----------------------------------------+----+----+----+----+
++-------------------------------------------+----+-----+----+-----+
+| Attack                                    |    Attacker Type    |
+|                                           +----------+----------+
+|                                           | Internal | External |
+|                                           |On-P|Off-P|On-P|Off-P|
++-------------------------------------------+----+-----+----+-----+
+|Delay attack                               | +  |  +  | +  |  +  |
++-------------------------------------------+----+-----+----+-----+
+|DetNet Flow Modification or Spoofing       | +  |  +  |    |     |
++-------------------------------------------+----+-----+----+-----+
+|Inter-segment Attack                       | +  |  +  | +  |  +  |
++-------------------------------------------+----+-----+----+-----+
+|Replication: Increased Attack Surface      | +  |  +  | +  |  +  |
++-------------------------------------------+----+-----+----+-----+
+|Replication-related Header Manipulation    | +  |     |    |     |
++-------------------------------------------+----+-----+----+-----+
+|Path Manipulation                          | +  |  +  |    |     |
++-------------------------------------------+----+-----+----+-----+
+|Path Choice: Increased Attack Surface      | +  |  +  | +  |  +  |
++-------------------------------------------+----+-----+----+-----+
+|Control or Signaling Packet Modification   | +  |     |    |     |
++-------------------------------------------+----+-----+----+-----+
+|Control or Signaling Packet Injection      | +  |  +  |    |     |
++-------------------------------------------+----+-----+----+-----+
+|Reconnaissance                             | +  |     | +  |     |
++-------------------------------------------+----+-----+----+-----+
+|Attacks on Time Synchronization Mechanisms | +  |  +  | +  |  +  |
++-------------------------------------------+----+-----+----+-----+
            ]]></artwork>
         </figure>
       </section>
@@ -523,10 +523,10 @@
         have been designed to run in an OT-only environment and thus may not have been designed for
         security in an IT environment with its associated devices, services and protocols. </t>
       <t>The severity of various components of the impact of a successful vulnerability exploit to
-        use cases by industry is available in more detail in the DetNet Use Cases <xref
-          target="RFC8578"/>. Each of these use cases is represented in the table below, including
-        Pro Audio, Electrical Utilities, Industrial M2M (split into two areas, M2M Data Gathering
-        and M2M Control Loop), and others. </t>
+      use cases by industry is available in more detail in the DetNet Use Cases <xref
+      target="RFC8578"/>. Each of these use cases is represented in
+      <xref target="ThreatIndustryMapping" />, including Pro Audio, Electrical Utilities, Industrial M2M
+      (split into two areas, M2M Data Gathering and M2M Control Loop), and others. </t>
       <t>Components of Impact (left column) include Criticality of Failure, Effects of Failure,
         Recovery, and DetNet Functional Dependence. Criticality of failure summarizes the
         seriousness of the impact. The impact of a resulting failure can affect many different
@@ -763,8 +763,8 @@ Table, Part Two (of Two)
           environment may need to be adapted to limit distinctive flow properties that could make
           them susceptible to reconnaissance. </t>
       </section>
-      <section title="Attacks on Time Sync Mechanisms">
-        <t>Attacks on time sync mechanisms are addressed in <xref target="RFC7384"/>. </t>
+      <section title="Attacks on Time Synchronization Mechanisms">
+        <t>Attacks on time synchronization mechanisms are addressed in <xref target="RFC7384"/>. </t>
       </section>
       <section title="Attacks on Path Choice" anchor="PathChoiceImpact">
         <t>This is covered in part in <xref target="SegmentationImpact"/>, Segmentation Attacks, and
@@ -882,7 +882,7 @@ Table, Part Two (of Two)
               however, regarding encryption of IP headers see <xref
                 target="TechnologySpecificThreats"/>. </t>
             <t>DetNet nodes do not have any need to inspect the payload of any DetNet packets,
-              making them data-agnostic. This means that end-to- end encryption at the application
+              making them data-agnostic. This means that end-to-end encryption at the application
               layer is an acceptable way to protect user data. </t>
             <t>Encryption can also be applied at the subnet layer, for example for Ethernet using
               MACSec, as noted in <xref target="TechnologySpecificThreats"/>. </t>
@@ -964,7 +964,7 @@ Table, Part Two (of Two)
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>Performance analytics can be used to mitigate various attacks, including the ones
               described in <xref target="DelayThreat"/> (Delay Attack), <xref target="SegmentThreat"
-              /> (Resource Segmentation Attack), and <xref target="SyncThreat"/> (Time Sync Attack). </t>
+              /> (Resource Segmentation Attack), and <xref target="SyncThreat"/> (Time Synchronization Attack). </t>
             <t>For example, in the case of data plane delay attacks, one possible mitigation is to
               timestamp the data at the source, and timestamp it again at the destination, and if
               the resulting latency exceeds the promised bound, discard that data and warn the
@@ -1032,9 +1032,9 @@ Table, Part Two (of Two)
 |                      | delay               |                     |
 |                      |-Data disruption     |                     |
 +----------------------+---------------------+---------------------+
-|Attacks on Time Sync  |-Non-deterministic   |-Path redundancy     |
-|Mechanisms            | delay               |-Control message     |
-|                      |-Increased resource  | protection          |
+|Attacks on Time       |-Non-deterministic   |-Path redundancy     |
+|Synchronization       | delay               |-Control message     |
+|Mechanisms            |-Increased resource  | protection          |
 |                      | consumption         |-Performance         |
 |                      |-Data disruption     | analytics           |
 +----------------------+---------------------+---------------------+
@@ -1075,8 +1075,8 @@ Table, Part Two (of Two)
             the network. </t>
           <t>All attacks named in this document which are relevant to controller plane packets (and
             the controller itself) are relevant to this theme, including Path Manipulation, Path
-            Choice, Control Packet Modification or Injection, Reconaissance and Attacks on Time Sync
-            Mechanisms. </t>
+            Choice, Control Packet Modification or Injection, Reconaissance and Attacks on Time
+	    Synchronization Mechanisms. </t>
         </section>
         <section title="Hot Swap">
           <t>A DetNet network is not expected to be "plug and play" - it is expected that there is
@@ -1100,9 +1100,9 @@ Table, Part Two (of Two)
             insecure packet flows from unknown devices. </t>
           <t>Similarly if the network was designed to support runtime replacement of a clock device,
             then presence (or apparent presence) and thus consideration of packets from a new such
-            device could affect the network, or the time sync of the network, for example by
-            initiating a new Best Master Clock selection process. Thus attacks on time sync should
-            be considered when designing hot swap type functionality (see <xref target="RFC7384"/>).
+            device could affect the network, or the time synchronization of the network, for example by
+            initiating a new Best Master Clock selection process. These types of attacks should
+            therefore be considered when designing hot swap type functionality (see <xref target="RFC7384"/>).
           </t>
         </section>
         <section title="Data Flow Information Models">
@@ -1134,7 +1134,7 @@ Table, Part Two (of Two)
           <t>An attack may also cause packets that should not be delivered to be delivered, such as
             by forcing packets from one (e.g. replicated) path to be preferred over another path
             when they should not be (Replication attack), or by Flow Modification, or by Path Choice
-            or Packet Injection. A Time Sync attack could cause a system that was expecting certain
+            or Packet Injection. A Time Synchronization attack could cause a system that was expecting certain
             packets at certain times to accept unintended packets based on compromised system time
             or time windowing in the scheduler. </t>
         </section>
@@ -1239,7 +1239,7 @@ Table, Part Two (of Two)
             the amount of delay might be different. </t>
           <t>Attacks sourced from IT traffic might be more likely in large networks, since more
             people might have access to the network, presenting a larger attack surface. Similarly
-            Path Manipulation, Path Choice and Time Sync attacks seem more likely relevant to large
+            Path Manipulation, Path Choice and Time Synchronization attacks seem more likely relevant to large
             networks.</t>
         </section>
         <section title="Multiple Hops">
@@ -1273,7 +1273,7 @@ Table, Part Two (of Two)
         <section title="Bounded Latency" anchor="BoundedLatencyTheme">
           <t>DetNet provides the expectation of guaranteed bounded latency. </t>
           <t>Delay attacks can cause packets to miss their agreed-upon latency boundaries.</t>
-          <t>Time Sync attacks can corrupt the system's time reference, resulting in missed latency
+          <t>Time Synchronization attacks can corrupt the system's time reference, resulting in missed latency
             deadlines (with respect to the "correct" time reference).</t>
         </section>
         <section title="Low Latency">
@@ -1296,7 +1296,7 @@ Table, Part Two (of Two)
           <t>Some applications would like to specify that the transit delay time values be equal for
             both the transmit and return paths. </t>
           <t>Delay attacks can cause path delays to materially differ between paths.</t>
-          <t>Time Sync attacks can corrupt the system's time reference, resulting in path delays
+          <t>Time Synchronization attacks can corrupt the system's time reference, resulting in path delays
             that may be perceived to be different (with respect to the "correct" time reference)
             even if they are not materially different.</t>
         </section>
@@ -1345,31 +1345,31 @@ Table, Part Two (of Two)
         <figure align="center" anchor="ThreatList" title="List of Attacks">
           <artwork align="left">
             <![CDATA[
-+----+----------------------------------------+
-|    | Attack                                 |
-+----+----------------------------------------+
-|  1 |Delay Attack                            |
-+----+----------------------------------------+
-|  2 |DetNet Flow Modification or Spoofing    |
-+----+----------------------------------------+
-|  3 |Inter-Segment Attack                    |
-+----+----------------------------------------+
-|  4 |Replication: Increased attack surface   |
-+----+----------------------------------------+
-|  5 |Replication-related Header Manipulation |
-+----+----------------------------------------+
-|  6 |Path Manipulation                       |
-+----+----------------------------------------+
-|  7 |Path Choice: Increased Attack Surface   |
-+----+----------------------------------------+
-|  8 |Control or Signaling Packet Modification|
-+----+----------------------------------------+
-|  9 |Control or Signaling Packet Injection   |
-+----+----------------------------------------+
-| 10 |Reconnaissance                          |
-+----+----------------------------------------+
-| 11 |Attacks on Time Sync Mechanisms         |
-+--+----------------------------------------+
++----+-------------------------------------------+
+|    | Attack                                    |
++----+-------------------------------------------+
+|  1 |Delay Attack                               |
++----+-------------------------------------------+
+|  2 |DetNet Flow Modification or Spoofing       |
++----+-------------------------------------------+
+|  3 |Inter-Segment Attack                       |
++----+-------------------------------------------+
+|  4 |Replication: Increased attack surface      |
++----+-------------------------------------------+
+|  5 |Replication-related Header Manipulation    |
++----+-------------------------------------------+
+|  6 |Path Manipulation                          |
++----+-------------------------------------------+
+|  7 |Path Choice: Increased Attack Surface      |
++----+-------------------------------------------+
+|  8 |Control or Signaling Packet Modification   |
++----+-------------------------------------------+
+|  9 |Control or Signaling Packet Injection      |
++----+-------------------------------------------+
+| 10 |Reconnaissance                             |
++----+-------------------------------------------+
+| 11 |Attacks on Time Synchronization Mechanisms |
++----+-------------------------------------------+
            ]]></artwork>
         </figure>
         <t>The Mapping Between Themes and Attacks table <xref target="ThemeAttackMapping"/>maps the
@@ -1483,7 +1483,7 @@ Table, Part Two (of Two)
         ( <xref target="I-D.ietf-detnet-ip-over-tsn"/>). Application flows can be protected through
         whatever means are provided by the layer and sub-layer technologies. For example,
         technology-specific encryption may be used, for example for IP flows, IPSec <xref
-          target="RFC4301"/>. For IP over Ethernet (Layer-2) flows using an underlying sub-net,
+          target="RFC4301"/>. For IP over Ethernet (Layer 2) flows using an underlying sub-net,
         MACSec <xref target="IEEE802.1AE-2018"/> may be appropriate. For some use cases packet
         integrity protection without encryption may be sufficient. </t>
       <t>However, if the DetNet nodes cannot decrypt IPsec traffic, IPSec may not be a valid option;
