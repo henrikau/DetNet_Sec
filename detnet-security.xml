@@ -1325,16 +1325,14 @@ Table, Part Two (of Two)
             can also interfere with the configuration of redundant paths.</t>
         </section>
         <section title="Security Measures">
-          <t>A DetNet network must be made secure against devices
-	  failures, attackers, one or more misbehaving components and so on.
-	  The actual location of the attackers or misbehaving components need not be in close proximity for
-	  their effect to be noticeable. If the security mechanisms protecting the DetNet are attacked or
-            subverted, this can result in malfunction of the network. The design of the security
-            system itself needs to take this into account based on the specifics of the security
-            system being considered. The general topic of protection of security mechanisms is not
-            unique to DetNet; it is identical to the case of securing any security mechanism for any
-            network. The text of this document addresses these concerns to the extent that they are
-            relevant to DetNet. </t>
+          <t>A DetNet network must be made sufficiently secure against problematic component or
+          traffic behavior, whether malicious or incidental, and whether affecting a single
+          component or multiple components. If any of the security mechanisms which protect the
+          DetNet from such problems are attacked or subverted, this can result in malfunction of the
+          network. Thus the design of the security system itself needs to be robust against attacks.</t>
+	  <t>The general topic of protection of security mechanisms is not unique to DetNet; it is
+	  identical to the case of securing any security mechanism for any network. This document
+	  addresses these concerns only to the extent that they are unique to DetNet.</t>
         </section>
       </section>
       <section title="Summary of Attack Types per Use Case Common Theme">
