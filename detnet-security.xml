@@ -60,7 +60,7 @@
     <workgroup>Internet Engineering Task Force</workgroup>
     <keyword>DetNet, security</keyword>
     <abstract>
-      <t>A Deterministic Network (DetNet) provides specific performance guarantees to its data
+      <t>A DetNet (deterministic network) provides specific performance guarantees to its data
         flows, such as extremely low data loss rates and bounded latency
 	(including bounded latency variation, i.e. "jitter"). As a result, securing a
         DetNet requires that in addition to the best practice security measures taken for any
@@ -78,7 +78,7 @@
   </front>
   <middle>
     <section title="Introduction">
-      <t>A deterministic network (DetNet) is one that can carry data flows for real-time applications with
+      <t>A DetNet is one that can carry data flows for real-time applications with
         extremely low data loss rates and bounded latency. The bounds on
 	latency defined by DetNet (<xref target="I-D.ietf-detnet-flow-information-model"/>) include
 	both worst case latency (Maximum Latency, Section 5.9.2) and worst case jitter (Maximum
