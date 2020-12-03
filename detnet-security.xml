@@ -143,10 +143,10 @@
       cases handled by that network. Thus the reader is assumed to be familiar with the specific
       security requirements of their use cases, for example those outlined in the DetNet Use Cases
       <xref target="RFC8578"/> and the Security Considerations sections of the DetNet documents
-      applicable to the network technologies in use, for example <xref target="RFC8939"/>). A reader
-      can find general introduction to the DetNet architecture in <xref target="RFC8655"/> the
-      DetNet Data Plane in <xref target="RFC8938" />, and the Flow Information Model in <xref
-      target="I-D.ietf-detnet-flow-information-model"/>. </t>
+      applicable to the network technologies in use, for example <xref target="RFC8939"/>).
+      Readers can find a general introduction to the DetNet Architecture in <xref
+      target="RFC8655"/>, the DetNet Data Plane in <xref target="RFC8938" />, and the Flow
+      Information Model in <xref target="I-D.ietf-detnet-flow-information-model"/>.</t>
       <t>The DetNet technologies include ways to: <list style="symbols">
           <t> Assign data plane resources for DetNet flows in some or all of the intermediate nodes
             (routers) along the path of the flow</t>
