@@ -806,15 +806,36 @@ Table, Part Two (of Two)
         </t>
       </section>
       <section anchor="IntegritySection" title="Integrity Protection">
-        <t>Description <list hangIndent="10" style="empty">
-            <t>An integrity protection mechanism, such as a Message Authentication Code
-              (MAC) can be used to mitigate modification attacks on IP packets. Such MAC usage needs
-              to be part of a security association that is established and managed by a security
-              association protocol (such as IKEv2 for IPsec security associations). Integrity
-              protection in the controller plane is discussed in <xref
-                target="ControllerProtectSection"/>. The secret key,
-	      regardless of MAC used, must be protected from falling
-	      into the hands of unauthorized users. </t>
+	<t>Description <list hangIndent="10" style="empty">
+	  <t>Integrity Protection in the scope of DetNet is the ability to detect if a header has
+	  been modified (either maliciously or by chance) and propagate a warning to a responsible
+	  monitoring agent. An integrity protection mechanism is designed to counteract header
+	  modification attacks where a Message Authentication Code (MAC) is the most common. The MAC
+	  can be distributed either in-line (included in the same packet) or via a side channel. Due
+	  to the nature of DetNet traffic. Note: a sideband approach may yield too high overhead and
+	  complexity and should only be used as a very last resort if in-line approaches are not
+	  viable.
+	  </t>
+	  <t>
+	  There are different levels of security available for integrity protection, ranging from
+	  the basic ability to detect if a header has been corrupted in transit (no malicious
+	  attack) to stopping a skilled and determined attacker capable of both subtly modifying
+	  fields in the headers as well as updating an unsigned MAC. Common for all are the 2 steps
+	  that need to be performed in both ends. The first is computing the checksum or MAC. The
+	  corresponding verification step must perform the same steps before comparing the provided
+	  with the computed value.  Only then can the receiver be reasonably sure that the header is
+	  authentic.
+	</t>
+	<t>
+	  The most basic protection mechanism consists of computing a simple checksum of the header
+	  fields and provide it to the next entity in the packets path for verification. Using a MAC
+	  combined with a secret keys provides the best protection against modification and
+	  replication attacks (see <xref target="ModificationThreat" /> and <xref
+	  target="ReplicationThreat" />). This MAC usage needs to be part of a security association
+	  that is established and managed by a security association protocol (such as IKEv2 for
+	  IPsec security associations). Integrity protection in the controller plane is discussed in
+	  <xref target="ControllerProtectSection"/>. The secret key, regardless of MAC used, must be
+	  protected from falling into the hands of unauthorized users. </t>
           </list>
         </t>
         <t>Packet Sequence Number Integrity Considerations <list hangIndent="10" style="empty">
@@ -833,6 +854,10 @@ Table, Part Two (of Two)
               practice. Note: At the time of this writing, PREOF is not defined for the IP data
               plane.</t>
           </list>
+	  <t>
+	    The DetNet architect needs to be aware of these distinctions and enforce appropriate
+	    integrity protection mechanisms as needed based on a threat analysis.
+	  </t>
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>Integrity protection mitigates attacks related to modification and tampering,
