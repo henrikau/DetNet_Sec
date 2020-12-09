@@ -907,19 +907,32 @@ Table, Part Two (of Two)
       </section>
       <section title="Encryption">
         <t>Description <list hangIndent="10" style="empty">
-            <t>DetNet flows can in principle be forwarded in encrypted form at the DetNet layer,
-              however, regarding encryption of IP headers see <xref
-                target="TechnologySpecificThreats"/>. </t>
+            <t>Reconnaissance attacks (<xref target="ReconnaissanceThreat"/>) 
+			can be mitigated by using encryption. Specific encryption 
+			protocols will depend on the lower layers that DetNet is forwarded
+			over. For example, IP flows may be forwarded over IPsec 
+			<xref target="RFC4301"/>, and Ethernet flows may secured using 
+			MACsec <xref target="IEEE802.1AE-2018"/>.</t>
+
             <t>DetNet nodes do not have any need to inspect the payload of any DetNet packets,
               making them data-agnostic. This means that end-to-end encryption at the application
               layer is an acceptable way to protect user data. </t>
-            <t>Encryption can also be applied at the subnet layer, for example for Ethernet using
-              MACSec, as noted in <xref target="TechnologySpecificThreats"/>. </t>
+			
+			<t>Notably, recon is a threat that
+			is not specific to DetNet flows, and therefore recon mitigation will
+			typically be analyzed and addressed by a network operator regardless
+			of whether DetNet flows are deployed. Thus, encryption requirements
+			will typically not be defined in DetNet technology-specific specifications,
+			but considerations of using DetNet in encrypted environments will be
+			discussed in these specifications. For example, Section 5.1.2.3. of 
+			<xref target="I-D.ietf-detnet-ip"/> discusses flow identification of
+			DetNet flows running over IPsec.</t>
+			 
           </list>
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
-            <t>Encryption can be used to mitigate recon attacks ( <xref
-                target="ReconnaissanceThreat"/>). However, in order to provide
+            <t>As noted above, encryption can be used to mitigate recon attacks ( <xref
+                target="ReconnaissanceThreat"/>). However, for a DetNet network to give
               differentiated quality of service on a flow-by-flow basis, the network must be able to
               identify the flows individually. This implies that in a recon attack the attacker may
               also be able to track individual flows to learn more about the system. </t>
@@ -1513,13 +1526,15 @@ Table, Part Two (of Two)
           target="RFC4301"/>. For IP over Ethernet (Layer 2) flows using an underlying sub-net,
         MACSec <xref target="IEEE802.1AE-2018"/> may be appropriate. For some use cases packet
         integrity protection without encryption may be sufficient. </t>
-      <t>However, if the DetNet nodes cannot decrypt IPsec traffic, IPSec may not be a valid option;
-        this is because the DetNet IP Data Plane identifies flows via a 6-tuple that consists of two
+      <t>However, if the DetNet nodes cannot decrypt IPsec traffic, then DetNet flow identification
+	    is performed differently than in unencrypted IP DetNet flows.
+        The DetNet IP Data Plane identifies unencrypted flows via a 6-tuple that consists of two
         IP addresses, the transport protocol ID, two transport protocol port numbers and the DSCP in
         the IP header. When IPsec is used, the transport header is encrypted and the next protocol
         ID is an IPsec protocol, usually ESP, and not a transport protocol (e.g., neither TCP nor
         UDP, etc.) leaving only three components of the 6-tuple, which are the two IP addresses and
-        the DSCP, which are in general not sufficient to identify a DetNet flow. </t>
+        the DSCP. Identification of DetNet flows over IPsec is further discussed in Section 5.1.2.3. of 
+		<xref target="I-D.ietf-detnet-ip"/>.</t>
       <t>Sections below discuss threats specific to IP and MPLS in more detail.</t>
       <section title="IP">
         <t>The IP protocol has a long history of security considerations and architectural
@@ -1648,6 +1663,7 @@ Table, Part Two (of Two)
     <references title="Informative References">
       <?rfc include='reference.I-D.ietf-detnet-mpls-over-udp-ip.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-ip-over-mpls.xml'?>
+      <?rfc include='reference.I-D.ietf-detnet-ip.xml'?>
       <?rfc include='reference.RFC.3552.xml'?>
       <?rfc include='reference.RFC.7384.xml'?>
       <?rfc include='reference.RFC.4301.xml'?>
