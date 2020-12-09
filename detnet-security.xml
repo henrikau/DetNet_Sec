@@ -829,14 +829,22 @@ Table, Part Two (of Two)
 	<t>
 	  The most basic protection mechanism consists of computing a simple checksum of the header
 	  fields and provide it to the next entity in the packets path for verification. Using a MAC
-	  combined with a secret keys provides the best protection against modification and
+	  combined with a secret key provides the best protection against modification and
 	  replication attacks (see <xref target="ModificationThreat" /> and <xref
 	  target="ReplicationThreat" />). This MAC usage needs to be part of a security association
 	  that is established and managed by a security association protocol (such as IKEv2 for
 	  IPsec security associations). Integrity protection in the controller plane is discussed in
 	  <xref target="ControllerProtectSection"/>. The secret key, regardless of MAC used, must be
-	  protected from falling into the hands of unauthorized users. </t>
-          </list>
+	  protected from falling into the hands of unauthorized users.
+	</t>
+	<t>
+	    The DetNet architect needs to be aware of these distinctions and enforce appropriate
+	    integrity protection mechanisms as needed based on a threat analysis. In the same
+	    setting, it is important to note that adding integrity protection mechanisms will
+	    introduce latency in each node and many of the same considerations in <xref
+	    target="EncryptionConsiderations" /> also applies here.
+	  </t>
+	</list>
         </t>
         <t>Packet Sequence Number Integrity Considerations <list hangIndent="10" style="empty">
             <t>The use of PREOF in a DetNet implementation implies the use of a sequence number for
@@ -853,12 +861,8 @@ Table, Part Two (of Two)
               obscure the sequence number, however that is a layer violation, and is not recommended
               practice. Note: At the time of this writing, PREOF is not defined for the IP data
               plane.</t>
-          </list>
-	  <t>
-	    The DetNet architect needs to be aware of these distinctions and enforce appropriate
-	    integrity protection mechanisms as needed based on a threat analysis.
-	  </t>
-        </t>
+	    </list>
+	</t>
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>Integrity protection mitigates attacks related to modification and tampering,
               including the attacks described in <xref target="ModificationThreat"/> and <xref
@@ -921,7 +925,7 @@ Table, Part Two (of Two)
               also be able to track individual flows to learn more about the system. </t>
           </list>
         </t>
-        <section title="Encryption Considerations for DetNet">
+        <section anchor="EncryptionConsiderations" title="Encryption Considerations for DetNet">
           <t>Any compute time which is required for encryption and decryption processing ('crypto')
             must be included in the flow latency calculations. Thus, crypto algorithms used in a
             DetNet must have bounded worst-case execution times, and these values must be used in
