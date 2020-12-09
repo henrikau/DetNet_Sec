@@ -20,7 +20,7 @@
 <rfc category="info" docName="draft-ietf-detnet-security-13" ipr="trust200902">
   <front>
     <title abbrev="DetNet Security"> Deterministic Networking (DetNet) Security Considerations </title>
-    <author fullname="Ethan Grossman" initials="E.A.G." role="editor" surname="Grossman">
+    <author fullname="Ethan Grossman" initials="E.A." role="editor" surname="Grossman">
       <organization abbrev="DOLBY">Dolby Laboratories, Inc.</organization>
       <address>
         <postal>
@@ -35,13 +35,13 @@
         <uri>http://www.dolby.com</uri>
       </address>
     </author>
-    <author fullname="Tal Mizrahi" initials="T.M." surname="Mizrahi">
+    <author fullname="Tal Mizrahi" initials="T." surname="Mizrahi">
       <organization abbrev="HUAWEI">Huawei Network.IO Innovation Lab</organization>
       <address>
         <email>tal.mizrahi.phd@gmail.com</email>
       </address>
     </author>
-    <author fullname="Andrew  J. Hacker" initials="A.J.H." surname="Hacker">
+    <author fullname="Andrew  J. Hacker" initials="A.J." surname="Hacker">
       <organization abbrev="MISTIQ">MistIQ Technologies, Inc</organization>
       <address>
         <postal>
