@@ -943,8 +943,8 @@ Table, Part Two (of Two)
             authenticate distribution or exchange of a secret symmetric crypto key; a successful
             check based on that key will provide traffic origin verification, as long as the key is
             kept secret by the participants. TLS (v1.3 <xref target="RFC8446"/>, in particular
-            section 4.1 "Key exchange") and IKEv2 (xref target="RFC6071" />) are examples of this
-            for endpoint checks.</t>
+            section 4.1 "Key exchange") and IKEv2 <xref target="RFC6071"/>) are examples of this for
+            endpoint checks.</t>
           <t>However, if secret symmetric keys are used for this purpose the key must be given to
             all relays, which increases the probability of a secret key being leaked. Also, if any
             relay is compromised or misbehaving it may inject traffic into the flow. Group key
@@ -977,21 +977,82 @@ Table, Part Two (of Two)
       </section>
       <section title="Dynamic Performance Analytics">
         <t>Description <list hangIndent="10" style="empty">
-            <t>The expectation is that the network will have a way to monitor to detect if timing
-              guarantees are not being met, and a way to alert the controller plane in that event.
-              Information about the network performance can be gathered in real-time in order to
-              detect anomalies and unusual behavior that may be the symptom of a security attack.
-              The gathered information can be based, for example, on per-flow counters, bandwidth
-              measurement, and monitoring of packet arrival times. Unusual behavior or potentially
-              malicious nodes can be reported to a management system, or can be used as a trigger
-              for taking corrective actions. The information can be tracked by DetNet end systems
-              and transit nodes, and exported to a management system, for example using YANG.</t>
-            <t>If the monitoring or reporting mechanism itself is attacked or subverted, this can
-              result in malfunction of the network. The design of the monitoring system needs to
-              take this into account based on the specifics of the monitoring or reporting system
-              being considered.</t>
+            <t>Incorporating Dynamic Performance Analytics ("DPA") implies that the DetNet design
+              includes a performance monitoring system to validate that timing guarantees are being
+              met and to detect timing violations or other anomalies that may be the symptom of a
+              security attack or system malfunction. If this monitoring system detects unexpected
+              behavior, it must then cause action to be initiated to address the situation in an
+              appropriate and timely manner, either at the data plane or controller plane, or both
+              in concert. </t>
+            <t>The overall DPA system can thus be decomposed into the "detection" and "notification"
+              functions. Although the time-specific DPA performance indicators and their
+              implementation will likely be specific to a given DetNet, and as such are nascent
+              technology at the time of this writing, DPA is commonly used in existing networks so
+              we can make some observations on how such a system might be implemented for a DetNet,
+              given that it would need to be adapted to address the time-specific performance
+              indicators. </t>
           </list>
         </t>
+        <t>Detection Mechanisms <list hangIndent="10" style="empty">
+            <t>Measurement of timing performance can be done via "passive" or "active" monitoring,
+              as discussed below. </t>
+            <t>Examples of passive monitoring strategies include</t>
+            <t>
+              <list style="symbols">
+                <t>Monitoring of queue and buffer levels, e.g. via Active Queue Management (e.g.
+                    <xref target="RFC7567"/></t>
+                <t>Monitoring of per-flow counters</t>
+                <t>Measurement of link statistics such as traffic volume, bandwidth, and QoS</t>
+                <t>Detection of dropped packets</t>
+                <t>Use of commercially available Network Monitoring tools</t>
+              </list>
+            </t>
+            <t>Examples of active monitoring include</t>
+            <t>
+              <list style="symbols">
+                <t>In-band timing measurements (such as packet arrival times) e.g. by timestamping
+                  and packet inspection</t>
+                <t>Use of OAM. For DetNet-specific OAM considerations see <xref
+                    target="I-D.ietf-detnet-ip-oam"/>, <xref target="I-D.ietf-detnet-mpls-oam"/>.
+                  Note: At the time of this writing, specifics of DPA have not been developed for
+                  the DetNet OAM, but could be a subject for future investigation</t>
+                <t>For OAM for Ethernet specifically, see also Connectivity Fault Management (CFM,
+                    <xref target="IEEE802.1Q"/>) which defines protocols and practices for OAM for
+                  paths through 802.1 bridges and LANs</t>
+                <t>Out-of-band detection. following the data path or parts of a data path, for
+                  example Bidirectional Forwarding Detection (BFD, e.g. <xref target="RFC5880"
+                  />)</t>
+              </list>
+            </t>
+            <t>Note that for some measurements (e.g. packet delay) it may be necessary to make and
+              reconcile measurements from more than one physical location (e.g. a source and
+              destination), possibly in both directions, in order to arrive at a given performance
+              indicator value. </t>
+          </list>
+        </t>
+        <t>Notification Mechanisms <list hangIndent="10" style="empty">
+            <t>Making DPA measurement results available at the right place(s) and time(s) to effect
+              timely response can be challenging. Two notification mechanisms that are in general
+              use are Netconf/YANG Notifications (e.g. <xref target="RFC5880"/>) and the proprietary
+              local telemetry interfaces provided with some vendors' products.</t>
+            <t>At the time of this writing YANG Notifications are not addressed by the DetNet YANG
+              drafts, however this may be a topic for future work. It is possible that some of the
+              passive mechanisms could be covered by notifications from non-DetNet-specific YANG
+              modules; for example if there is OAM or other performance monitoring that can monitor
+              delay bounds then that could have its own associated YANG model which could be
+              relevant to DetNet, for example some "threshold" values for timing measurement
+              notifications. </t>
+            <t>At the time of this writing there is an IETF Working Group for network/performance
+              monitoring (IP Performance Measurement, ippm). See also previous work by the completed
+              Remote Network Monitoring Working Group (rmonmib). See also <xref target="RFC6632"/>,
+              An Overview of the IETF Network Management Standards. </t>
+            <t>Vendor-specific local telemetry may be available on some commercially available
+              systems, whereby the system can be programmed (via a proprietary dedicated port and
+              API) to monitor and report on specific conditions, based on both passive and active
+              measurements.</t>
+          </list>
+        </t>
+
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>Performance analytics can be used to mitigate various attacks, including the ones
               described in <xref target="DelayThreat"/> (Delay Attack), <xref target="SegmentThreat"
@@ -1652,6 +1713,8 @@ Table, Part Two (of Two)
       <?rfc include='reference.RFC.8655.xml'?>
     </references>
     <references title="Informative References">
+      <?rfc include='reference.I-D.ietf-detnet-ip-oam.xml'?>
+      <?rfc include='reference.I-D.ietf-detnet-mpls-oam.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-mpls-over-udp-ip.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-ip-over-mpls.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-ip.xml'?>
@@ -1680,7 +1743,9 @@ Table, Part Two (of Two)
       <?rfc include='reference.RFC.7567.xml'?>
       <?rfc include='reference.RFC.7835.xml'?>
       <?rfc include='reference.RFC.8446.xml'?>
-      <?rfc include='reference.RFC.607.xml1?>
+      <?rfc include='reference.RFC.6071.xml'?>
+      <?rfc include='reference.RFC.5880.xml'?>
+      <?rfc include='reference.RFC.6632.xml'?>
       <!-- DetNet RFCs:  -->
       <?rfc include='reference.RFC.8578.xml'?>
 
@@ -1778,6 +1843,16 @@ Table, Part Two (of Two)
             <organization>Wikipedia</organization>
           </author>
           <date year="2020"/>
+        </front>
+      </reference>
+      <reference anchor="IEEE802.1Q" target="https://ieeexplore.ieee.org/document/6991462">
+        <front>
+          <title>IEEE Standard for Local and metropolitan area networks--Bridges and Bridged
+            Networks - Annex J - Connectivity Fault Management </title>
+          <author>
+            <organization>IEEE Standards Association</organization>
+          </author>
+          <date year="2014"/>
         </front>
       </reference>
     </references>
