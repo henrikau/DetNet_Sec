@@ -1060,11 +1060,10 @@ Table, Part Two (of Two)
               Synchronization Attack). </t>
             <t>For example, in the case of data plane delay attacks, one possible mitigation is to
               timestamp the data at the source, and timestamp it again at the destination, and if
-              the resulting latency exceeds the promised bound, discard that data and warn the
-              operator (and/or enter a fail-safe mode). Note that DetNet specifies packet sequence
-              numbering, however it does not specify use of packet timestamps, although they may be
-              used by the underlying transport (for example TSN, <xref target="IEEE802.1BA"/>) to
-              provide the service.</t>
+              the resulting latency exceeds the promised bound, take appropriate action. Note that
+              DetNet specifies packet sequence numbering, however it does not specify use of packet
+              timestamps, although they may be used by the underlying transport (for example TSN,
+                <xref target="IEEE802.1BA"/>) to provide the service.</t>
           </list>
         </t>
       </section>
