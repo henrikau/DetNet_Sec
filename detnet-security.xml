@@ -976,15 +976,19 @@ Table, Part Two (of Two)
       <section anchor="ControllerProtectSection" title="Control and Signaling Message Protection">
         <t>Description <list hangIndent="10" style="empty">
             <t>Control and signaling messages can be protected through the use of any or all of
-              encryption, authentication, and integrity protection
-	      mechanisms.
+            encryption, authentication, and integrity protection mechanisms. Unlike data-flows, the
+            deadlines for controller and signaling messages are less strict, as is the number of
+            such packets in the network. This makes it possible to use asymmetric cryptography for
+            signing of both payload and headers as well as encrypting the payload. A DetNet can be
+	    managed by a central controller, which makes a shared public key  approach a well proven
+	    approach. This is further discussed in <xref target="EncryptionConsiderations" />.
 	    </t>
           </list>
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>These mechanisms can be used to mitigate various attacks on the controller plane, as
-              described in <xref target="ControllerThreat"/>, <xref target="SyncThreat"/> and <xref
-                target="PathThreat"/>. </t>
+            described in <xref target="ControllerThreat"/>, <xref target="SyncThreat"/> and <xref
+            target="PathThreat"/>. </t>
           </list>
         </t>
       </section>
