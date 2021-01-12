@@ -224,7 +224,7 @@
           malicious or accidental re-routing of OT flows that might adversely affect delivering the
           traffic within the specified service parameters.</t>
       </section>
-      <section title="Redundant Path Support">
+      <section anchor="RedundantSec" title="Redundant Path Support">
         <t>The DetNet provision for redundant paths (PREOF) (as defined in the DetNet Architecture
             <xref target="RFC8655"/>) provides the foundation for high reliablity of a DetNet, by
           virtually eliminating packet loss (i.e. to a degree which is implementation-dependent)
@@ -367,6 +367,9 @@
           <t>An attacker can maliciously delay DetNet data flow traffic. By delaying the traffic,
             the attacker can compromise the service of applications that are sensitive to high
             delays or to high delay variation. The delay may be constant or modulated.</t>
+          <t>A delay modulation attack could result in extensively exercising parts of the code
+              that would not normally be extensively exercised and thus might expose flaws in the
+              system that might otherwise not be exposed. </t>
         </section>
         <section anchor="ModificationThreat" title="DetNet Flow Modification or Spoofing">
           <t>An attacker can modify some header fields of en route packets in a way that causes the
@@ -785,11 +788,24 @@ Table, Part Two (of Two)
           target="I-D.ietf-detnet-ip-over-mpls"/>. </t>
       <section title="Path Redundancy">
         <t>Description <list hangIndent="10" style="empty">
-            <t>A DetNet flow that can be forwarded simultaneously over multiple paths. Path
-              replication and elimination <xref target="RFC8655"/> provides resiliency to dropped or
-              delayed packets. This redundancy improves the robustness to failures and to on-path
-              attacks. Note: At the time of this writing, PREOF is not defined for the IP data
-              plane. </t>
+            <t>A DetNet flow can be forwarded simultaneously over multiple paths, thus increasing
+			the robustness to various types of threats.	The DetNet provision for redundant paths (PREOF) 
+			(<xref target="RedundantSec"/>), as specified in <xref target="RFC8655"/>, is an approach in 
+			which each packet of a DetNet flow is replicated and sent over two or more different paths. 
+			The node at the end of the path keeps only one copy of each packet and eliminates the 
+			redundant copies. Replication and elimination requires each packet to include sequencing
+			information, allowing to match each packet to its corresponding copy (or copies).</t>
+			
+			<t>Technology-specific considerations of path redundancy are defined in the
+			DetNet data plane specifications. For example, path redundancy in the MPLS data
+			plane including packet sequencing and its use for replication and elimination is specified in 
+			<xref target="I-D.ietf-detnet-mpls"/>. Specific considerations of replication 
+			in the IP data plane are discussed in <xref target="RFC8939"/>, although specific
+			mechanisms such as path sequencing are not defined there.</t>
+			
+			<t>Using replication and elimination	provides resiliency to dropped or delayed 
+			packets. This redundancy improves the robustness to failures and to on-path attacks.</t>
+			
           </list>
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
@@ -798,9 +814,6 @@ Table, Part Two (of Two)
                 target="SegmentThreat"/>, and <xref target="SyncThreat"/>. However it is also
               possible that multiple paths may make it more difficult to locate the source of an
               on-path attacker. </t>
-            <t>A delay modulation attack could result in extensively exercising parts of the code
-              that wouldn't normally be extensively exercised and thus might expose flaws in the
-              system that might otherwise not be exposed. </t>
           </list>
         </t>
       </section>
@@ -1716,6 +1729,7 @@ Table, Part Two (of Two)
     <references title="Informative References">
       <?rfc include='reference.I-D.ietf-detnet-ip-oam.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-mpls-oam.xml'?>
+      <?rfc include='reference.I-D.ietf-detnet-mpls.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-mpls-over-udp-ip.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-ip-over-mpls.xml'?>
       <?rfc include='reference.RFC.3552.xml'?>
