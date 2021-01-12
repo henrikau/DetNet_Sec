@@ -1011,23 +1011,11 @@ Table
       <section title="Dummy Traffic Insertion">
         <t>Description <list hangIndent="10" style="empty">
             <t>With some queueing methods such as <xref target="IEEE802.1Qch-2017"/> it is possible
-              to introduce dummy traffic in order to regularize the
-	      timing of packet transmission. This will subsequently
-	      reduce the value of passive monitoring as it will be much
-	      more difficult to associate discrete events with
-	      particular network packets.
+            to introduce dummy traffic in order to regularize the timing of packet
+            transmission. This will subsequently reduce the value of passive monitoring from
+	    internal threats (see <xref target="ThreatSection" />) as it will
+	    be much more difficult to associate discrete events with particular network packets.
             </t>
-	    <t>
-	      Note: once an attacker is able to monitor the frames
-	      traversing a network to such a degree that it is possible
-	      to differentiate between regular, best-effort traffic and
-	      traffic belonging to a specific DetNet-flow, it becomes
-	      hard to not reveal if a frame is valid traffic or an
-	      inserted, dummy frame. It should therefore be a conscious
-	      design decision how to implement this. In many cases, the
-	      DetNet application itself is best suited to send valid
-	      traffic or dummy content. 
-	    </t>
           </list>
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
@@ -1036,10 +1024,34 @@ Table
               example, dummy traffic can be used to synthetically maintain constant traffic rate
               even when no user data is transmitted, thus making it difficult to collect information
               about the times at which users are active, and the times at which DetNet flows are
-              added or removed. </t>
+            added or removed.</t>
           </list>
-        </t>
-      </section>
+	</t>
+        <t>Traffic Insertion Challenges
+	<list hangIndent="10" style="empty">
+	  <t>Once an attacker is able to monitor the frames traversing a network to such a degree that
+	  they can differentiate between best-effort traffic and traffic belonging to a specific
+	  DetNet flow, it becomes difficult to not reveal to the attacker whether a given frame is
+	  valid traffic or an inserted frame. Thus, having the DetNet components generate and remove
+	  the dummy traffic may or may not be a viable option, unless certain challenges are solved;
+	  for example, but not limited to:</t>
+	</list>
+          <list style="symbols">
+            <t>Inserted traffic must be indistinguishable from valid stream traffic from the
+            viewpoint of the attacker.</t>
+	    <t>DetNet components must be able to safely identify and remove all inserted traffic
+	    (and only inserted traffic).</t>
+	    <t>The controller plane must manage where to insert and remove dummy traffic, but this
+	    information must not be revealed to an attacker.</t>
+	  </list>
+	<list hangIndent="10" style="empty">
+	  <t>An alternative design is to have the insertion and removal of dummy traffic be performed
+	  at the application layer, rather than by the DetNet itself.  Further discussions and
+	  reading about how sRTP handles this can be found in <xref target="RFC6562" /></t>
+	  </list>
+	</t>
+	</section>
+
       <section title="Encryption">
         <t>Description <list hangIndent="10" style="empty">
             <t>Reconnaissance attacks (<xref target="ReconnaissanceThreat"/>) can be mitigated to
@@ -1121,7 +1133,9 @@ Table
       <section anchor="ControllerProtectSection" title="Control and Signaling Message Protection">
         <t>Description <list hangIndent="10" style="empty">
             <t>Control and signaling messages can be protected through the use of any or all of
-              encryption, authentication, and integrity protection mechanisms.</t>
+              encryption, authentication, and integrity protection
+	      mechanisms.
+	    </t>
           </list>
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
@@ -1919,6 +1933,7 @@ Table
       <?rfc include='reference.RFC.2474.xml'?>
       <?rfc include='reference.RFC.2475.xml'?>
       <?rfc include='reference.RFC.6274.xml'?>
+      <?rfc include='reference.RFC.6562.xml'?>
       <?rfc include='reference.RFC.7567.xml'?>
       <?rfc include='reference.RFC.7835.xml'?>
       <?rfc include='reference.RFC.8446.xml'?>
