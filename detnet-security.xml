@@ -861,7 +861,7 @@ Table, Part Two (of Two)
         system will typically use a subset of these tools, based on a system-specific threat
         analysis. </t>
       <t>Some of the technology-specific security considerations and mitigation approaches are
-        further discussed in the DETNET data plane solution documents, such as <xref
+        further discussed in the DetNet data plane solution documents, such as <xref
           target="RFC8939"/>, <xref target="RFC8938"/>, <xref
           target="I-D.ietf-detnet-mpls-over-udp-ip"/>, and <xref
           target="I-D.ietf-detnet-ip-over-mpls"/>. </t>
@@ -974,7 +974,7 @@ Table, Part Two (of Two)
               to mitigate against reconnaissance attacks <xref target="ReconnaissanceThreat"/>. For
               example, dummy traffic can be used to synthetically maintain constant traffic rate
               even when no user data is transmitted, thus making it difficult to collect information
-              about the times at which users are active, and the times at which DETNET flows are
+              about the times at which users are active, and the times at which DetNet flows are
               added or removed. </t>
           </list>
         </t>
@@ -1335,7 +1335,7 @@ Table, Part Two (of Two)
           <t>DetNet is intended to support coexistence of time-sensitive operational (OT,
             deterministic) traffic and information (IT, "best effort") traffic on the same
             ("unified") network. </t>
-          <t>With DetNet, this coexistance will become more common, and mitigations will need to be
+          <t>With DetNet, this coexistence will become more common, and mitigations will need to be
             established. The fact that the IT traffic on a DetNet is limited to a corporate
             controlled network makes this a less difficult problem compared to being exposed to the
             open Internet, however this aspect of DetNet security should not be underestimated. </t>
@@ -1372,16 +1372,17 @@ Table, Part Two (of Two)
             attack does not affect performance for DetNet OT traffic. </t>
         </section>
         <section title="Interoperability">
-          <t>The DetNet network specifications are intended to enable an ecosystem in which multiple
-            vendors can create interoperable products, thus promoting component diversity and
-            potentially higher numbers of each component manufactured. </t>
-          <t>The security mechanisms and protocols that are discussed in this document also require
-            interoperability. It is expected that DETNET network specifications that define security
-            measures and protocols will be defined in a way that allows interoperability.</t>
+          <t>The DetNet specifications as a whole are intended to enable an ecosystem in which
+            multiple vendors can create interoperable products, thus promoting component diversity
+            and potentially higher numbers of each component manufactured. Toward that end, the
+            security measures and protocols discussed in this document are intended to encourage
+            interoperability.</t>
           <t>Given that the DetNet specifications are unambiguously written and that the
-            implementations are accurate, then this should not in and of itself cause a security
-            concern; however, in the real world, it could be. The network operator can mitigate this
-            through sufficient interoperability testing. </t>
+            implementations are accurate, the property of interoperability should not in and of
+            itself cause security concerns; however, flaws in interoperability between components
+            could result in security weaknesses. The network operator as well as system and
+            component designer can all contribute to reducing such weaknesses through
+            interoperability testing. </t>
         </section>
         <section title="Cost Reductions">
           <t>The DetNet network specifications are intended to enable an ecosystem in which multiple
@@ -1496,10 +1497,11 @@ Table, Part Two (of Two)
             attacks are mitigated whose potential cost is higher than the cost of mitigation.</t>
         </section>
         <section title="Redundant Paths">
-          <t>DetNet based systems are expected to be implemented with essentially arbitrarily high
-            reliability/availability. A strategy used by DetNet for providing such extraordinarily
-            high levels of reliability is to provide redundant paths that can be seamlessly switched
-            between, all the while maintaining the required performance of that system. </t>
+          <t>This document expects that each DetNet system will be implemented to some essentially
+            arbitrary level of reliability and/or availability, depending on the use case. A
+            strategy used by DetNet for providing extraordinarily high levels of reliability when
+            justified is to provide redundant paths between which traffic can be seamlessly
+            switched, all the while maintaining the required performance of that system. </t>
           <t>Replication-related attacks are by definition applicable here. Controller plane attacks
             can also interfere with the configuration of redundant paths.</t>
         </section>
