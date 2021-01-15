@@ -77,7 +77,7 @@
     </abstract>
   </front>
   <middle>
-    <section title="Introduction">
+    <section anchor="Introduction" title="Introduction">
       <t>A DetNet is one that can carry data flows for real-time applications with extremely low
         data loss rates and bounded latency. The bounds on latency defined by DetNet (<xref
           target="I-D.ietf-detnet-flow-information-model"/>) include both worst case latency
@@ -179,34 +179,115 @@
         practice of splitting a computer network into subnetworks, each being a network segment -
           <xref target="RS_DEF"/>) </t>
     </section>
+
     <section title="Security Considerations for DetNet Component Design">
       <t>As noted above, DetNet provides resource allocation, explicit routes and redundant path
         support. Each of these has associated security implications, which are discussed in this
         section, in the context of component design. Detection, reporting and appropriate action in
         the case of packet arrival time violations are also discussed.</t>
+
       <section title="Resource Allocation">
-        <t>A DetNet system security designer relies on the premise that any resources allocated to a
-          resource-reserved (OT-type) flow are inviolable, in other words there is no physical
-          possibility within a DetNet component that resources allocated to a given flow can be
-          compromised by any type of traffic in the network; this includes both malicious traffic as
-          well as inadvertent traffic such as might be produced by a malfunctioning component, for
-          example one made by a different manufacturer. From a security standpoint, this is a
-          critical assumption, for example when designing against DOS attacks. </t>
-        <t>It is the responsibility of the component designer to ensure that this condition is met;
-          this implies protection against excess traffic from adjacent flows, and against
-          compromises to the resource allocation/deallocation process, for example through the use
-          of traffic shaping and policing. </t>
-        <t>As an example, consider the implementation of Flow Aggregation for DetNet flows (as
-          discussed in <xref target="RFC8938"/>). In this example say there are N flows that are to
-          be aggregated, thus the bandwidth resources of the aggregate flow must be sufficient to
-          contain the sum of the bandwidth reservation for the N flows. However if one of those
-          flows were to consume more than its individually allocated bandwidth, this could cause
-          starvation of the other flows. Thus simply providing and enforcing the calculated
-          aggregate bandwidth may not be a complete solution - the bandwidth for each individual
-          flow must still be guaranteed, for example via ingress policing of each flow (i.e. before
-          it is aggregated). Alternatively, if by some other means each flow to be aggregated can be
-          trusted not to exceed its allocated bandwidth, the same goal can be achieved. </t>
+
+        <section title="Inviolable Flows">
+          <t>A DetNet system security designer relies on the premise that any resources allocated to
+            a resource-reserved (OT-type) flow are inviolable; in other words there is no physical
+            possibility within a DetNet component that resources allocated to a given DetNet flow
+            can be compromised by any type of traffic in the network; this includes malicious
+            traffic as well as inadvertent traffic such as might be produced by a malfunctioning
+            component, or due to interactions between components that were not sufficiently tested
+            for interoperability. From a security standpoint this is a critical assumption, for
+            example when designing against DOS attacks. In other words, with correctly designed
+            components and security mechanisms, one can prevent malicious activities from impacting
+            other resources.</t>
+          <t>However, achieving the goal of absolutely inviolable flows may not be technically or
+            economically feasible for any given use case, given the broad range of possible use
+            cases (e.g. [reference to DetNet Use Cases RFC8578]) and their associated security
+            considerations as outlined in this document. It can be viewed as a continuum of security
+            requirements, from isolated ultra-low latency systems that may have little security
+            vulnerability (such as an industrial machine) to broadly distributed systems with many
+            possible attack vectors and OT security concerns (such as a utility network). Given this
+            continuum, the design principle employed in this document is to specify the desired end
+            results, without being overly prescriptive in how the results are achieved, reflecting
+            the understanding that no individual implementation is likely to be appropriate for
+            every DetNet use case. </t>
+        </section>
+
+        <section title="Design Trade-Off Considerations in the Use Cases Continuum">
+          <t>It is important for the DetNet system designer to understand, for any given DetNet use
+            case and its associated security requirements, the interaction and design trade-offs
+            that inevitably need to be reconciled between the desired end results and the DetNet
+            protocols, as well as the DetNet system and component design. </t>
+          <t>For any given component, as designed for any given use case (or scope of use cases), it
+            is the responsibility of the component designer to ensure that the premise of inviolable
+            flows is supported, to the extent that they deem necessary to support their target use
+            cases. </t>
+          <t>For example, the component may include traffic shaping and policing at the ingress, to
+            prevent corrupted or malicious or excessive packets from entering the network, thereby
+            decreasing the likelihood that any traffic will interfere with any DetNet OT flow. The
+            component may include integrity protection for some or all of the header fields such as
+            those used for flow ID, thereby decreasing the likelihood that a packet whose flow ID
+            has been compromised might be directed into a different flow path. The component may
+            verify every single packet header at every forwarding location, or only at certain
+            points. In any of these cases the component may use dynamic performance analytics [ref
+            to DPA section] to cause action to be initiated to address the situation in an
+            appropriate and timely manner, either at the data plane or controller plane, or both in
+            concert. The component's software and hardware may include measures to ensure the
+            integrity of the resource allocation/deallocation process. Other design aspects of the
+            component may help ensure that the adverse effects of malicious traffic are more
+            limited, for example by protecting network control interfaces, or minimizing cascade
+            failures. The component may include features specific to a given use case, such as
+            configuration of the response to a given sequential packet loss count. </t>
+          <t>Ultimately, due to cost and complexity factors, the security properties of a component
+            designed for low-cost systems may be (by design) far inferior to a component with
+            similar intended functionality, but designed for highly secure or otherwise critical
+            applications, perhaps at substantially higher cost. Any given component is designed for
+            some set of use cases and accordingly will have certain limitations on its security
+            properties and vulnerabilities. It is thus the responsibility of the system designer to
+            assure themselves that the components they use in their design are capable of satisfying
+            their overall system security requirements. </t>
+        </section>
+
+        <section title="Documenting the Security Properties of a Component">
+          <t>In order for the system designer to adequately understand the security related behavior
+            of a given component, the designer of any component intended for use with DetNet needs
+            to clearly document the security properties of that component. For example, to address
+            the case where a corrupted packet in which the flow identification information is
+            compromised and thus may incidentally match the flow ID of another ("victim") DetNet
+            flow, resulting in additional unauthorized traffic on the victim, the documentation
+            might state that the component employs integrity protection on the flow identification
+            fields. </t>
+        </section>
+
+        <section title="Fail-Safe Component Behavior">
+          <t>Even when the security properties of a component are understood and well specified, if
+            the component malfunctions, for example due to physical circumstances unpredicted by the
+            component designer, it may be difficult or impossible to fully prevent malfunction of
+            the network. The degree to which a component is hardened against various types of
+            failures is a distinguishing feature of the component and its design, and the overall
+            system design can only be as strong as its weakest link. </t>
+          <t>However, all networks are subject to this level of uncertainty; it is not unique to
+            DetNet. Having said that, DetNet raises the bar by changing many added latency scenarios
+            from tolerable annoyances to unacceptable service violations. That in turn underscores
+            the importance of system integrity, as well as correct and stable configuration of the
+            network and its nodes, as discussed in <xref target="Introduction"/>. </t>
+        </section>
+
+        <section title="Flow Aggregation Example">
+          <t>As another example regarding resource allocation implementation, consider the
+            implementation of Flow Aggregation for DetNet flows (as discussed in <xref
+              target="RFC8938"/>). In this example say there are N flows that are to be aggregated,
+            thus the bandwidth resources of the aggregate flow must be sufficient to contain the sum
+            of the bandwidth reservation for the N flows. However if one of those flows were to
+            consume more than its individually allocated bandwidth, this could cause starvation of
+            the other flows. Thus simply providing and enforcing the calculated aggregate bandwidth
+            may not be a complete solution - the bandwidth for each individual flow must still be
+            guaranteed, for example via ingress policing of each flow (i.e. before it is
+            aggregated). Alternatively, if by some other means each flow to be aggregated can be
+            trusted not to exceed its allocated bandwidth, the same goal can be achieved. </t>
+        </section>
+
       </section>
+
       <section title="Explicit Routes">
         <t>The DetNet-specific purpose for constraining the ability of the DetNet to re-route OT
           traffic is to maintain the specified service parameters (such as upper and lower latency
@@ -224,6 +305,7 @@
           malicious or accidental re-routing of OT flows that might adversely affect delivering the
           traffic within the specified service parameters.</t>
       </section>
+
       <section title="Redundant Path Support">
         <t>The DetNet provision for redundant paths (PREOF) (as defined in the DetNet Architecture
             <xref target="RFC8655"/>) provides the foundation for high reliablity of a DetNet, by
@@ -976,7 +1058,7 @@ Table, Part Two (of Two)
           </list>
         </t>
       </section>
-      <section title="Dynamic Performance Analytics">
+      <section anchor="DpaMitigation" title="Dynamic Performance Analytics">
         <t>Description <list hangIndent="10" style="empty">
             <t>Incorporating Dynamic Performance Analytics ("DPA") implies that the DetNet design
               includes a performance monitoring system to validate that timing guarantees are being
@@ -1215,9 +1297,14 @@ Table, Part Two (of Two)
             imply that there could be no relevant attacks related to L2-L3 integration.</t>
         </section>
         <section title="End-to-End Delivery">
-          <t>Packets sent over DetNet are not to be dropped by the network due to congestion.
-            (Packets may however intentionally be dropped for intended reasons, e.g. per security
-            measures). </t>
+          <t>Packets that are part of a resource-reserved DetNet flow are not to be dropped by the
+            DetNet due to congestion. Packets may however be dropped for intended reasons, for
+            example security measures. For example, consider the case in which a packet becomes
+            corrupted (whether incidentally or maliciously) such that the resulting flow ID
+            incidentally matches the flow ID of another DetNet flow, potentially resulting in
+            additional unauthorized traffic on the latter. In such a case it may be a security
+            requirement that the system report and/or take some defined action, perhaps when a
+            packet drop count threshold has been reached (see also <xref target="DpaMitigation"/>). </t>
           <t>A data plane attack may force packets to be dropped, for example a "long" Delay or
             Replication/Elimination or Flow Modification attack. </t>
           <t>The same result might be obtained by a controller plane attack, e.g. Path Manipulation
