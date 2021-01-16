@@ -52,7 +52,6 @@
           <country>USA</country>
         </postal>
         <email>ajhacker@mistiqtech.com</email>
-        <uri>http://www.mistiqtech.com</uri>
       </address>
     </author>
     <date year="2021"/>
@@ -78,8 +77,8 @@
   </front>
   <middle>
     <section anchor="Introduction" title="Introduction">
-      <t>A DetNet is one that can carry data flows for real-time applications with extremely low
-        data loss rates and bounded latency. The bounds on latency defined by DetNet (<xref
+      <t>A DetNet can carry data flows for real-time applications with extremely low data loss rates
+        and bounded latency. The bounds on latency defined by DetNet (<xref
           target="I-D.ietf-detnet-flow-information-model"/>) include both worst case latency
         (Maximum Latency, Section 5.9.2) and worst case jitter (Maximum Latency Variation, Section
         5.9.3). Deterministic networks have been successfully deployed in real-time Operational
@@ -112,13 +111,13 @@
         technologies and use cases. </t>
       <t> Given the above considerations, securing a DetNet starts with a scrupulously well-designed
         and well-managed engineered network following industry best practices for security at both
-        the data plane and controller plane; this is the assumed starting point for the
-        considerations discussed herein. Such assumptions also depend on the network components
-        themselves upholding the security-related properties that are to be assumed by DetNet
-        system-level designers; for example, the assumption that network traffic associated with a
-        given flow can never affect traffic associated with a different flow is only true if the
-        underlying components make it so. Such properties, which may represent new challenges to
-        component designers, are also considered herein. </t>
+        the data plane and controller plane, as well as for any OAM implementation; this is the
+        assumed starting point for the considerations discussed herein. Such assumptions also depend
+        on the network components themselves upholding the security-related properties that are to
+        be assumed by DetNet system-level designers; for example, the assumption that network
+        traffic associated with a given flow can never affect traffic associated with a different
+        flow is only true if the underlying components make it so. Such properties, which may
+        represent new challenges to component designers, are also considered herein. </t>
       <t>In this context we view the "traditional" (i.e. non-time-sensitive) network design and
         management aspects of network security as being primarily concerned with denial-of service
         prevention, i.e. they must ensure that DetNet traffic goes where it's supposed to and that
@@ -310,8 +309,8 @@
         <t>The DetNet provision for redundant paths (PREOF) (as defined in the DetNet Architecture
             <xref target="RFC8655"/>) provides the foundation for high reliablity of a DetNet, by
           virtually eliminating packet loss (i.e. to a degree which is implementation-dependent)
-          through hitless redundant packet delivery. (Note that PREOF is not defined for a DetNet IP
-          data plane). </t>
+          through hitless redundant packet delivery. Note: At the time of this writing, PREOF is not
+          defined for the IP data plane. </t>
         <t>It is the responsibility of the system designer to determine the level of reliability
           required by their use case, and to specify redundant paths sufficient to provide the
           desired level of reliability (in as much as that reliability can be provided through the
@@ -341,14 +340,13 @@
       </section>
       <section title="Timing (or other) Violation Reporting">
         <t>Another fundamental assumption of a secure DetNet is that in any case in which an
-          incoming packet arrives with any timing or bandwidth violation, something can be done
-          about it which doesn't cause damage to the system. For example having the network shut
-          down a link if a packet arrives outside of its prescribed time window may serve the
-          attacker better than it serves the network. That means that the data plane of the
-          component must be able to detect and act on a variety of such violations, at least
-          alerting the controller plane. Any action apart from that needs to be carefully considered
-          in the context of the specific system. Some possible violations that warrant detection
-          include cases where a packet arrives: </t>
+          incoming packet arrives with any timing or bandwidth violation, an appropriate action can
+          be taken in order to prevent damage to the system. For example, a naive approach might be
+          to have the component shut down the link if a packet arrives outside of its prescribed
+          time window; however such a simplistic action may serve the attacker better than it serves
+          the network. This document further discusses such considerations in <xref
+            target="DpaMitigation"/>). Some possible violations that warrant detection include cases
+          where a packet arrives: </t>
         <t>
           <list style="symbols">
             <t>Outside of its prescribed time window</t>
@@ -377,9 +375,9 @@
     <section title="DetNet Security Considerations Compared With DiffServ Security Considerations">
       <t>DetNet is designed to be compatible with DiffServ <xref target="RFC2474"/> as applied to IT
         traffic in the DetNet. DetNet also incorporates the use of the 6-bit value of the DSCP field
-        of the TOS field of the IP header for flow identification for OT traffic, however the DetNet
-        interpretation of the DSCP value for OT traffic is not equivalent to the PHB selection
-        behavior as defined by DiffServ. </t>
+        of the Type of Service (ToS) byte of the IPv4 header (or the Traffic Class byte in IPv6) for
+        flow identification for OT traffic. However, the DetNet interpretation of the DSCP value for
+        OT traffic is not equivalent to the PHB selection behavior as defined by DiffServ. </t>
       <t>Thus security consideration for DetNet have some aspects in common with DiffServ, in fact
         overlapping 100% with respect to IP IT traffic. Security considerations for these aspects
         are part of the existing literature on IP network security, specifically the Security
@@ -591,7 +589,18 @@
     </section>
     <!-- Section: Security Threats -->
     <section anchor="ThreatImpact" title="Security Threat Impacts">
-      <t>This section describes and rates the impact of the attacks described in <xref
+      <t>When designing security for a DetNet, as with any network, it may be prohibitively
+        expensive or technically infeasible to thoroughly protect against every possible threat.
+        Thus the security designer must be informed (for example by an application domain expert
+        such as a product manager) regarding the relative significance of the various threats and
+        their impact if a successful attack is carried out. In this section we present an example of
+        a possible template for such a communication, culminating in a table (<xref
+          target="ThreatIndustryMapping"/>) which lists a set of threats under consideration, and
+        some values characterizing their relative impact in the context of a given industry. The
+        specific threats, industries, and impact values in the table are provided only as an example
+        of this kind of assessment and its communication; they are not intended to be taken
+        literally.</t>
+      <t>This section considers assessment of the relative impacts of the attacks described in <xref
           target="ThreatSection"/>, Security Threats. In this section, the impacts as described
         assume that the associated mitigation is not present or has failed. Mitigations are
         discussed in <xref target="ThreatMitigation"/>, Security Threat Mitigation. </t>
@@ -630,7 +639,7 @@
         title="Impact of Attacks by Use Case Industry">
         <artwork align="left">
           <![CDATA[
-Table, Part One (of Two)
+Table
 +------------------+-----------------------------------------+-----+
 |                  | Pro A | Util | Bldg |Wire- | Cell |M2M  |M2M  |
 |                  |       |      |      | less |      |Data |Ctrl |
@@ -667,45 +676,6 @@ Table, Part One (of Two)
 +------------------+-----------------------------------------+-----+
 |  Availability    | Hi    | Hi   | Med  | Hi   | Low  | Hi  | Hi  |
 +------------------+-----------------------------------------+-----+
-
-Table, Part Two (of Two)
-+------------------+--------------------------+
-|                  | Mining | Block | Network |
-|                  |        | Chain | Slicing |
-+------------------+--------------------------+
-| Criticality      | Hi     | Med   | Hi      |
-+------------------+--------------------------+
-| Effects
-+------------------+--------------------------+
-|  Financial       | Hi     | Hi    | Hi      |
-+------------------+--------------------------+
-|  Health/Safety   | Hi     | Low   | Med     |
-+------------------+--------------------------+
-|  People WB       | Hi     | Low   | Med     |
-+------------------+--------------------------+
-|  Effect 1 org    | Hi     | Hi    | Hi      |
-+------------------+--------------------------+
-|  Effect >1 org   | Hi     | Low   | Hi      |
-+------------------+--------------------------+
-|Recovery
-+------------------+--------------------------+
-|  Recov Time Obj  | Hi     | Low   | Hi      |
-+------------------+--------------------------+
-|  Recov Point Obj | Hi     | Low   | Hi      |
-+------------------+--------------------------+
-|DetNet Dependence
-+------------------+--------------------------+
-|  Time Dependency | Hi     | Low   | Hi      |
-+------------------+--------------------------+
-|  Latency/Jitter  | Hi     | Low   | Hi      |
-+------------------+--------------------------+
-|  Data Integrity  | Hi     | Hi    | Hi      |
-+------------------+--------------------------+
-|  Src Node Integ  | Hi     | Hi    | Hi      |
-+------------------+--------------------------+
-|  Availability    | Hi     | Hi    | Hi      |
-+------------------+--------------------------+
-
 ]]></artwork>
       </figure>
       <t>The rest of this section will cover impact of the different groups in more detail.</t>
@@ -790,7 +760,9 @@ Table, Part Two (of Two)
             In total, it will consume more resources in the routers than normal, giving rise to a
             resource exhaustion attack on the routers.</t>
           <t>If a DetNet flow is interrupted, the end application will be affected by what is now a
-            non-deterministic flow. </t>
+            non-deterministic flow. Note that there are many possible sources of flow interruptions,
+            for example, but not limited to, such physical layer conditions as a broken wire or a
+            radio link which is compromised by interference. </t>
         </section>
         <section title="Controller Plane Segmentation">
           <t> In a successful controller plane segmentation attack, control messages are acted on by
@@ -1552,7 +1524,7 @@ Table, Part Two (of Two)
 +----+-------------------------------------------+
            ]]></artwork>
         </figure>
-        <t>The Mapping Between Themes and Attacks table <xref target="ThemeAttackMapping"/>maps the
+        <t>The Mapping Between Themes and Attacks table <xref target="ThemeAttackMapping"/> maps the
           use case themes of <xref target="RFC8578"/> (as also enumerated in this document) to the
           attacks of <xref target="ThreatList"/>. Each row specifies a theme, and the attacks
           relevant to this theme are marked with a '+'. The row items which have no threats
@@ -1673,8 +1645,11 @@ Table, Part Two (of Two)
         port numbers and the DSCP in the IP header. When IPsec is used, the transport header is
         encrypted and the next protocol ID is an IPsec protocol, usually ESP, and not a transport
         protocol, leaving only three components of the 6-tuple, which are the two IP addresses and
-        the DSCP. Identification of DetNet flows over IPsec is further discussed in Section 5.1.2.3.
-        of <xref target="RFC8939"/>.</t>
+        the DSCP. If the IPsec sessions are established by a controller, then this controller could
+        also transmit (in the clear) the Security Parameter Index (SPI) and thus the SPI could be
+        used (in addition to the pair of IP addresses) for flow identification. Identification of
+        DetNet flows over IPsec is further discussed in Section 5.1.2.3. of <xref target="RFC8939"
+        />.</t>
       <t>Sections below discuss threats specific to IP and MPLS in more detail.</t>
       <section title="IP">
         <t>The IP protocol has a long history of security considerations and architectural
