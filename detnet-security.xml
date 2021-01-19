@@ -937,7 +937,10 @@ Table
       <section title="Dummy Traffic Insertion">
         <t>Description <list hangIndent="10" style="empty">
             <t>With some queueing methods such as <xref target="IEEE802.1Qch-2017"/> it is possible
-              to introduce dummy traffic in order to regularize the timing of packet transmission.
+            to introduce dummy traffic in order to regularize the timing of packet
+            transmission. This will subsequently reduce the value of passive monitoring from
+	    internal threats (see <xref target="ThreatSection" />) as it will
+	    be much more difficult to associate discrete events with particular network packets.
             </t>
           </list>
         </t>
@@ -946,11 +949,33 @@ Table
               to mitigate against reconnaissance attacks <xref target="ReconnaissanceThreat"/>. For
               example, dummy traffic can be used to synthetically maintain constant traffic rate
               even when no user data is transmitted, thus making it difficult to collect information
-              about the times at which users are active, and the times at which DetNet flows are
-              added or removed. </t>
+              about the times at which users are active, and the times at which DETNET flows are
+            added or removed.</t>
           </list>
-        </t>
-      </section>
+	</t>
+        <t>Traffic Insertion Challenges
+	<list hangIndent="10" style="empty">
+	  <t>Once an attacker is able to monitor the frames traversing a network to such a degree
+	  that it is possible to differentiate between regular, best-effort traffic and traffic
+	  belonging to a specific DetNet-flow, it becomes hard to not reveal if a frame is valid
+	  traffic or an inserted frame. It should therefore be a conscious design decision
+	  how to implement this. In many cases, the DetNet application itself is best suited to
+	  send valid traffic, insert dummy content and remove it in the other end..</t>
+	  <t>If the traffic is to be inserted by bridges in the network, additional challenges must
+	  be solved.
+          <list style="symbols">
+            <t>Inserted traffic must be indistinguishable from valid stream traffic.</t>
+	    <t>Bridges near the end of the path must be able to safely remove all inserted
+	    traffic, but only inserted traffic.</t>
+	    <t>Control plane support for where to insert and remove dummy traffic must be in
+	    place. This must not be revealed to an attacker.</t>
+          </list>
+	  Further discussions and reading about how sRTP handles this can be found in <xref
+	  target="RFC6562" />
+	  </t>
+	</list>
+	</t>
+	</section>
       <section title="Encryption">
         <t>Description <list hangIndent="10" style="empty">
             <t>Reconnaissance attacks (<xref target="ReconnaissanceThreat"/>) can be mitigated by
@@ -1020,13 +1045,19 @@ Table
       <section anchor="ControllerProtectSection" title="Control and Signaling Message Protection">
         <t>Description <list hangIndent="10" style="empty">
             <t>Control and signaling messages can be protected through the use of any or all of
-              encryption, authentication, and integrity protection mechanisms.</t>
+            encryption, authentication, and integrity protection mechanisms. Unlike data-flows, the
+            deadlines for controller and signaling messages are less strict, as is the number of
+            such packets in the network. This makes it possible to use asymmetric cryptography for
+            signing of both payload and headers as well as encrypting the payload. A DetNet can be
+	    managed by a central controller, which makes a shared public key  approach a well proven
+	    approach. This is further discussed in <xref target="EncryptionConsiderations" />.
+	    </t>
           </list>
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>These mechanisms can be used to mitigate various attacks on the controller plane, as
-              described in <xref target="ControllerThreat"/>, <xref target="SyncThreat"/> and <xref
-                target="PathThreat"/>. </t>
+            described in <xref target="ControllerThreat"/>, <xref target="SyncThreat"/> and <xref
+            target="PathThreat"/>. </t>
           </list>
         </t>
       </section>
@@ -1782,33 +1813,34 @@ Table
       <?rfc include='reference.I-D.ietf-detnet-mpls-oam.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-mpls-over-udp-ip.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-ip-over-mpls.xml'?>
-      <?rfc include='reference.RFC.3552.xml'?>
-      <?rfc include='reference.RFC.7384.xml'?>
-      <?rfc include='reference.RFC.4301.xml'?>
       <!-- <?rfc include='reference.I-D.ietf-tictoc-1588overmpls'?>  -->
       <?rfc include='reference.I-D.varga-detnet-service-model.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-flow-information-model.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-ip-over-tsn.xml'?>
       <?rfc include='reference.I-D.ietf-mpls-opportunistic-encrypt.xml'?>
       <?rfc include='reference.I-D.ietf-ipsecme-g-ikev2.xml'?>
-      <?rfc include='reference.RFC.5920.xml'?>
-      <?rfc include='reference.RFC.6941.xml'?>
-      <?rfc include='reference.RFC.5921.xml'?>
-      <?rfc include='reference.RFC.5905.xml'?>
-      <?rfc include='reference.RFC.8077.xml'?>
-      <?rfc include='reference.RFC.3931.xml'?>
-      <?rfc include='reference.RFC.3985.xml'?>
-      <?rfc include='reference.RFC.6073.xml'?>
-      <?rfc include='reference.RFC.6478.xml'?>
       <?rfc include='reference.RFC.2474.xml'?>
       <?rfc include='reference.RFC.2475.xml'?>
+      <?rfc include='reference.RFC.3552.xml'?>
+      <?rfc include='reference.RFC.3931.xml'?>
+      <?rfc include='reference.RFC.3985.xml'?>
+      <?rfc include='reference.RFC.4301.xml'?>
+      <?rfc include='reference.RFC.5880.xml'?>
+      <?rfc include='reference.RFC.5905.xml'?>
+      <?rfc include='reference.RFC.5920.xml'?>
+      <?rfc include='reference.RFC.5921.xml'?>
+      <?rfc include='reference.RFC.6071.xml'?>
+      <?rfc include='reference.RFC.6073.xml'?>
       <?rfc include='reference.RFC.6274.xml'?>
+      <?rfc include='reference.RFC.6478.xml'?>
+      <?rfc include='reference.RFC.6562.xml'?>
+      <?rfc include='reference.RFC.6632.xml'?>
+      <?rfc include='reference.RFC.6941.xml'?>
+      <?rfc include='reference.RFC.7384.xml'?>
       <?rfc include='reference.RFC.7567.xml'?>
       <?rfc include='reference.RFC.7835.xml'?>
+      <?rfc include='reference.RFC.8077.xml'?>
       <?rfc include='reference.RFC.8446.xml'?>
-      <?rfc include='reference.RFC.6071.xml'?>
-      <?rfc include='reference.RFC.5880.xml'?>
-      <?rfc include='reference.RFC.6632.xml'?>
       <!-- DetNet RFCs:  -->
       <?rfc include='reference.RFC.8578.xml'?>
 
