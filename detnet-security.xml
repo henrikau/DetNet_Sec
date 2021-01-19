@@ -788,20 +788,26 @@ Table, Part Two (of Two)
           target="I-D.ietf-detnet-ip-over-mpls"/>. </t>
       <section title="Path Redundancy">
         <t>Description <list hangIndent="10" style="empty">
-            <t>A DetNet flow can be forwarded simultaneously over multiple paths, thus increasing
-			the robustness to various types of threats.	The DetNet provision for redundant paths (PREOF) 
+            <t>Redundant paths can be used simultaneously for either data traffic, control traffic or both, 
+			thus increasing the robustness to various types of threats.	
+			The DetNet provision for redundant paths (PREOF) 
 			(<xref target="RedundantSec"/>), as specified in <xref target="RFC8655"/>, is an approach in 
 			which each packet of a DetNet flow is replicated and sent over two or more different paths. 
 			The node at the end of the path keeps only one copy of each packet and eliminates the 
 			redundant copies. Replication and elimination requires each packet to include sequencing
 			information, allowing to match each packet to its corresponding copy (or copies).</t>
 			
+			<t>Note that PREOF is intended to provide redundancy in a way that mitigates packet 
+			loss or path failures. A generalized approach can be taken, where the elimination function
+			eliminates packets that fail an integrity check or decryption process, and thus provides
+			resiliency to malicous modification attacks.</t>
+			
 			<t>Technology-specific considerations of path redundancy are defined in the
 			DetNet data plane specifications. For example, path redundancy in the MPLS data
 			plane including packet sequencing and its use for replication and elimination is specified in 
 			<xref target="I-D.ietf-detnet-mpls"/>. Specific considerations of replication 
-			in the IP data plane are discussed in <xref target="RFC8939"/>, although specific
-			mechanisms such as path sequencing are not defined there.</t>
+			in the IP data plane are discussed in <xref target="RFC8939"/>, although at 
+			the time of this writing, PREOF is not defined for the IP data plane.</t>
 			
 			<t>Using replication and elimination	provides resiliency to dropped or delayed 
 			packets. This redundancy improves the robustness to failures and to on-path attacks.</t>
@@ -811,7 +817,13 @@ Table, Part Two (of Two)
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>Path redundancy can be used to mitigate various on-path attacks, including attacks
               described in <xref target="DelayThreat"/>, <xref target="ModificationThreat"/>, <xref
-                target="SegmentThreat"/>, and <xref target="SyncThreat"/>. However it is also
+                target="SegmentThreat"/>, and <xref target="SyncThreat"/>. PREOF is a way of applying 
+				path redundancy that provides robustness to packet loss in DetNet flows. Path redundancy is a general 
+				approach that is not necessarily specific to DetNet; for example, redundancy can be 
+				used by the time distribution protocol, as discussed in Annex S of <xref
+                target="IEEE1588v2.1"/>.</t>
+				
+				<t>Note that it is also
               possible that multiple paths may make it more difficult to locate the source of an
               on-path attacker. </t>
           </list>
@@ -1780,6 +1792,16 @@ Table, Part Two (of Two)
             <organization>IEEE</organization>
           </author>
           <date year="2008"/>
+        </front>
+      </reference>
+      <reference anchor="IEEE1588v2.1">
+        <front>
+          <title>IEEE 1588 Standard for a Precision Clock Synchronization Protocol for Networked
+            Measurement and Control Systems Version 2.1 </title>
+          <author>
+            <organization>IEEE</organization>
+          </author>
+          <date year="2019"/>
         </front>
       </reference>
       <reference anchor="ARINC664P7">
