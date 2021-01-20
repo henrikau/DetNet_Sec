@@ -161,6 +161,15 @@
       <t>The structure of the threat model and threat analysis sections were originally derived from
           <xref target="RFC7384"/>, which also considers time-related security considerations in IP
         networks. </t>
+      <t>This document is based on the premise that there will be a very broad range of DetNet
+        applications and use cases, ranging in size scope from individual industrial machines to
+        networks that span an entire country (<xref target="RFC8578"/>). Thus no single set of
+        prescriptions (such as exactly which mitigation should be applied to which segment of a
+        DetNet) can be applicable to all of them, and indeed any single one that we might prescribe
+        would inevitably prove impractical for some use case, perhaps one that does not even exist
+        at the time of this writing. Thus we are not prescriptive here - we are stating the desired
+        end result, with the understanding that most DetNet use cases will necessarily differ from
+        each other, and there is no "one size fits all". </t>
     </section>
     <section title="Abbreviations and Terminology">
       <t>IT: Information Technology (the application of computers to store, study, retrieve,
@@ -180,6 +189,7 @@
     </section>
 
     <section title="Security Considerations for DetNet Component Design">
+      <t>This section provides guidance for implementers of components to be used in a DetNet. </t>
       <t>As noted above, DetNet provides resource allocation, explicit routes and redundant path
         support. Each of these has associated security implications, which are discussed in this
         section, in the context of component design. Detection, reporting and appropriate action in
@@ -297,17 +307,19 @@
           violating the quality of service for the affected flow (or part of that flow). </t>
         <t>However, it is acceptable for the network to re-route OT traffic in such a way as to
           maintain the specified latency bounds (and any other specified service properties) for any
-          reason, for example in response to a runtime component or path failure. From a security
-          standpoint, the system designer relies on the premise that the packets will be delivered
-          with the specified latency boundaries; thus any component that is involved in controlling
-          or implementing any change of the initially TE-configured flow routes needs to prevent
-          malicious or accidental re-routing of OT flows that might adversely affect delivering the
-          traffic within the specified service parameters.</t>
+          reason, for example in response to a runtime component or path failure. </t>
+        <t>So from a DetNet security standpoint, the DetNet system designer can expect that any
+          component designed for use in a DetNet will deliver the packets within the agreed-upon
+          service parameters. For the component designer, this means that in order for a component
+          to achieve that expectation, any component that is involved in controlling or implementing
+          any change of the initially TE-configured flow routes must prevent re-routing of OT flows
+          (whether malicious or accidental) which might adversely affect delivering the traffic
+          within the specified service parameters.</t>
       </section>
 
       <section title="Redundant Path Support">
         <t>The DetNet provision for redundant paths (PREOF) (as defined in the DetNet Architecture
-            <xref target="RFC8655"/>) provides the foundation for high reliablity of a DetNet, by
+            <xref target="RFC8655"/>) provides the foundation for high reliability of a DetNet, by
           virtually eliminating packet loss (i.e. to a degree which is implementation-dependent)
           through hitless redundant packet delivery. Note: At the time of this writing, PREOF is not
           defined for the IP data plane. </t>
@@ -324,8 +336,8 @@
         <t>Ideally a redundant path for a flow could be specified from end to end, however given
           that this is not always possible (as described in <xref target="RFC8655"/>) the system
           designer will need to consider the resulting end-to-end reliability and security resulting
-          from any given arrangment of network segments along the path, each of which provides its
-          individual PREOF implementation and thus its individual level of reliabiilty and security. </t>
+          from any given arrangement of network segments along the path, each of which provides its
+          individual PREOF implementation and thus its individual level of reliability and security. </t>
         <t>At the data plane the implementation of PREOF depends on the correct assignment and
           interpretation of packet sequence numbers, as well as the actions taken based on them,
           such as elimination (including elimination of packets with spurious sequence numbers).
@@ -335,18 +347,33 @@
           DetNet (or any other) data plane, and is not unique to redundant paths. The integrity
           protection of header values is technology-dependent; for example, in Layer 2 networks the
           integrity of the header fields can be protected by using MACsec <xref
-            target="IEEE802.1AE-2018"/>. Similary, from the sequence number injection perspective,
+            target="IEEE802.1AE-2018"/>. Similarly, from the sequence number injection perspective,
           it is no different from any other protocols that use sequence numbers. </t>
       </section>
       <section title="Timing (or other) Violation Reporting">
-        <t>Another fundamental assumption of a secure DetNet is that in any case in which an
-          incoming packet arrives with any timing or bandwidth violation, an appropriate action can
-          be taken in order to prevent damage to the system. For example, a naive approach might be
-          to have the component shut down the link if a packet arrives outside of its prescribed
-          time window; however such a simplistic action may serve the attacker better than it serves
-          the network. This document further discusses such considerations in <xref
-            target="DpaMitigation"/>). Some possible violations that warrant detection include cases
-          where a packet arrives: </t>
+
+        <t>A task of the DetNet system designer is to create a network such that for any incoming
+          packet which arrives with any timing or bandwidth violation, an appropriate action can be
+          taken in order to prevent damage to the system. The reporting step may be accomplished
+          through dynamic performance analysis (see <xref target="DpaMitigation"/>) or by any other
+          means as implemented in one or more components. The action to be taken for any given
+          circumstance within any given application will depend on the use case. The action may
+          involve intervention from the controller plane, or it may be taken "immediately" by an
+          individual component, for example if very fast response is required. </t>
+
+        <t>The definitions and selections of the actions that can be taken are properties of the
+          components. The component designer implements these options according to their expected
+          use cases, which may vary widely from component to component. Clearly selecting an
+          inappropriate response to a given condition may cause more problems than it is intending
+          to mitigate; for example, a naive approach might be to have the component shut down the
+          link if a packet arrives outside of its prescribed time window; however such a simplistic
+          action may serve the attacker better than it serves the network. Similarly, simple logging
+          of such issues may not be adequate, since a delay in response could result in material
+          damage, for example to mechanical devices controlled by the network. Thus a breadth of
+          possible and effective security-related actions and their configuration is a positive
+          attribute for a DetNet component.</t>
+
+        <t>Some possible violations that warrant detection include cases where a packet arrives: </t>
         <t>
           <list style="symbols">
             <t>Outside of its prescribed time window</t>
@@ -355,12 +382,7 @@
             <t>Exceeding the reserved flow bandwidth</t>
           </list>
         </t>
-        <t>Logging of such issues is unlikely to be adequate, since a delay in response to the
-          situation could result in material damage, for example to mechanical devices controlled by
-          the network. Given that the data plane component probably has no knowledge of the use case
-          of the network, or its applications and end systems, it would seem useful for a data plane
-          component to allow the system designer to configure its actions in the face of such
-          violations.</t>
+
         <t>Some possible direct actions that may be taken at the data plane include traffic policing
           and shaping functions (e.g., those described in <xref target="RFC2475"/>), separating
           flows into per-flow rate-limited queues, and potentially applying active queue management
@@ -420,10 +442,19 @@
               the other hand, do not have the keys and have access only to the encrypted or
               authenticated traffic.</t>
             <t>On-path vs. off-path: on-path attackers are located in a position that allows
-              interception and modification of in-flight protocol packets, whereas off-path
-              attackers can only attack by generating protocol packets.</t>
+              interception, modification, or dropping of in-flight protocol packets, whereas
+              off-path attackers can only attack by generating protocol packets.</t>
           </list>
         </t>
+        <t>Regarding the boundary between internal vs. external attackers as defined above, please
+          note that in this document we do not make concrete recommendations regarding which
+          specific segments of the network are to be protected in any specific way, for example via
+          encryption or authentication. As a result, the boundary as defined above is not
+          unequivocally specified here. Given that constraint, the reader can view an internal
+          attacker as one who can operate within the perimeter defined by the DetNet Edge Nodes (as
+          defined in the DetNet Architecture <xref target="RFC8655"/>), allowing that the specifics
+          of what is encrypted or authenticated within this perimeter will vary depending on the
+          implementation. </t>
         <t>Care has also been taken to adhere to Section 5 of <xref target="RFC3552"/>, both with
           respect to which attacks are considered out-of-scope for this document, but also which are
           considered to be the most common threats (explored further in <xref
@@ -488,8 +519,8 @@
                   where C is a constant integer. Thus, the attacker creates a false illusion that
                   the attacked path has the lowest delay, causing all packets from other paths to be
                   eliminated in favor of the attacked path. Once the flow from the compromised path
-                  is favored by the elminating bridge, the flow is hijacked by the attacker. It is
-                  now posible to either replace en route packets with malicious packets, or simply
+                  is favored by the eliminating bridge, the flow is hijacked by the attacker. It is
+                  now possible to either replace en route packets with malicious packets, or simply
                   injecting errors, causing the packets to be dropped at their destination.</t>
                 <t>Amplification - an attacker who injects packets into a flow that is to be
                   replicated will have their attack amplified through the replication process. This
@@ -519,14 +550,19 @@
             <t>An attacker can subvert a controller, or enable a compromised controller to falsely
               represent itself as a controller so that the network nodes believe it to be authorized
               to instruct them. </t>
-            <t>Presence of compromised nodes in a DetNet is not a new threat that arises as a result
-              of determinism or time sensitivity; the same techniques used to prevent or mitigate
-              against compromised nodes in any network are equally applicable in the DetNet case.
-              However this underscores the requirement for careful system security design in a
-              DetNet, given that the effects of even one bad actor on the network can be potentially
-              catastrophic. </t>
+            <t>The presence of a compromised node or controller in a DetNet is not a threat that
+              arises as a result of determinism or time sensitivity; the same techniques used to
+              prevent or mitigate against compromised nodes in any network are equally applicable in
+              the DetNet case. The act of compromising a controller may not even be within the
+              capabilities of our defined attacker types - in other words it may not be achievable
+              via packet traffic at all, whether internal or external, on-path or off-path. It might
+              be accomplished for example by a human with physical access to the component, who
+              could upload bogus firmware to it via a USB stick. All of this underscores the
+              requirement for careful overall system security design in a DetNet, given that the
+              effects of even one bad actor on the network can be potentially catastrophic. </t>
+
             <t>Security concerns specific to any given controller plane technology used in DetNet
-              will be addressed by the DetNet documents associated with that technology.</t>
+              will be addressed by the DetNet documents associated with that technology. </t>
           </section>
         </section>
         <section anchor="ReconnaissanceThreat" title="Reconnaissance">
@@ -606,8 +642,9 @@
         discussed in <xref target="ThreatMitigation"/>, Security Threat Mitigation. </t>
       <t> In computer security, the impact (or consequence) of an incident can be measured in loss
         of confidentiality, integrity or availability of information. In the case of time sensitive
-        networks, the impact of a network exploit can also include failure or malfunction of
-        mechanical and/or other OT systems. </t>
+        or OT networks (though not to the exclusion of IT or non-time-sensitive networks) the impact
+        of an exploit can also include failure or malfunction of mechanical and/or other physical
+        systems. </t>
       <t>DetNet raises these stakes significantly for OT applications, particularly those which may
         have been designed to run in an OT-only environment and thus may not have been designed for
         security in an IT environment with its associated components, services and protocols. </t>
@@ -654,9 +691,9 @@ Table
 +------------------+-----------------------------------------+-----+
 |  People WB       | Med   | Hi   | Hi   | Low  | Hi   | Low | Low |
 +------------------+-----------------------------------------+-----+
-|  Effect 1 org    | Hi    | Hi   | Med  | Hi   | Med  | Med | Med |
+|  Affects 1 org   | Hi    | Hi   | Med  | Hi   | Med  | Med | Med |
 +------------------+-----------------------------------------+-----+
-|  Effect >1 org   | Med   | Hi   | Low  | Med  | Med  | Med | Med |
+|  Affects >1 org  | Med   | Hi   | Low  | Med  | Med  | Med | Med |
 +------------------+-----------------------------------------+-----+
 |Recovery
 +------------------+-----------------------------------------+-----+
@@ -730,8 +767,8 @@ Table
               endpoint instead of (or in addition to) a valid message.</t>
           </section>
           <section title="Controller Plane Spoofing">
-            <t>A successful controller plane spoofing-attack will potentionally have adverse
-              effects. It can do virtually anything from:</t>
+            <t>A successful controller plane spoofing-attack will potentially have adverse effects.
+              It can do virtually anything from:</t>
             <t>
               <list style="symbols">
                 <t>modifying existing DetNet flows by changing the available bandwidth</t>
@@ -801,13 +838,11 @@ Table
           compromised.</t>
       </section>
       <section title="Reconnaissance" anchor="Reconnaissance">
-        <t> Of all the attacks, this is one of the most difficult to detect and counter. Often, an
-          attacker will start out by observing the traffic going through the network and use the
-          knowledge gathered in this phase to mount future attacks. </t>
-        <t> The attacker can, at their leisure, observe over time all aspects of the messaging and
-          signalling, learning the intent and purpose of all traffic flows. At some later date,
-          possibly at an important time in an operational context, the attacker can launch a
-          multi-faceted attack, possibly in conjunction with some demand for ransom. </t>
+        <t> Of all the attacks, this is one of the most difficult to detect and counter. </t>
+        <t> An attacker can, at their leisure, observe over time various aspects of the messaging
+          and signalling, learning the intent and purpose of the traffic flows. Then at some later
+          date, possibly at an important time in the operational context, they might launch an
+          attack based on that knowledge. </t>
         <t> The flow-id in the header of the data plane messages gives an attacker a very reliable
           identifier for DetNet traffic, and this traffic has a high probability of going to
           lucrative targets. </t>
@@ -829,9 +864,9 @@ Table
     <section anchor="ThreatMitigation" title="Security Threat Mitigation">
       <t>This section describes a set of measures that can be taken to mitigate the attacks
         described in <xref target="ThreatSection"/>, Security Threats. These mitigations should be
-        viewed as a toolset that includes several different and diverse tools. Each application or
-        system will typically use a subset of these tools, based on a system-specific threat
-        analysis. </t>
+        viewed as a set of tools, any of which can be used individually or in concert. The DetNet
+        component and/or system and/or application designer can apply these tools, as necessary
+        based on a system-specific threat analysis. </t>
       <t>Some of the technology-specific security considerations and mitigation approaches are
         further discussed in the DetNet data plane solution documents, such as <xref
           target="RFC8939"/>, <xref target="RFC8938"/>, <xref
@@ -839,7 +874,7 @@ Table
           target="I-D.ietf-detnet-ip-over-mpls"/>. </t>
       <section title="Path Redundancy">
         <t>Description <list hangIndent="10" style="empty">
-            <t>A DetNet flow that can be forwarded simultaneously over multiple paths. Path
+            <t>A DetNet flow that can be forwarded simultaneously over multiple paths. Packet
               replication and elimination <xref target="RFC8655"/> provides resiliency to dropped or
               delayed packets. This redundancy improves the robustness to failures and to on-path
               attacks. Note: At the time of this writing, PREOF is not defined for the IP data
@@ -860,14 +895,18 @@ Table
       </section>
       <section anchor="IntegritySection" title="Integrity Protection">
         <t>Description <list hangIndent="10" style="empty">
-            <t>Integrity Protection in the scope of DetNet is the ability to detect if a header has
-              been modified (either maliciously or by chance) and propagate a warning to a
-              responsible monitoring agent. An integrity protection mechanism is designed to
-              counteract header modification attacks where a Message Authentication Code (MAC) is
-              the most common. The MAC can be distributed either in-line (included in the same
-              packet) or via a side channel. Due to the nature of DetNet traffic. Note: a sideband
-              approach may yield too high overhead and complexity and should only be used as a very
-              last resort if in-line approaches are not viable. </t>
+            <t>Integrity Protection in the scope of DetNet is the ability to detect if a packet
+              header has been modified (maliciously or otherwise) and if so, take some appropriate
+              action (as discussed in <xref target="DpaMitigation"/>). The decision on where in the
+              network to apply integrity protection is part of the DetNet system design, and the
+              implementation of the protection method itself is a part of a DetNet component
+              design.</t>
+            <t>The most common technique for detecting header modification is the use of a Message
+              Authentication Code (MAC) (for examples see <xref target="TechnologySpecificThreats"
+              />). The MAC can be distributed either in-line (included in the same packet) or via a
+              side channel. Of these, the in-line method is generally preferred due to the low
+              latency that may be required on DetNet flows and the relative complexity and
+              computational overhead of a sideband approach. </t>
             <t> There are different levels of security available for integrity protection, ranging
               from the basic ability to detect if a header has been corrupted in transit (no
               malicious attack) to stopping a skilled and determined attacker capable of both subtly
@@ -886,11 +925,11 @@ Table
               plane is discussed in <xref target="ControllerProtectSection"/>. The secret key,
               regardless of MAC used, must be protected from falling into the hands of unauthorized
               users. </t>
-            <t> DetNet system- and/or component- level designers need to be aware of these
-              distinctions and enforce appropriate integrity protection mechanisms as needed based
-              on a threat analysis. Note that adding integrity protection mechanisms may introduce
-              latency, thus many of the same considerations in <xref
-                target="EncryptionConsiderations"/> also apply here. </t>
+            <t> DetNet system and/or component designers need to be aware of these distinctions and
+              enforce appropriate integrity protection mechanisms as needed based on a threat
+              analysis. Note that adding integrity protection mechanisms may introduce latency, thus
+              many of the same considerations in <xref target="EncryptionConsiderations"/> also
+              apply here. </t>
           </list>
         </t>
         <t>Packet Sequence Number Integrity Considerations <list hangIndent="10" style="empty">
@@ -953,11 +992,19 @@ Table
       </section>
       <section title="Encryption">
         <t>Description <list hangIndent="10" style="empty">
-            <t>Reconnaissance attacks (<xref target="ReconnaissanceThreat"/>) can be mitigated by
-              using encryption. Specific encryption protocols will depend on the lower layers that
-              DetNet is forwarded over. For example, IP flows may be forwarded over IPsec <xref
-                target="RFC4301"/>, and Ethernet flows may be secured using MACsec <xref
-                target="IEEE802.1AE-2018"/>.</t>
+            <t>Reconnaissance attacks (<xref target="ReconnaissanceThreat"/>) can be mitigated to
+              some extent through the use of encryption, thereby preventing the attacker from
+              accessing the packet header or contents. Specific encryption protocols will depend on
+              the lower layers that DetNet is forwarded over. For example, IP flows may be forwarded
+              over IPsec <xref target="RFC4301"/>, and Ethernet flows may be secured using MACsec
+                <xref target="IEEE802.1AE-2018"/>.</t>
+            <t>However, despite the use of encryption, a reconnaissance attack can provide the
+              attacker with insight into the network, even without visibility into the packet. For
+              example, an attacker can observe which nodes are communicating with which other nodes,
+              including when, how often, and with how much data. In addition, the timing of packets
+              may be correlated in time with external events such as action of an external device.
+              Such information may be used by the attacker, for example in mapping out specific
+              targets for a different type of attack at a different time.</t>
 
             <t>DetNet nodes do not have any need to inspect the payload of any DetNet packets,
               making them data-agnostic. This means that end-to-end encryption at the application
@@ -1025,8 +1072,7 @@ Table
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>These mechanisms can be used to mitigate various attacks on the controller plane, as
-              described in <xref target="ControllerThreat"/>, <xref target="SyncThreat"/> and <xref
-                target="PathThreat"/>. </t>
+              described in <xref target="SyncThreat"/> and <xref target="PathThreat"/>. </t>
           </list>
         </t>
       </section>
@@ -1109,16 +1155,17 @@ Table
         </t>
 
         <t>Related attacks <list hangIndent="10" style="empty">
-            <t>Performance analytics can be used to mitigate various attacks, including the ones
+            <t>Performance analytics can be used to detect various attacks, including the ones
               described in <xref target="DelayThreat"/> (Delay Attack), <xref target="SegmentThreat"
               /> (Resource Segmentation Attack), and <xref target="SyncThreat"/> (Time
-              Synchronization Attack). </t>
+              Synchronization Attack). Once detection and notification have occurred, the
+              appropriate action can be taken to mitigate the threat. </t>
             <t>For example, in the case of data plane delay attacks, one possible mitigation is to
               timestamp the data at the source, and timestamp it again at the destination, and if
-              the resulting latency exceeds the promised bound, take appropriate action. Note that
-              DetNet specifies packet sequence numbering, however it does not specify use of packet
-              timestamps, although they may be used by the underlying transport (for example TSN,
-                <xref target="IEEE802.1BA"/>) to provide the service.</t>
+              the resulting latency does not meet the service agreement, take appropriate action.
+              Note that DetNet specifies packet sequence numbering, however it does not specify use
+              of packet timestamps, although they may be used by the underlying transport (for
+              example TSN, <xref target="IEEE802.1BA"/>) to provide the service.</t>
           </list>
         </t>
       </section>
@@ -1222,7 +1269,7 @@ Table
             the network. </t>
           <t>All attacks named in this document which are relevant to controller plane packets (and
             the controller itself) are relevant to this theme, including Path Manipulation, Path
-            Choice, Control Packet Modification or Injection, Reconaissance and Attacks on Time
+            Choice, Control Packet Modification or Injection, Reconnaissance and Attacks on Time
             Synchronization Mechanisms. </t>
         </section>
         <section title="Hot Swap">
@@ -1242,8 +1289,8 @@ Table
             rejecting them out of hand as one would do if one did not have to consider introduction
             of a new component).</t>
           <t>To mitigate this situation, deployments should provide a method for dynamic and secure
-            registration of new components, and (possibly manual) deregistration of retired
-            components. This would avoid the situation in which the network must accommodate
+            registration of new components, and (possibly manual) deregistration and re-keying of
+            retired components. This would avoid the situation in which the network must accommodate
             potentially insecure packet flows from unknown components. </t>
           <t>Similarly if the network was designed to support runtime replacement of a clock
             component, then presence (or apparent presence) and thus consideration of packets from a
@@ -1253,9 +1300,10 @@ Table
               <xref target="RFC7384"/>). </t>
         </section>
         <section title="Data Flow Information Models">
-          <t> DetNet specifies new YANG models which may present new attack surfaces. Per IETF
-            guidelines, security considerations for any YANG model are expected to be part of the
-            YANG model specification, as described in <xref target="IETF_YANG_SEC"/>.</t>
+          <t> DetNet specifies new YANG models (<xref target="I-D.ietf-detnet-yang"/>)which may
+            present new attack surfaces. Per IETF guidelines, security considerations for any YANG
+            model are expected to be part of the YANG model specification, as described in <xref
+              target="IETF_YANG_SEC"/>.</t>
         </section>
         <section title="L2 and L3 Integration">
           <t>A DetNet network integrates Layer 2 (bridged) networks (e.g. AVB/TSN LAN) and Layer 3
@@ -1478,12 +1526,9 @@ Table
             can also interfere with the configuration of redundant paths.</t>
         </section>
         <section title="Security Measures">
-          <t>A DetNet network must be made sufficiently secure against problematic component or
-            traffic behavior, whether malicious or incidental, and whether affecting a single
-            component or multiple components. If any of the security mechanisms which protect the
-            DetNet from such problems are attacked or subverted, this can result in malfunction of
-            the network. Thus the design of the security system itself needs to be robust against
-            attacks.</t>
+          <t>If any of the security mechanisms which protect the DetNet are attacked or subverted,
+            this can result in malfunction of the network. Thus the security systems themselves
+            needs to be robust against attacks.</t>
           <t>The general topic of protection of security mechanisms is not unique to DetNet; it is
             identical to the case of securing any security mechanism for any network. This document
             addresses these concerns only to the extent that they are unique to DetNet.</t>
@@ -1782,6 +1827,7 @@ Table
       <?rfc include='reference.I-D.ietf-detnet-mpls-oam.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-mpls-over-udp-ip.xml'?>
       <?rfc include='reference.I-D.ietf-detnet-ip-over-mpls.xml'?>
+      <?rfc include='reference.I-D.ietf-detnet-yang.xml'?>
       <?rfc include='reference.RFC.3552.xml'?>
       <?rfc include='reference.RFC.7384.xml'?>
       <?rfc include='reference.RFC.4301.xml'?>
@@ -1966,6 +2012,9 @@ v12 2020-10-01 EAG
                     Move Andrew Hacker back to Author role. Move EAG to first author. 
 v13 2020-12-11 EAG 
                     Addressed secdir AD review items from Russ Housely (done) and Yaron (still one more to go, but it is significant).
+v14 2021 ...   EAG 
+                    Addressed secdir AD review items from Magnus Westerlund, Murray Kucherawy, Eric Vyncke, Roman Danyliw.. 
+                    
 
 ToDo list:
               Validate use of words "attack" and "threat" is correct - prefer use of "attack" unless necessary.
