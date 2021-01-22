@@ -77,18 +77,22 @@
   </front>
   <middle>
     <section anchor="Introduction" title="Introduction">
-      <t>A DetNet can carry data flows for real-time applications with extremely low data loss rates
-        and bounded latency. The bounds on latency defined by DetNet (<xref
+      <t>A deterministic network (IETF DetNet, <xref target="RFC8655"/>) can carry data flows for
+        real-time applications with extremely low data loss rates and bounded latency. The bounds on
+        latency defined by DetNet (as described in <xref
           target="I-D.ietf-detnet-flow-information-model"/>) include both worst case latency
         (Maximum Latency, Section 5.9.2) and worst case jitter (Maximum Latency Variation, Section
-        5.9.3). Deterministic networks have been successfully deployed in real-time Operational
-        Technology (OT) applications for some years, however such networks are typically isolated
-        from external access, and thus the security threat from external attackers is low. IETF
-        Deterministic Networking (DetNet, <xref target="RFC8655"/>) specifies a set of technologies
-        that enable creation of deterministic flows on IP-based networks of potentially wide area
-        (on the scale of a corporate network), potentially bringing the OT network into contact with
-        Information Technology (IT) traffic and security threats that lie outside of a tightly
-        controlled and bounded area (such as the internals of an aircraft). </t>
+        5.9.3). </t>
+      <t>Deterministic networks have been successfully deployed in real-time Operational Technology
+        (OT) applications for some years, however such networks are typically isolated from external
+        access, and thus the security threat from external attackers is low. An example of such an
+        isolated network is a network deployed within an aircraft, which is "air gapped" from the
+        outside world. DetNet specifies a set of technologies that enable creation of deterministic
+        flows on IP-based networks of potentially wide area (on the scale of a corporate network),
+        potentially merging OT traffic with best-effort (Information Technology, IT) traffic, and
+        placing OT network components into contact with IT network components, thereby exposing the
+        OT traffic and components to security threats that were not present in an isolated OT
+        network. </t>
       <t>These DetNet (OT-type) technologies may not have previously been deployed on a wide area
         IP-based network that also carries IT traffic, and thus can present security considerations
         that may be new to IP-based wide area network designers; this document provides insight into
@@ -190,6 +194,8 @@
       <t>Resource Segmentation: Used as a more general form for Network Segmentation (the act or
         practice of splitting a computer network into subnetworks, each being a network segment -
           <xref target="RS_DEF"/>) </t>
+      <t>Controller Plane: In DetNet the Controller Plane corresponds to the aggregation of the
+        Control and Management Planes (see <xref target="RFC8655"/> section 4.4.2). </t>
     </section>
 
     <section title="Security Considerations for DetNet Component Design">
@@ -2045,7 +2051,8 @@ v12 2020-10-01 EAG
 v13 2020-12-11 EAG 
                     Addressed secdir AD review items from Russ Housely (done) and Yaron (still one more to go, but it is significant).
 v14 2021 ...   EAG 
-                    Addressed secdir AD review items from Magnus Westerlund, Murray Kucherawy, Eric Vyncke, Roman Danyliw.. 
+                    Addressed secdir AD review items from Magnus Westerlund, Murray Kucherawy, 
+                    Eric Vyncke, Roman Danyliw, Benjamin Kaduk, Robert Wilton, and Barry Leiba. 
                     
 
 ToDo list:
