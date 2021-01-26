@@ -965,7 +965,9 @@ Table
               as IKEv2 for IPsec security associations). Integrity protection in the controller
               plane is discussed in <xref target="ControllerProtectSection"/>. The secret key,
               regardless of MAC used, must be protected from falling into the hands of unauthorized
-              users. </t>
+              users. Once key management becomes a topic, it is important to understand that this is
+	      a delicate process and should not be undertaken lightly. BCP 107 <xref
+	      target="RFC4107" /> provides best practices in this regard.</t>
             <t> DetNet system and/or component designers need to be aware of these distinctions and
               enforce appropriate integrity protection mechanisms as needed based on a threat
               analysis. Note that adding integrity protection mechanisms may introduce latency, thus
@@ -980,9 +982,9 @@ Table
               number may be end-to-end source to destination, or may be added/deleted by network
               edge components. The adder and remover(s) have the trust relationship because they are
               the ones that ensure that the sequence numbers are not modifiable. Thus, sequence
-              numbers can be protected by using encryption, or by a MAC without using encryption.
-              Between the adder and remover there may or may not be replication and elimination
-              functions. The elimination functions must be able to see the sequence numbers.
+              numbers can be protected by using authenticated encryption, or by a MAC without using
+	      encryption. Between the adder and remover there may or may not be replication and
+	      elimination functions. The elimination functions must be able to see the sequence numbers.
               Therefore, if encryption is done between adders and removers it must not obscure the
               sequence number. If the sequence removers and the eliminators are in the same physical
               component, it may be possible to obscure the sequence number, however that is a layer
@@ -1938,6 +1940,7 @@ Table
       <?rfc include='reference.RFC.3552.xml'?>
       <?rfc include='reference.RFC.3931.xml'?>
       <?rfc include='reference.RFC.3985.xml'?>
+      <?rfc include='reference.RFC.4107.xml'?>
       <?rfc include='reference.RFC.4301.xml'?>
       <?rfc include='reference.RFC.4302.xml'?>
       <?rfc include='reference.RFC.5880.xml'?>
