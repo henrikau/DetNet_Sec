@@ -358,7 +358,9 @@
           protection of header values is technology-dependent; for example, in Layer 2 networks the
           integrity of the header fields can be protected by using MACsec <xref
             target="IEEE802.1AE-2018"/>. Similarly, from the sequence number injection perspective,
-          it is no different from any other protocols that use sequence numbers. </t>
+          it is no different from any other protocols that use sequence numbers. In particular IPSec
+	  Authentication Header (<xref target="RFC4302" />, Sec. 3 Authentication Header (AH)
+	  Processing) provides useful insights.</t>
       </section>
       <section title="Timing (or other) Violation Reporting">
 
@@ -1931,6 +1933,7 @@ Table
       <?rfc include='reference.RFC.3931.xml'?>
       <?rfc include='reference.RFC.3985.xml'?>
       <?rfc include='reference.RFC.4301.xml'?>
+      <?rfc include='reference.RFC.4302.xml'?>
       <?rfc include='reference.RFC.5880.xml'?>
       <?rfc include='reference.RFC.5905.xml'?>
       <?rfc include='reference.RFC.5920.xml'?>
