@@ -842,6 +842,12 @@ Table
               <t>modify the DetNet flow attributes (affecting available bandwidth)</t>
             </list>
           </t>
+	  <t>If an attacker can inject control messages without the central controller knowing, then
+	    one or more components in the network may get into a state that is not expected by the
+	    controller. At that point, if the controller initiates a command, the effect of that
+	    command may not be as expected, since the target of the command may have started from a
+	    different initial state.
+	  </t>
         </section>
         <!-- cp segment impact -->
 
