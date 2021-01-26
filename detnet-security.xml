@@ -506,8 +506,13 @@
             cannot guarantee the performance that is expected when the flow identification works
             correctly.</t>
         </section>
-        <section anchor="SegmentThreat" title="Resource Segmentation (Inter-segment Attack)">
-          <t>An attacker can inject traffic that will consume network resources such that it affects
+        <section anchor="SegmentThreat" title="Resource Segmentation (Inter-segment Attack) Vulnerability">
+          <t>DetNet nodes are expected to split their resources between
+		    DetNet flows in a way that prevents traffic from one DetNet flow from affecting the performance
+			of other DetNet flows, and prevents non-DetNet traffic from affecting DetNet traffic. 
+			However, due to implementation constraints ,in some DetNet nodes some of the
+			resources may be partially shared. An attacker can try to exploit this property. For example,		
+		    an attacker can inject traffic that will consume network resources such that it affects
             DetNet flows. This can be performed using non-DetNet traffic that indirectly affects
             DetNet traffic (hardware resource exhaustion), or by using DetNet traffic from one
             DetNet flow that directly affects traffic from different DetNet flows.</t>
@@ -591,8 +596,8 @@
             or other temporal or statistical properties. The gathered information can later be used
             to invoke other attacks on some or all of the flows.</t>
           <t>DetNet flows are typically uniquely identified by their 6-tuple, i.e. fields within the
-            IP header, however in some implementations the flow ID may also be augmented by
-            additional per-flow attributes known to the system, e.g. above the IP-layer. For the
+            L3 or L4 header, however in some implementations the flow ID may also be augmented by
+            additional per-flow attributes known to the system, e.g. above L4. For the
             purpose of this document we assume any such additional fields used for flow ID are
             encrypted and/or integrity-protected from external attackers. Note however that existing
             OT protocols designed for use on dedicated secure networks may not intrinsically provide
@@ -620,7 +625,7 @@
 |                                           | Internal | External |
 |                                           |On-P|Off-P|On-P|Off-P|
 +-------------------------------------------+----+-----+----+-----+
-|Delay attack                               | +  |  +  | +  |  +  |
+|Delay attack                               | +  |     | +  |     |
 +-------------------------------------------+----+-----+----+-----+
 |DetNet Flow Modification or Spoofing       | +  |  +  |    |     |
 +-------------------------------------------+----+-----+----+-----+
@@ -773,7 +778,8 @@ Table
         <section title="Flow Modification">
           <t>If the contents of a packet header or body can be modified by the attacker, this can
             cause the packet to be routed incorrectly or dropped, or the payload to be corrupted or
-            subtly modified.</t>
+            subtly modified. Thus, the potential impact of a modification attack includes 
+			disrupting the application as well as the network equipment.</t>
         </section>
         <section title="Spoofing">
           <section title="Dataplane Spoofing">
@@ -843,10 +849,14 @@ Table
         <t> The Replication and Elimination is relevant only to data plane messages as controller
           plane messages are not subject to multipath routing. </t>
         <section title="Increased Attack Surface">
-          <t>Covered briefly in <xref target="SegmentationImpact"/>, Segmentation Attacks. </t>
+          <t>The impact of an increased attack surface is that it increases the probability that the
+		  network can be exposed to an attacker. This can facilitate a wide range of specific attacks, 
+		  and their respective impacts are discussed in other subsections of this section.</t>
         </section>
         <section title="Header Manipulation at Elimination Routers">
-          <t>Covered briefly in <xref target="SegmentationImpact"/>, Segmentation Attacks. </t>
+          <t>This attack can potentially cause DoS to the application that uses the attacked DetNet flows 
+		  or to the network equipment that forwards them. Furthermore, it can 
+		  allow an attacker to manipulate the network paths and the behavior of the network layer.</t>
         </section>
       </section>
       <section title="Control or Signaling Packet Modification">
@@ -871,7 +881,10 @@ Table
           them susceptible to reconnaissance. </t>
       </section>
       <section title="Attacks on Time Synchronization Mechanisms">
-        <t>Attacks on time synchronization mechanisms are addressed in <xref target="RFC7384"/>.
+        <t>DetNet relies on an underlying time synchronization mechanism, and therefore a compromised
+		synchronization mechanism may cause DetNet nodes to malfunction. Specifically, DetNet flows 
+		may fail to meet their latency requirements and deterministic behavior, 
+		thus causing DoS to DetNet applications.
         </t>
       </section>
       <section title="Attacks on Path Choice" anchor="PathChoiceImpact">
@@ -981,9 +994,11 @@ Table
             <t>Authentication verifies the identity of DetNet nodes (including DetNet Controller
               Plane nodes), and this enables mitigation of spoofing attacks. While integrity
               protection ( <xref target="IntegritySection"/>) prevents intermediate nodes from
-              modifying information, authentication (such as IPsec <xref target="RFC4301"/> or
-              MACsec <xref target="IEEE802.1AE-2018"/>) can provide traffic origin verification,
-              i.e. to verify that each packet in a DetNet flow is from a known source. </t>
+              modifying information, authentication can provide traffic origin verification,
+              i.e. to verify that each packet in a DetNet flow is from a known source. Although 
+			  node authentication and integrity protection are two different goals of a security
+			  protocol, in most cases a common protocol (such as IPsec <xref target="RFC4301"/> or
+              MACsec <xref target="IEEE802.1AE-2018"/>) is used for achieving both purposes.</t>
           </list>
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
@@ -1228,34 +1243,38 @@ Table
 |Replication: Increased|-All impacts of other|-Integrity protection|
 |attack surface        | attacks             |-DetNet Node         |
 |                      |                     | authentication      |
+|                      |                     |-Encryption          |
 +----------------------+---------------------+---------------------+
 |Replication-related   |-Non-deterministic   |-Integrity protection|
 |Header Manipulation   | delay               |-DetNet Node         |
 |                      |-Data disruption     | authentication      |
 +----------------------+---------------------+---------------------+
-|Path Manipulation     |-Enabler for other   |-Control message     |
-|                      | attacks             | protection          |
+|Path Manipulation     |-Enabler for other   |-Control and         |
+|                      | attacks             | signaling message   |
+|                      |                     | protection          |
 +----------------------+---------------------+---------------------+
-|Path Choice: Increased|-All impacts of other|-Control message     |
-|Attack Surface        | attacks             | protection          |
+|Path Choice: Increased|-All impacts of other|-Control and         |
+|Attack Surface        | attacks             | signaling message   |
+|                      |                     | protection          |
 +----------------------+---------------------+---------------------+
-|Control or Signaling  |-Increased resource  |-Control message     |
-|Packet Modification   | consumption         | protection          |
-|                      |-Non-deterministic   |                     |
+|Control or Signaling  |-Increased resource  |-Control and         |
+|Packet Modification   | consumption         | signaling message   |
+|                      |-Non-deterministic   | protection          |
 |                      | delay               |                     |
 |                      |-Data disruption     |                     |
 +----------------------+---------------------+---------------------+
-|Control or Signaling  |-Increased resource  |-Control message     |
-|Packet Injection      | consumption         | protection          |
-|                      |-Non-deterministic   |                     |
+|Control or Signaling  |-Increased resource  |-Control and         |
+|Packet Injection      | consumption         | signaling message   |
+|                      |-Non-deterministic   | protection          |
 |                      | delay               |                     |
 |                      |-Data disruption     |                     |
 +----------------------+---------------------+---------------------+
 |Attacks on Time       |-Non-deterministic   |-Path redundancy     |
-|Synchronization       | delay               |-Control message     |
-|Mechanisms            |-Increased resource  | protection          |
-|                      | consumption         |-Performance         |
-|                      |-Data disruption     | analytics           |
+|Synchronization       | delay               |-Control and         |
+|Mechanisms            |-Increased resource  | signaling message   |
+|                      | consumption         | protection          |
+|                      |-Data disruption     |-Performance         |
+|                      |                     | analytics           |
 +----------------------+---------------------+---------------------+
            ]]></artwork>
         </figure>
@@ -1638,7 +1657,7 @@ Table
 |Deterministic vs. Best-     |  |  | +|  |  |  |  |  |  |  |  |
 |Effort Traffic              |  |  |  |  |  |  |  |  |  |  |  |
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
-|Deterministic Flows         |  | +| +|  | +| +|  | +|  |  |  |
+|Deterministic Flows         | +| +| +|  | +| +|  | +|  |  |  |
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
 |Unused Reserved Bandwidth   |  | +| +|  |  |  |  | +| +|  |  |
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
@@ -1657,7 +1676,7 @@ Table
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
 |Bounded Latency             | +|  |  |  |  |  |  |  |  |  | +|
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
-|Low Latency                 | +|  |  |  |  |  |  | +| +| +| +|
+|Low Latency                 | +|  |  |  |  |  |  | +| +|  | +|
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
 |Bounded Jitter              | +|  |  |  |  |  |  |  |  |  |  |
 +----------------------------+--+--+--+--+--+--+--+--+--+--+--+
@@ -1776,7 +1795,7 @@ Table
           emphasis on static provisioning supported by network management systems. </t>
         <t>The operation of DetNet over an MPLS network is modeled on the operation of multi-segment
           pseudowires (MS-PW). Thus for guidance on securing the DetNet elements of DetNet over MPLS
-          the reader is referred to the MS-PW security mechanisms as defined in <xref
+          the reader is referred to the security considerations of <xref
             target="RFC8077"/>, <xref target="RFC3931"/>, <xref target="RFC3985"/>, <xref
             target="RFC6073"/>, and <xref target="RFC6478"/>. </t>
         <t>Having attended to the conventional aspects of network security it is necessary to attend
