@@ -77,22 +77,24 @@
   </front>
   <middle>
     <section anchor="Introduction" title="Introduction">
-      <t>A deterministic network (IETF DetNet, <xref target="RFC8655"/>) can carry data flows for
+      <t>A deterministic IP network (IETF DetNet, <xref target="RFC8655"/>) can carry data flows for
         real-time applications with extremely low data loss rates and bounded latency. The bounds on
         latency defined by DetNet (as described in <xref
           target="I-D.ietf-detnet-flow-information-model"/>) include both worst case latency
         (Maximum Latency, Section 5.9.2) and worst case jitter (Maximum Latency Variation, Section
-        5.9.3). </t>
-      <t>Deterministic networks have been successfully deployed in real-time Operational Technology
-        (OT) applications for some years, however such networks are typically isolated from external
-        access, and thus the security threat from external attackers is low. An example of such an
-        isolated network is a network deployed within an aircraft, which is "air gapped" from the
-        outside world. DetNet specifies a set of technologies that enable creation of deterministic
-        flows on IP-based networks of potentially wide area (on the scale of a corporate network),
-        potentially merging OT traffic with best-effort (Information Technology, IT) traffic, and
-        placing OT network components into contact with IT network components, thereby exposing the
-        OT traffic and components to security threats that were not present in an isolated OT
-        network. </t>
+        5.9.3). Data flows with deterministic properties are well-established for Ethernet networks
+        (see TSN, <xref target="IEEE802.1BA"/>); DetNet brings these capabilities to the IP
+        network.</t>
+      <t>Deterministic IP networks have been successfully deployed in real-time Operational
+        Technology (OT) applications for some years, however such networks are typically isolated
+        from external access, and thus the security threat from external attackers is low. An
+        example of such an isolated network is a network deployed within an aircraft, which is "air
+        gapped" from the outside world. DetNet specifies a set of technologies that enable creation
+        of deterministic flows on IP-based networks of potentially wide area (on the scale of a
+        corporate network), potentially merging OT traffic with best-effort (Information Technology,
+        IT) traffic, and placing OT network components into contact with IT network components,
+        thereby exposing the OT traffic and components to security threats that were not present in
+        an isolated OT network. </t>
       <t>These DetNet (OT-type) technologies may not have previously been deployed on a wide area
         IP-based network that also carries IT traffic, and thus can present security considerations
         that may be new to IP-based wide area network designers; this document provides insight into
@@ -359,8 +361,8 @@
           integrity of the header fields can be protected by using MACsec <xref
             target="IEEE802.1AE-2018"/>. Similarly, from the sequence number injection perspective,
           it is no different from any other protocols that use sequence numbers. In particular IPSec
-	  Authentication Header (<xref target="RFC4302" />, Sec. 3 Authentication Header (AH)
-	  Processing) provides useful insights.</t>
+          Authentication Header (<xref target="RFC4302"/>, Sec. 3 Authentication Header (AH)
+          Processing) provides useful insights.</t>
       </section>
       <section title="Timing (or other) Violation Reporting">
 
@@ -508,16 +510,17 @@
             cannot guarantee the performance that is expected when the flow identification works
             correctly.</t>
         </section>
-        <section anchor="SegmentThreat" title="Resource Segmentation (Inter-segment Attack) Vulnerability">
-          <t>DetNet nodes are expected to split their resources between
-		    DetNet flows in a way that prevents traffic from one DetNet flow from affecting the performance
-			of other DetNet flows, and prevents non-DetNet traffic from affecting DetNet traffic. 
-			However, due to implementation constraints ,in some DetNet nodes some of the
-			resources may be partially shared. An attacker can try to exploit this property. For example,		
-		    an attacker can inject traffic that will consume network resources such that it affects
-            DetNet flows. This can be performed using non-DetNet traffic that indirectly affects
-            DetNet traffic (hardware resource exhaustion), or by using DetNet traffic from one
-            DetNet flow that directly affects traffic from different DetNet flows.</t>
+        <section anchor="SegmentThreat"
+          title="Resource Segmentation (Inter-segment Attack) Vulnerability">
+          <t>DetNet nodes are expected to split their resources between DetNet flows in a way that
+            prevents traffic from one DetNet flow from affecting the performance of other DetNet
+            flows, and prevents non-DetNet traffic from affecting DetNet traffic. However, due to
+            implementation constraints ,in some DetNet nodes some of the resources may be partially
+            shared. An attacker can try to exploit this property. For example, an attacker can
+            inject traffic that will consume network resources such that it affects DetNet flows.
+            This can be performed using non-DetNet traffic that indirectly affects DetNet traffic
+            (hardware resource exhaustion), or by using DetNet traffic from one DetNet flow that
+            directly affects traffic from different DetNet flows.</t>
         </section>
         <section anchor="ReplicationThreat" title="Packet Replication and Elimination">
           <section title="Replication: Increased Attack Surface">
@@ -599,11 +602,11 @@
             to invoke other attacks on some or all of the flows.</t>
           <t>DetNet flows are typically uniquely identified by their 6-tuple, i.e. fields within the
             L3 or L4 header, however in some implementations the flow ID may also be augmented by
-            additional per-flow attributes known to the system, e.g. above L4. For the
-            purpose of this document we assume any such additional fields used for flow ID are
-            encrypted and/or integrity-protected from external attackers. Note however that existing
-            OT protocols designed for use on dedicated secure networks may not intrinsically provide
-            such protection, in which case IPsec or transport layer security mechanisms may be
+            additional per-flow attributes known to the system, e.g. above L4. For the purpose of
+            this document we assume any such additional fields used for flow ID are encrypted and/or
+            integrity-protected from external attackers. Note however that existing OT protocols
+            designed for use on dedicated secure networks may not intrinsically provide such
+            protection, in which case IPsec or transport layer security mechanisms may be
             needed.</t>
         </section>
         <section anchor="SyncThreat" title="Time Synchronization Mechanisms">
@@ -780,8 +783,8 @@ Table
         <section title="Flow Modification">
           <t>If the contents of a packet header or body can be modified by the attacker, this can
             cause the packet to be routed incorrectly or dropped, or the payload to be corrupted or
-            subtly modified. Thus, the potential impact of a modification attack includes 
-			disrupting the application as well as the network equipment.</t>
+            subtly modified. Thus, the potential impact of a modification attack includes disrupting
+            the application as well as the network equipment.</t>
         </section>
         <section title="Spoofing">
           <section title="Dataplane Spoofing">
@@ -842,12 +845,11 @@ Table
               <t>modify the DetNet flow attributes (affecting available bandwidth)</t>
             </list>
           </t>
-	  <t>If an attacker can inject control messages without the central controller knowing, then
-	    one or more components in the network may get into a state that is not expected by the
-	    controller. At that point, if the controller initiates a command, the effect of that
-	    command may not be as expected, since the target of the command may have started from a
-	    different initial state.
-	  </t>
+          <t>If an attacker can inject control messages without the central controller knowing, then
+            one or more components in the network may get into a state that is not expected by the
+            controller. At that point, if the controller initiates a command, the effect of that
+            command may not be as expected, since the target of the command may have started from a
+            different initial state. </t>
         </section>
         <!-- cp segment impact -->
 
@@ -858,13 +860,14 @@ Table
           plane messages are not subject to multipath routing. </t>
         <section title="Increased Attack Surface">
           <t>The impact of an increased attack surface is that it increases the probability that the
-		  network can be exposed to an attacker. This can facilitate a wide range of specific attacks, 
-		  and their respective impacts are discussed in other subsections of this section.</t>
+            network can be exposed to an attacker. This can facilitate a wide range of specific
+            attacks, and their respective impacts are discussed in other subsections of this
+            section.</t>
         </section>
         <section title="Header Manipulation at Elimination Routers">
-          <t>This attack can potentially cause DoS to the application that uses the attacked DetNet flows 
-		  or to the network equipment that forwards them. Furthermore, it can 
-		  allow an attacker to manipulate the network paths and the behavior of the network layer.</t>
+          <t>This attack can potentially cause DoS to the application that uses the attacked DetNet
+            flows or to the network equipment that forwards them. Furthermore, it can allow an
+            attacker to manipulate the network paths and the behavior of the network layer.</t>
         </section>
       </section>
       <section title="Control or Signaling Packet Modification">
@@ -889,11 +892,10 @@ Table
           them susceptible to reconnaissance. </t>
       </section>
       <section title="Attacks on Time Synchronization Mechanisms">
-        <t>DetNet relies on an underlying time synchronization mechanism, and therefore a compromised
-		synchronization mechanism may cause DetNet nodes to malfunction. Specifically, DetNet flows 
-		may fail to meet their latency requirements and deterministic behavior, 
-		thus causing DoS to DetNet applications.
-        </t>
+        <t>DetNet relies on an underlying time synchronization mechanism, and therefore a
+          compromised synchronization mechanism may cause DetNet nodes to malfunction. Specifically,
+          DetNet flows may fail to meet their latency requirements and deterministic behavior, thus
+          causing DoS to DetNet applications. </t>
       </section>
       <section title="Attacks on Path Choice" anchor="PathChoiceImpact">
         <t>This is covered in part in <xref target="SegmentationImpact"/>, Segmentation Attacks, and
@@ -966,8 +968,8 @@ Table
               plane is discussed in <xref target="ControllerProtectSection"/>. The secret key,
               regardless of MAC used, must be protected from falling into the hands of unauthorized
               users. Once key management becomes a topic, it is important to understand that this is
-	      a delicate process and should not be undertaken lightly. BCP 107 <xref
-	      target="RFC4107" /> provides best practices in this regard.</t>
+              a delicate process and should not be undertaken lightly. BCP 107 <xref
+                target="RFC4107"/> provides best practices in this regard.</t>
             <t> DetNet system and/or component designers need to be aware of these distinctions and
               enforce appropriate integrity protection mechanisms as needed based on a threat
               analysis. Note that adding integrity protection mechanisms may introduce latency, thus
@@ -983,13 +985,13 @@ Table
               edge components. The adder and remover(s) have the trust relationship because they are
               the ones that ensure that the sequence numbers are not modifiable. Thus, sequence
               numbers can be protected by using authenticated encryption, or by a MAC without using
-	      encryption. Between the adder and remover there may or may not be replication and
-	      elimination functions. The elimination functions must be able to see the sequence numbers.
-              Therefore, if encryption is done between adders and removers it must not obscure the
-              sequence number. If the sequence removers and the eliminators are in the same physical
-              component, it may be possible to obscure the sequence number, however that is a layer
-              violation, and is not recommended practice. Note: At the time of this writing, PREOF
-              is not defined for the IP data plane.</t>
+              encryption. Between the adder and remover there may or may not be replication and
+              elimination functions. The elimination functions must be able to see the sequence
+              numbers. Therefore, if encryption is done between adders and removers it must not
+              obscure the sequence number. If the sequence removers and the eliminators are in the
+              same physical component, it may be possible to obscure the sequence number, however
+              that is a layer violation, and is not recommended practice. Note: At the time of this
+              writing, PREOF is not defined for the IP data plane.</t>
           </list>
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
@@ -1004,10 +1006,10 @@ Table
             <t>Authentication verifies the identity of DetNet nodes (including DetNet Controller
               Plane nodes), and this enables mitigation of spoofing attacks. While integrity
               protection ( <xref target="IntegritySection"/>) prevents intermediate nodes from
-              modifying information, authentication can provide traffic origin verification,
-              i.e. to verify that each packet in a DetNet flow is from a known source. Although 
-			  node authentication and integrity protection are two different goals of a security
-			  protocol, in most cases a common protocol (such as IPsec <xref target="RFC4301"/> or
+              modifying information, authentication can provide traffic origin verification, i.e. to
+              verify that each packet in a DetNet flow is from a known source. Although node
+              authentication and integrity protection are two different goals of a security
+              protocol, in most cases a common protocol (such as IPsec <xref target="RFC4301"/> or
               MACsec <xref target="IEEE802.1AE-2018"/>) is used for achieving both purposes.</t>
           </list>
         </t>
@@ -1021,11 +1023,10 @@ Table
       <section title="Dummy Traffic Insertion">
         <t>Description <list hangIndent="10" style="empty">
             <t>With some queueing methods such as <xref target="IEEE802.1Qch-2017"/> it is possible
-            to introduce dummy traffic in order to regularize the timing of packet
-            transmission. This will subsequently reduce the value of passive monitoring from
-	    internal threats (see <xref target="ThreatSection" />) as it will
-	    be much more difficult to associate discrete events with particular network packets.
-            </t>
+              to introduce dummy traffic in order to regularize the timing of packet transmission.
+              This will subsequently reduce the value of passive monitoring from internal threats
+              (see <xref target="ThreatSection"/>) as it will be much more difficult to associate
+              discrete events with particular network packets. </t>
           </list>
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
@@ -1034,33 +1035,33 @@ Table
               example, dummy traffic can be used to synthetically maintain constant traffic rate
               even when no user data is transmitted, thus making it difficult to collect information
               about the times at which users are active, and the times at which DetNet flows are
-            added or removed.</t>
+              added or removed.</t>
           </list>
-	</t>
-        <t>Traffic Insertion Challenges
-	<list hangIndent="10" style="empty">
-	  <t>Once an attacker is able to monitor the frames traversing a network to such a degree that
-	  they can differentiate between best-effort traffic and traffic belonging to a specific
-	  DetNet flow, it becomes difficult to not reveal to the attacker whether a given frame is
-	  valid traffic or an inserted frame. Thus, having the DetNet components generate and remove
-	  the dummy traffic may or may not be a viable option, unless certain challenges are solved;
-	  for example, but not limited to:</t>
-	</list>
+        </t>
+        <t>Traffic Insertion Challenges <list hangIndent="10" style="empty">
+            <t>Once an attacker is able to monitor the frames traversing a network to such a degree
+              that they can differentiate between best-effort traffic and traffic belonging to a
+              specific DetNet flow, it becomes difficult to not reveal to the attacker whether a
+              given frame is valid traffic or an inserted frame. Thus, having the DetNet components
+              generate and remove the dummy traffic may or may not be a viable option, unless
+              certain challenges are solved; for example, but not limited to:</t>
+          </list>
           <list style="symbols">
             <t>Inserted traffic must be indistinguishable from valid stream traffic from the
-            viewpoint of the attacker.</t>
-	    <t>DetNet components must be able to safely identify and remove all inserted traffic
-	    (and only inserted traffic).</t>
-	    <t>The controller plane must manage where to insert and remove dummy traffic, but this
-	    information must not be revealed to an attacker.</t>
-	  </list>
-	<list hangIndent="10" style="empty">
-	  <t>An alternative design is to have the insertion and removal of dummy traffic be performed
-	  at the application layer, rather than by the DetNet itself.  Further discussions and
-	  reading about how sRTP handles this can be found in <xref target="RFC6562" /></t>
-	  </list>
-	</t>
-	</section>
+              viewpoint of the attacker.</t>
+            <t>DetNet components must be able to safely identify and remove all inserted traffic
+              (and only inserted traffic).</t>
+            <t>The controller plane must manage where to insert and remove dummy traffic, but this
+              information must not be revealed to an attacker.</t>
+          </list>
+          <list hangIndent="10" style="empty">
+            <t>An alternative design is to have the insertion and removal of dummy traffic be
+              performed at the application layer, rather than by the DetNet itself. Further
+              discussions and reading about how sRTP handles this can be found in <xref
+                target="RFC6562"/></t>
+          </list>
+        </t>
+      </section>
 
       <section title="Encryption">
         <t>Description <list hangIndent="10" style="empty">
@@ -1143,21 +1144,20 @@ Table
       <section anchor="ControllerProtectSection" title="Control and Signaling Message Protection">
         <t>Description <list hangIndent="10" style="empty">
             <t>Control and signaling messages can be protected through the use of any or all of
-            encryption, authentication, and integrity protection mechanisms. Compared with
-            data-flows, the timing constraints for controller and signaling messages may be less
-            strict, and the number of such packets may be fewer. If that is the case in a given
-            application, then it may enable the use of asymmetric cryptography for signing of both
-            payload and headers for such messages, as well as encrypting the payload. Given that a
-            DetNet is managed by a central controller, the use of a shared public key approach for
-            these processes is well-proven.  This is further discussed in <xref
-            target="EncryptionConsiderations" />.
-	    </t>
+              encryption, authentication, and integrity protection mechanisms. Compared with
+              data-flows, the timing constraints for controller and signaling messages may be less
+              strict, and the number of such packets may be fewer. If that is the case in a given
+              application, then it may enable the use of asymmetric cryptography for signing of both
+              payload and headers for such messages, as well as encrypting the payload. Given that a
+              DetNet is managed by a central controller, the use of a shared public key approach for
+              these processes is well-proven. This is further discussed in <xref
+                target="EncryptionConsiderations"/>. </t>
           </list>
         </t>
         <t>Related attacks <list hangIndent="10" style="empty">
             <t>These mechanisms can be used to mitigate various attacks on the controller plane, as
-            described in <xref target="ControllerThreat"/>, <xref target="SyncThreat"/> and <xref
-            target="PathThreat"/>. </t>
+              described in <xref target="ControllerThreat"/>, <xref target="SyncThreat"/> and <xref
+                target="PathThreat"/>. </t>
           </list>
         </t>
       </section>
@@ -1415,8 +1415,8 @@ Table
             additional unauthorized traffic on the latter. In such a case it may be a security
             requirement that the system report and/or take some defined action, perhaps when a
             packet drop count threshold has been reached (see also <xref target="DpaMitigation"/>). </t>
-          <t>A data plane attack may force packets to be dropped, for example a "long" Delay or
-            Replication/Elimination or Flow Modification attack. </t>
+          <t>A data plane attack may force packets to be dropped, for example as a result of a Delay
+            attack, Replication/Elimination attack, or Flow Modification attack. </t>
           <t>The same result might be obtained by a controller plane attack, e.g. Path Manipulation
             or Signaling Packet Modification.</t>
           <t>An attack may also cause packets that should not be delivered to be delivered, such as
@@ -1841,9 +1841,9 @@ Table
           emphasis on static provisioning supported by network management systems. </t>
         <t>The operation of DetNet over an MPLS network is modeled on the operation of multi-segment
           pseudowires (MS-PW). Thus for guidance on securing the DetNet elements of DetNet over MPLS
-          the reader is referred to the security considerations of <xref
-            target="RFC8077"/>, <xref target="RFC3931"/>, <xref target="RFC3985"/>, <xref
-            target="RFC6073"/>, and <xref target="RFC6478"/>. </t>
+          the reader is referred to the security considerations of <xref target="RFC8077"/>, <xref
+            target="RFC3931"/>, <xref target="RFC3985"/>, <xref target="RFC6073"/>, and <xref
+            target="RFC6478"/>. </t>
         <t>Having attended to the conventional aspects of network security it is necessary to attend
           to the dynamic aspects. The closest experience that the IETF has with securing protocols
           that are sensitive to manipulation of delay are the two way time transfer protocols
@@ -2117,15 +2117,10 @@ v12 2020-10-01 EAG
 v13 2020-12-11 EAG 
                     Addressed secdir AD review items from Russ Housely (done) and Yaron (still one more to go, but it is significant).
 v14 2021 ...   EAG 
-                    Addressed secdir AD review items from Magnus Westerlund, Murray Kucherawy, 
+                    Addressed remaining comment from Yaron. Addressed secdir AD review items from Magnus Westerlund, Murray Kucherawy, 
                     Eric Vyncke, Roman Danyliw, Benjamin Kaduk, Robert Wilton, and Barry Leiba. 
                     
-
-ToDo list:
-              Validate use of words "attack" and "threat" is correct - prefer use of "attack" unless necessary.
-              Add a new attack type for internal knowledge of drivers/firmware (as in Multiple Hops section)? Is this in scope?
-              ?? Pascal pointed out that we could discuss attacks on the UNI, e.g. buffering
-   -->
+ -->
 
   </back>
 </rfc>
