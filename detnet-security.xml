@@ -249,10 +249,10 @@
             those used for flow ID, thereby decreasing the likelihood that a packet whose flow ID
             has been compromised might be directed into a different flow path. The component may
             verify every single packet header at every forwarding location, or only at certain
-            points. In any of these cases the component may use dynamic performance analytics [ref
-            to DPA section] to cause action to be initiated to address the situation in an
-            appropriate and timely manner, either at the data plane or controller plane, or both in
-            concert. The component's software and hardware may include measures to ensure the
+            points. In any of these cases the component may use dynamic performance analytics (<xref
+              target="DpaMitigation"/>) to cause action to be initiated to address the situation in
+            an appropriate and timely manner, either at the data plane or controller plane, or both
+            in concert. The component's software and hardware may include measures to ensure the
             integrity of the resource allocation/deallocation process. Other design aspects of the
             component may help ensure that the adverse effects of malicious traffic are more
             limited, for example by protecting network control interfaces, or minimizing cascade
