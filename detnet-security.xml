@@ -515,11 +515,11 @@
           <t>DetNet components are expected to split their resources between DetNet flows in a way
             that prevents traffic from one DetNet flow from affecting the performance of other
             DetNet flows, and also prevents non-DetNet traffic from affecting DetNet flows. However,
-            due to implementation constraints, in a DetNet component some of the resources may be
-            partially shared, and an attacker can try to exploit this property. For example, an
-            attacker can inject traffic in order to exhaust network resources such that DetNet
-            packets which share resources with the injected traffic may be dropped or delayed. Such
-            injected traffic may be DetNet flows or non-DetNet traffic.</t>
+            perhaps due to implementation constraints, some resources may be partially shared, and
+            an attacker may try to exploit this property. For example, an attacker can inject
+            traffic in order to exhaust network resources such that DetNet packets which share
+            resources with the injected traffic may be dropped or delayed. Such injected traffic may
+            be part of DetNet flows or non-DetNet traffic.</t>
 
           <t>Another example of a resource segmentation attack is the case in which an attacker is
             able to overload the exception path queue on the router, i.e. a "slow path" typically
