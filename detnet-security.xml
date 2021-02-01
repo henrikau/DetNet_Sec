@@ -521,6 +521,16 @@
             This can be performed using non-DetNet traffic that indirectly affects DetNet traffic
             (hardware resource exhaustion), or by using DetNet traffic from one DetNet flow that
             directly affects traffic from different DetNet flows.</t>
+		  <t>A specific example of a resource segmentation attack is by overloading the control 
+		  plane of the DetNet node, e.g., by overloading the exception path queue on the 
+		  router.  Thus, if any of the DetNet streams require or expect some packets to be punted 
+		  to the control plane or software data plane for processing, and there is a single queue 
+		  from the forwarding ASIC to a control plane or software data plane, then it could be 
+		  possible for non-DetNet flows to overload that shared queue such that punted packets 
+		  on the DetNet flows would end up being dropped. It should be noted that various attacks
+		  directed at the control plane (either the CPU of the DetNet node or a network controller) 
+		  can be used to compromise the network, but this document focuses on threats that are
+		  specific to deterministic networks.</t>
         </section>
         <section anchor="ReplicationThreat" title="Packet Replication and Elimination">
           <section title="Replication: Increased Attack Surface">
