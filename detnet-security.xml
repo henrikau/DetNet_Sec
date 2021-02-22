@@ -17,7 +17,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="info" docName="draft-ietf-detnet-security-14" ipr="trust200902">
+<rfc category="info" docName="draft-ietf-detnet-security-15" ipr="trust200902">
   <front>
     <title abbrev="DetNet Security"> Deterministic Networking (DetNet) Security Considerations </title>
     <author fullname="Ethan Grossman" initials="E.A." role="editor" surname="Grossman">
