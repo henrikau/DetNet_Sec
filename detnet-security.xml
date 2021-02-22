@@ -1143,11 +1143,16 @@ Table
           <t>In either case, origin verification also requires replay detection as part of the
             security protocol to prevent an attacker from recording and resending traffic, e.g., as
             a denial of service attack on flow forwarding resources.</t>
-          <t>If crypto keys are to be regenerated over the duration of the flow then the time
-            required to accomplish this must be accounted for in the latency calculations.
-            Unfortunately, key generation is a cryptographic operation that is frequently not
-            possible to implement in constant time, most notably (though not exclusively) for RSA
-            key pairs. </t>
+          <t>In the general case, cryptographic hygiene requires the generation of new keys during
+            the lifetime of an encrypted flow (e.g. see <xref target="RFC4253"/> section 9), and any
+            such key generation (or key exchange) requires additional computing time which must be
+            accounted for in the latency calculations for that flow. For modern ECDH (Elliptical
+            Curve Diffie-Hellman) key-exchange operations (such as x25519, see <xref
+              target="RFC7748"/>) these operations can be performed in constant (predictable) time,
+            however this is not universally true (for example for legacy RSA key exchange, <xref
+              target="RFC4432"/>). Thus implementers should be aware of the time properties of these
+            algorithms and avoid algorithms that make constant-time implementation difficult or
+            impossible.</t>
         </section>
       </section>
       <section anchor="ControllerProtectSection" title="Control and Signaling Message Protection">
@@ -1970,6 +1975,9 @@ Table
       <?rfc include='reference.RFC.8077.xml'?>
       <?rfc include='reference.RFC.8446.xml'?>
       <?rfc include='reference.RFC.8578.xml'?>
+      <?rfc include='reference.RFC.4253.xml'?>
+      <?rfc include='reference.RFC.7748.xml'?>
+      <?rfc include='reference.RFC.4432.xml'?>
 
       <reference anchor="IETF_YANG_SEC"
         target="https://trac.ietf.org/trac/ops/wiki/yang-security-guidelines">
@@ -2128,7 +2136,9 @@ v13 2020-12-11 EAG
 v14 2021-02-01 EAG 
                     Addressed remaining AD comment from Yaron. Addressed secdir AD review items from 
                     Magnus Westerlund, Murray Kucherawy, Eric Vyncke, Roman Danyliw, Benjamin Kaduk, 
-                    Robert Wilton, and Barry Leiba. 
+                    Robert Wilton, and Barry Leiba.
+v15 2021-02-22 EAG 
+                   Fix "RSA key pairs generated on the fly" text per Yaron and Ben.  
                     
  -->
 
