@@ -17,7 +17,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="info" docName="draft-ietf-detnet-security-15" ipr="trust200902">
+<rfc category="info" docName="draft-ietf-detnet-security-16" ipr="trust200902">
   <front>
     <title abbrev="DetNet Security"> Deterministic Networking (DetNet) Security Considerations </title>
     <author fullname="Ethan Grossman" initials="E.A." role="editor" surname="Grossman">
@@ -153,10 +153,11 @@
         cases handled by that network. Thus the reader is assumed to be familiar with the specific
         security requirements of their use cases, for example those outlined in the DetNet Use Cases
           <xref target="RFC8578"/> and the Security Considerations sections of the DetNet documents
-        applicable to the network technologies in use, for example <xref target="RFC8939"/>).
-        Readers can find a general introduction to the DetNet Architecture in <xref target="RFC8655"
-        />, the DetNet Data Plane in <xref target="RFC8938"/>, and the Flow Information Model in
-          <xref target="I-D.ietf-detnet-flow-information-model"/>.</t>
+        applicable to the network technologies in use, for example <xref target="RFC8939"/> for an
+        IP data plane and <xref target="RFC8964"/> for an MPLS data plane. Readers can find a
+        general introduction to the DetNet Architecture in <xref target="RFC8655"/>, the DetNet Data
+        Plane in <xref target="RFC8938"/>, and the Flow Information Model in <xref
+          target="I-D.ietf-detnet-flow-information-model"/>.</t>
       <t>The DetNet technologies include ways to: <list style="symbols">
           <t> Assign data plane resources for DetNet flows in some or all of the intermediate nodes
             (routers) along the path of the flow</t>
@@ -172,7 +173,7 @@
         mitigations, and an association of attacks with use cases (based on the Use Case Common
         Themes section of the DetNet Use Cases <xref target="RFC8578"/>). </t>
       <t>This document is based on the premise that there will be a very broad range of DetNet
-        applications and use cases, ranging in size scope from individual industrial machines to
+        applications and use cases, ranging in size and scope from individual industrial machines to
         networks that span an entire country (<xref target="RFC8578"/>). Thus no single set of
         prescriptions (such as exactly which mitigation should be applied to which segment of a
         DetNet) can be applicable to all of them, and indeed any single one that we might prescribe
@@ -410,10 +411,10 @@
     </section>
     <section title="DetNet Security Considerations Compared With DiffServ Security Considerations">
       <t>DetNet is designed to be compatible with DiffServ <xref target="RFC2474"/> as applied to IT
-        traffic in the DetNet. DetNet also incorporates the use of the 6-bit value of the DSCP field
-        of the Type of Service (ToS) byte of the IPv4 header (or the Traffic Class byte in IPv6) for
-        flow identification for OT traffic. However, the DetNet interpretation of the DSCP value for
-        OT traffic is not equivalent to the PHB selection behavior as defined by DiffServ. </t>
+        traffic in the DetNet. DetNet also incorporates the use of the 6-bit value of the DCSP field
+        of the Type of Service (IPv4) and Traffic Class (IPv6) bytes for flow identification.
+        However, the DetNet interpretation of the DSCP value for OT traffic is not equivalent to the
+        PHB selection behavior as defined by DiffServ. </t>
 
       <t>Thus security consideration for DetNet have some aspects in common with DiffServ, in fact
         overlapping 100% with respect to IP IT traffic. Security considerations for these aspects
@@ -527,7 +528,7 @@
             require processing by a CPU. DetNet OT flows are typically configured to take the "fast
             path" through the data plane, to minimize latency. However if there is only one queue
             from the forwarding ASIC to the exception path, and for some reason the system is
-            configured such that DetNet packets must be handled on this exception path, then
+            configured such that any DetNet packets must be handled on this exception path, then
             saturating the exception path could result in delaying or dropping of DetNet packets.
           </t>
         </section>
@@ -769,7 +770,7 @@ Table
           <t>A data-plane delay attack on a system controlling substantial moving devices, for
             example in industrial automation, can cause physical damage. For example, if the network
             promises a bounded latency of 2ms for a flow, yet the machine receives it with 5ms
-            latency, control loop of the machine can become unstable. </t>
+            latency, the control loop of the machine may become unstable. </t>
         </section>
         <section title="Controller Plane Delay Attacks">
           <t>In and of itself, this is not directly a threat to the DetNet service, but the effects
@@ -921,7 +922,7 @@ Table
         based on a system-specific threat analysis. </t>
       <t>Some of the technology-specific security considerations and mitigation approaches are
         further discussed in the DetNet data plane solution documents, such as <xref
-          target="RFC8939"/>, <xref target="RFC8938"/>, <xref
+          target="RFC8938"/>, <xref target="RFC8939"/>, <xref target="RFC8964"/>, <xref
           target="I-D.ietf-detnet-mpls-over-udp-ip"/>, and <xref
           target="I-D.ietf-detnet-ip-over-mpls"/>. </t>
       <section title="Path Redundancy">
@@ -962,8 +963,8 @@ Table
             <t> There are different levels of security available for integrity protection, ranging
               from the basic ability to detect if a header has been corrupted in transit (no
               malicious attack) to stopping a skilled and determined attacker capable of both subtly
-              modifying fields in the headers as well as updating an unsigned MAC. Common for all
-              are the 2 steps that need to be performed in both ends. The first is computing the
+              modifying fields in the headers as well as updating an unkeyed checksum. Common for
+              all are the 2 steps that need to be performed in both ends. The first is computing the
               checksum or MAC. The corresponding verification step must perform the same steps
               before comparing the provided with the computed value. Only then can the receiver be
               reasonably sure that the header is authentic. </t>
@@ -1751,30 +1752,29 @@ Table
            ]]></artwork>
         </figure>
       </section>
-      <section title="Security Considerations for OAM Traffic">
-        <t>This section considers DetNet-specific security considerations for packet traffic that is
-          generated and transmitted over a DetNet as part of OAM (Operations, Administration, and
-          Maintenance). For the purposes of this discussion, OAM traffic falls into one of two basic
-          types:</t>
-        <t>
-          <list style="symbols">
-            <t>OAM traffic generated by the network itself. The additional bandwidth required for
-              such packets is added by the network administration, presumably transparent to the
-              customer. Security considerations for such traffic are not DetNet-specific (apart from
-              such traffic being subject to the same DetNet-specific security considerations as any
-              other DetNet data flow) and are thus not covered in this document.</t>
-            <t>OAM traffic generated by the customer. From a DetNet security point of view, DetNet
-              security considerations for such traffic are exactly the same as for any other
-              customer data flows.</t>
-          </list>
-        </t>
-        <t>From the perspective of an attack, OAM traffic is indistinguishable from DetNet traffic
-          and the network needs to be secure against injection, removal, or modification of traffic
-          of any kind, including OAM traffic. A DetNet is sensitive to any form of packet injection,
-          removal or manipulation and in this respect DetNet OAM traffic is no different. Techniques
-          for securing a DetNet against these threats have been discussed elsewhere in this
-          document.</t>
-      </section>
+    </section>
+    <section title="Security Considerations for OAM Traffic">
+      <t>This section considers DetNet-specific security considerations for packet traffic that is
+        generated and transmitted over a DetNet as part of OAM (Operations, Administration, and
+        Maintenance). For the purposes of this discussion, OAM traffic falls into one of two basic
+        types:</t>
+      <t>
+        <list style="symbols">
+          <t>OAM traffic generated by the network itself. The additional bandwidth required for such
+            packets is added by the network administration, presumably transparent to the customer.
+            Security considerations for such traffic are not DetNet-specific (apart from such
+            traffic being subject to the same DetNet-specific security considerations as any other
+            DetNet data flow) and are thus not covered in this document.</t>
+          <t>OAM traffic generated by the customer. From a DetNet security point of view, DetNet
+            security considerations for such traffic are exactly the same as for any other customer
+            data flows.</t>
+        </list>
+      </t>
+      <t>From the perspective of an attack, OAM traffic is indistinguishable from DetNet traffic and
+        the network needs to be secure against injection, removal, or modification of traffic of any
+        kind, including OAM traffic. A DetNet is sensitive to any form of packet injection, removal
+        or manipulation and in this respect DetNet OAM traffic is no different. Techniques for
+        securing a DetNet against these threats have been discussed elsewhere in this document.</t>
     </section>
     <section anchor="TechnologySpecificThreats" title="DetNet Technology-Specific Threats">
       <t>
@@ -1788,7 +1788,7 @@ Table
         identification and OAM methodologies.</t>
       <t>As noted in <xref target="RFC8655"/>, DetNet operates at the IP layer ( <xref
           target="RFC8939"/>) and delivers service over sub-layer technologies such as MPLS (<xref
-          target="RFC8938"/>) and IEEE 802.1 Time-Sensitive Networking (TSN) (<xref
+          target="RFC8964"/>) and IEEE 802.1 Time-Sensitive Networking (TSN) (<xref
           target="I-D.ietf-detnet-ip-over-tsn"/>). Application flows can be protected through
         whatever means are provided by the layer and sub-layer technologies. For example,
         technology-specific encryption may be used, for example for IP flows, IPSec <xref
@@ -1934,6 +1934,7 @@ Table
   <back>
     <references title="Normative References">
       <?rfc include='reference.RFC.8939.xml'?>
+      <?rfc include='reference.RFC.8964.xml'?>
       <?rfc include='reference.RFC.8938.xml'?>
       <?rfc include='reference.RFC.8655.xml'?>
     </references>
@@ -2138,7 +2139,11 @@ v14 2021-02-01 EAG
                     Magnus Westerlund, Murray Kucherawy, Eric Vyncke, Roman Danyliw, Benjamin Kaduk, 
                     Robert Wilton, and Barry Leiba.
 v15 2021-02-22 EAG 
-                   Fix "RSA key pairs generated on the fly" text per Yaron and Ben.  
+                   Fix "RSA key pairs generated on the fly" text per Yaron and Ben.
+v16 2021-02-26 EAG 
+                   Address draft 15 comments from Ben Kaduk. 
+                   Fix typo: Move sec 8.3. Security Considerations for OAM Traffic out from under 8. Association of Attacks to Use Cases.
+
                     
  -->
 
