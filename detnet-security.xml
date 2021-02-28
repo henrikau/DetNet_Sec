@@ -1853,11 +1853,13 @@ Table
           <xref target="RFC5921"/> introduces to MPLS new Operations, Administration, and
           Maintenance (OAM) capabilities, a transport-oriented path protection mechanism, and strong
           emphasis on static provisioning supported by network management systems. </t>
-        <t>The operation of DetNet over an MPLS network is modeled on the operation of multi-segment
-          pseudowires (MS-PW). Thus for guidance on securing the DetNet elements of DetNet over MPLS
-          the reader is referred to the security considerations of <xref target="RFC8077"/>, <xref
-            target="RFC3931"/>, <xref target="RFC3985"/>, <xref target="RFC6073"/>, and <xref
+
+        <t>The operation of DetNet over an MPLS network builds on MPLS and pseudowire encapsulation.
+          Thus for guidance on securing the DetNet elements of DetNet over MPLS the reader is also
+          referred to the security considerations of <xref target="RFC4385"/>, <xref
+            target="RFC5586"/>, <xref target="RFC3985"/>, <xref target="RFC6073"/>, and <xref
             target="RFC6478"/>. </t>
+
         <t>Having attended to the conventional aspects of network security it is necessary to attend
           to the dynamic aspects. The closest experience that the IETF has with securing protocols
           that are sensitive to manipulation of delay are the two way time transfer protocols
@@ -1953,7 +1955,6 @@ Table
       <?rfc include='reference.RFC.2474.xml'?>
       <?rfc include='reference.RFC.2475.xml'?>
       <?rfc include='reference.RFC.3552.xml'?>
-      <?rfc include='reference.RFC.3931.xml'?>
       <?rfc include='reference.RFC.3985.xml'?>
       <?rfc include='reference.RFC.4107.xml'?>
       <?rfc include='reference.RFC.4301.xml'?>
@@ -1973,12 +1974,13 @@ Table
       <?rfc include='reference.RFC.7567.xml'?>
       <?rfc include='reference.RFC.7641.xml'?>
       <?rfc include='reference.RFC.7835.xml'?>
-      <?rfc include='reference.RFC.8077.xml'?>
       <?rfc include='reference.RFC.8446.xml'?>
       <?rfc include='reference.RFC.8578.xml'?>
       <?rfc include='reference.RFC.4253.xml'?>
       <?rfc include='reference.RFC.7748.xml'?>
       <?rfc include='reference.RFC.4432.xml'?>
+      <?rfc include='reference.RFC.4385.xml'?>
+      <?rfc include='reference.RFC.5586.xml'?>
 
       <reference anchor="IETF_YANG_SEC"
         target="https://trac.ietf.org/trac/ops/wiki/yang-security-guidelines">
